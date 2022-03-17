@@ -11,11 +11,14 @@ struct NewsListScreen: View {
     
     let newsSource: NewsSourceViewModel
     @StateObject private var newsArticleListViewModel = NewsArticleListViewModel()
+    @State private var showLoading: Bool = false
     
     var body: some View {
         
         List(newsArticleListViewModel.newsArticles, id: \.id) { newsArticle in
-            NavigationLink(destination: WebView(url: newsArticle.urlToSource!)) {
+            NavigationLink(destination:
+                            WebView(url: newsArticle.urlToSource!, showLoading: $showLoading)
+                            .overlay(showLoading ? ProgressView("Loading...").toAnyView() : EmptyView().toAnyView()) ) {
                 NewsArticleCell(newsArticle: newsArticle)
             }
         }
