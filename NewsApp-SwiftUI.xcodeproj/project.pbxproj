@@ -18,6 +18,7 @@
 		9A4ACEE827E109C80064541F /* NewsSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4ACEE727E109C80064541F /* NewsSource.swift */; };
 		9A4ACEEB27E10AC90064541F /* NewsArticleListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4ACEEA27E10AC90064541F /* NewsArticleListViewModel.swift */; };
 		9A4ACEED27E10ADD0064541F /* NewsSourceListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4ACEEC27E10ADD0064541F /* NewsSourceListViewModel.swift */; };
+		9AFB299027E3BDE7003CE3FA /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AFB298F27E3BDE7003CE3FA /* WebView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +34,7 @@
 		9A4ACEE727E109C80064541F /* NewsSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsSource.swift; sourceTree = "<group>"; };
 		9A4ACEEA27E10AC90064541F /* NewsArticleListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsArticleListViewModel.swift; sourceTree = "<group>"; };
 		9A4ACEEC27E10ADD0064541F /* NewsSourceListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsSourceListViewModel.swift; sourceTree = "<group>"; };
+		9AFB298F27E3BDE7003CE3FA /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +100,7 @@
 			isa = PBXGroup;
 			children = (
 				9A4ACEDF27E109440064541F /* Webservice.swift */,
+				9AFB298F27E3BDE7003CE3FA /* WebView.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -199,6 +202,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9A4ACEE327E109720064541F /* Constants.swift in Sources */,
+				9AFB299027E3BDE7003CE3FA /* WebView.swift in Sources */,
 				9A4ACEE627E1099E0064541F /* NewsArticle.swift in Sources */,
 				9A4ACEEB27E10AC90064541F /* NewsArticleListViewModel.swift in Sources */,
 				9A4ACEED27E10ADD0064541F /* NewsSourceListViewModel.swift in Sources */,

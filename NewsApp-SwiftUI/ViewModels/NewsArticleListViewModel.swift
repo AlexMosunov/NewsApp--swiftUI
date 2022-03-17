@@ -7,6 +7,7 @@
 
 import Foundation
 
+@MainActor
 class NewsArticleListViewModel: ObservableObject {
     
     @Published var newsArticles = [NewsArticleViewModel]()
@@ -15,9 +16,7 @@ class NewsArticleListViewModel: ObservableObject {
         do {
             let newsArticles = try await Webservice().fetchNewsAsync(sourceId: sourceId, url: Constants.Urls.topHeadlines(by: sourceId))
             
-            DispatchQueue.main.async {
-                self.newsArticles = newsArticles.map(NewsArticleViewModel.init)
-            }
+            self.newsArticles = newsArticles.map(NewsArticleViewModel.init)
         } catch {
             print(error)
         }
@@ -44,6 +43,10 @@ struct NewsArticleViewModel {
     
     var urlToImage: URL? {
         URL(string: newsArticle.urlToImage ?? "")
+    }
+    
+    var urlToSource: URL? {
+        URL(string: newsArticle.url ?? "")
     }
     
 }

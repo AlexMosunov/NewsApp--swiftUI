@@ -15,7 +15,9 @@ struct NewsListScreen: View {
     var body: some View {
         
         List(newsArticleListViewModel.newsArticles, id: \.id) { newsArticle in
+            NavigationLink(destination: WebView(url: newsArticle.urlToSource!)) {
                 NewsArticleCell(newsArticle: newsArticle)
+            }
         }
         .listStyle(.plain)
         .onAppear {
@@ -24,6 +26,13 @@ struct NewsListScreen: View {
             }
         }
         .navigationTitle(newsSource.name)
+        .navigationBarItems(trailing: Button(action: {
+            Task {
+                await newsArticleListViewModel.getNewsBy(sourceId: newsSource.id)
+            }
+        }, label: {
+            Image(systemName: "arrow.clockwise.circle")
+        }))
         
     }
 }
