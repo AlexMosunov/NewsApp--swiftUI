@@ -17,7 +17,6 @@ struct TopHeadlinesListView: View {
         NavigationView {
             VStack {
                 if results.isEmpty {
-                    
                     if newsArticleListViewModel.newsArticles.isEmpty {
                         ProgressView()
                             .onAppear {
@@ -47,21 +46,24 @@ struct TopHeadlinesListView: View {
             }
             .listStyle(.plain)
             .navigationTitle( results.isEmpty ? "Top Headlines" : "Top fetched headlines")
-            .navigationBarItems(trailing: Button(action: {
-                //clearing data in core data
-                do {
-                    results.forEach { video in
-                        context.delete(video)
-                    }
-                    try context.save()
-                } catch {
-                    print(error.localizedDescription)
+            .refreshable {
+                Task {
+                    try await refresh()
                 }
-                newsArticleListViewModel.newsArticles.removeAll()
-            }, label: {
-                Image(systemName: "arrow.clockwise.circle")
-            }))
+            }
         }
+    }
+
+    private func refresh() async throws {
+        do {
+            results.forEach { video in
+                context.delete(video)
+            }
+            try context.save()
+        } catch {
+            print(error.localizedDescription)
+        }
+        newsArticleListViewModel.newsArticles.removeAll()
     }
 }
 

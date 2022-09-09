@@ -30,7 +30,7 @@ class NewsArticleListViewModel: ObservableObject {
             self.newsArticles = newsArticles.map {
                 NewsArticleViewModel(newsArticle: $0, fetchedResult: nil)
             }
-            PersistenceController.shared.saveData(articles: newsArticles)
+            try await PersistenceController.shared.saveData(articles: newsArticles)
         } catch {
             print(error)
         }
@@ -57,7 +57,7 @@ struct NewsArticleViewModel {
     }
      
     var urlToImage: URL? {
-        URL(string: newsArticle == nil ? fetchedResult!.urlToImage ?? "" : newsArticle!.urlToImage ?? "")
+        URL(string: (newsArticle == nil ? fetchedResult!.urlToImage : newsArticle!.urlToImage) ?? "https://www.locala.org.uk/assets/images/news-placeholder.png")
     }
     
     var urlToSource: URL? {

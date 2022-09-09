@@ -27,7 +27,6 @@ struct PersistenceController {
         if context.hasChanges {
             do {
                 try context.save()
-                print("Success")
                 completion(nil)
             } catch {
                 completion(error)
@@ -35,12 +34,12 @@ struct PersistenceController {
         }
     }
 
-//    func save() async throws {
-//        let context = container.viewContext
-//        if context.hasChanges {
-//            try await context.save()
-//        }
-//    }
+    func saveAsync() async throws {
+        let context = container.viewContext
+        if context.hasChanges {
+            try context.save()
+        }
+    }
 
     func delete(_ object: NSManagedObject, completion: @escaping (Error?) -> () = {_ in}) {
         let context = container.viewContext
@@ -48,8 +47,18 @@ struct PersistenceController {
         save(completion: completion)
     }
 
-    func saveData(articles: [NewsArticle]) {
+    func saveData(articles: [NewsArticle]) async throws {
+        guard let existingArticles: [Article] = try container.viewContext.fetch(
+            NSFetchRequest<Article>.init(entityName: Article.description())
+        ) as? [Article] else {
+            return
+        }
         articles.forEach { data in
+            existingArticles.forEach { art in
+                if art.title == data.title && art.publishedAt == data.publishedAt {
+                    delete(art)
+                }
+            }
             let entity = Article(context: container.viewContext)
             entity.author = data.author
             entity.url = data.url
@@ -59,9 +68,8 @@ struct PersistenceController {
             entity.title = data.title
             entity.urlToImage = data.urlToImage
         }
+        
         //TODO: change, handel error to UI
-        save { error in
-            print(error?.localizedDescription ?? "")
-        }
+        try await saveAsync()
     }
 }
