@@ -12,9 +12,7 @@ struct NewsSourceListScreen: View {
     @StateObject private var newsSourceListViewModel = NewsSourceListViewModel()
     
     var body: some View {
-        
         NavigationView {
-            
             List(newsSourceListViewModel.newsSources, id: \.id) { newsSource in
                 NavigationLink(destination: NewsListScreen(newsSource: newsSource)) {
                     NewsSourceCell(newsSource: newsSource)

@@ -23,7 +23,6 @@ struct WebView: UIViewRepresentable {
     }
     
     func updateUIView(_ uiView: UIViewType, context: Context) {
-        
     }
     
     func makeCoordinator() -> WebViewCoordinator {
@@ -32,11 +31,9 @@ struct WebView: UIViewRepresentable {
         } didFinish: {
             showLoading = false
         }
-
     }
     
 }
-
 
 class WebViewCoordinator: NSObject, WKNavigationDelegate {
     
@@ -53,7 +50,7 @@ class WebViewCoordinator: NSObject, WKNavigationDelegate {
     }
     
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
-        print(error)
+        print("WebViewCoordinator error - \(error.localizedDescription)")
     }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
