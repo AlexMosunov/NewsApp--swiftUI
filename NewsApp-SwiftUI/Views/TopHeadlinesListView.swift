@@ -11,35 +11,33 @@ struct TopHeadlinesListView: View {
     @StateObject private var newsArticleListViewModel = NewsArticleListViewModel()
     @State private var showLoading: Bool = false
     @Environment(\.managedObjectContext) var context
-    @FetchRequest(entity: Article.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Article.publishedAt, ascending: true)]) var results : FetchedResults<Article>
+    @FetchRequest(entity: Article.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Article.publishedAt, ascending: false)]) var results : FetchedResults<Article>
 
     var body: some View {
         NavigationView {
             VStack {
                 if results.isEmpty {
-                    if newsArticleListViewModel.newsArticles.isEmpty {
-                        ProgressView()
-                            .onAppear {
-                                Task {
-                                    await newsArticleListViewModel.getTopNews()
-                                }
-                            }
-                    } else {
-                        List(newsArticleListViewModel.newsArticles, id: \.id) { newsArticle in
-                            NavigationLink(destination:
-                                            WebView(url: newsArticle.urlToSource!,
-                                                    showLoading: $showLoading)) {
-                                NewsArticleCell(newsArticle: newsArticle)
+                    ProgressView()
+                        .onAppear {
+                            Task {
+                                await newsArticleListViewModel.getTopNews()
                             }
                         }
-                    }
                 } else {
-                    List(results) { fetchedArticle in
+                    List(results.indices, id: \.self) { fetchedArticleIndex in
+                        let fetchedArticle = results[fetchedArticleIndex]
                         let viewModel = NewsArticleViewModel(newsArticle: nil, fetchedResult: fetchedArticle)
                         NavigationLink(destination:
                                         WebView(url: viewModel.urlToSource!,
                                                 showLoading: $showLoading)) {
                             NewsArticleCell(newsArticle: viewModel)
+                                .onAppear {
+                                    if fetchedArticleIndex == results.count - 2 {
+                                        Task {
+                                            await newsArticleListViewModel.loadMore(resultsCount: results.count)
+                                        }
+                                    }
+                                }
                         }
                     }
                 }
@@ -55,15 +53,10 @@ struct TopHeadlinesListView: View {
     }
 
     private func refresh() async throws {
-        do {
-            results.forEach { video in
-                context.delete(video)
-            }
-            try context.save()
-        } catch {
-            print(error.localizedDescription)
+        Constants.page = 1
+        Task {
+            await newsArticleListViewModel.getTopNews()
         }
-        newsArticleListViewModel.newsArticles.removeAll()
     }
 }
 

@@ -26,6 +26,7 @@ struct NewsArticleCell: View {
                     .fontWeight(.bold)
                 Text(newsArticle.description)
             }
+//            if self.islas
         }
     }
 }

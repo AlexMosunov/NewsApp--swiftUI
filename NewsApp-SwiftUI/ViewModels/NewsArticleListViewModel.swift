@@ -27,12 +27,24 @@ class NewsArticleListViewModel: ObservableObject {
     func getTopNews() async {
         do {
             let newsArticles = try await Webservice().fetchTopHeadlines(url: Constants.Urls.topHeadlines)
-            self.newsArticles = newsArticles.map {
+            let loadedArticles = newsArticles.map {
                 NewsArticleViewModel(newsArticle: $0, fetchedResult: nil)
             }
+            self.newsArticles.append(contentsOf: loadedArticles)
             try await PersistenceController.shared.saveData(articles: newsArticles)
         } catch {
             print(error)
+        }
+    }
+
+    func loadMore(resultsCount: Int)  async {
+        guard Constants.page < 5 else {
+            return
+        }
+        let currentPage = resultsCount / Constants.limit
+        Constants.page = currentPage + 1
+        Task {
+            await getTopNews()
         }
     }
     
