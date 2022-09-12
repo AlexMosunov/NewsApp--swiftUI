@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct MainTabView: View {
-    let persistenceController = PersistenceController.shared
     
     var body: some View {
         TabView {
@@ -16,7 +15,6 @@ struct MainTabView: View {
                 .tabItem {
                     Text("Top News")
                 }
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
             NewsSourceListScreen()
                 .tabItem {
                     Text("Sources")

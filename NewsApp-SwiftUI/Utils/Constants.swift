@@ -12,6 +12,7 @@ struct Constants {
     static let apiKey = "d7ae831b5c654b2bbee290b51935c35b"
     static let limit = 20
     static var page = 1
+    static var maxDaysOld = 5
     
     struct Urls {
         static func topHeadlines(by source: String) -> URL? {

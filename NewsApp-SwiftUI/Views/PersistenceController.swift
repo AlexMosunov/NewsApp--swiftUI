@@ -47,6 +47,7 @@ struct PersistenceController {
     }
 
     func saveData(articles: [NewsArticle]) async throws {
+        deleteOld()
         articles.forEach { data in
             deleteDuplicates(title: data.title, publishedAt: data.publishedAt)
             let entity = Article(context: context)
@@ -65,7 +66,6 @@ struct PersistenceController {
 
     private func deleteDuplicates(title: String, publishedAt: String) {
         do {
-            let days = numberOfDaysSinceNow(dateString: publishedAt)
             let fetchRequest = NSFetchRequest<Article>.init(entityName: Article.description())
             fetchRequest.predicate = NSCompoundPredicate(
                 andPredicateWithSubpredicates: [
@@ -83,13 +83,27 @@ struct PersistenceController {
         }
     }
 
+    private func deleteOld() {
+        do {
+            let fetchRequest = NSFetchRequest<Article>.init(entityName: Article.description())
+            let articles: [Article] = try context.fetch(fetchRequest)
+            for item in articles {
+                if numberOfDaysSinceNow(dateString: item.publishedAt ?? "") > Constants.maxDaysOld {
+                    delete(item)
+                }
+            }
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+
     private func numberOfDaysSinceNow(dateString: String) -> Int {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale.autoupdatingCurrent
         dateFormatter.timeZone = TimeZone.current
-        dateFormatter.dateFormat = "MMMM dd, yyyy 'at' hh:mm:ss a 'UTC'Z"
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
         let date = dateFormatter.date(from: dateString) ?? Date()
-        let calendar = Calendar(identifier: .gregorian)
+        let calendar = Calendar.current
         let lhs = calendar.startOfDay(for: date).timeIntervalSince1970
         let rhs = calendar.startOfDay(for: Date()).timeIntervalSince1970
         return Int(round((lhs - rhs) / 60 / 60 / 24))

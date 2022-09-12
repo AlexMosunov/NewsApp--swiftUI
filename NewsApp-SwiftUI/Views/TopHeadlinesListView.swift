@@ -12,6 +12,7 @@ struct TopHeadlinesListView: View {
     @State private var showLoading: Bool = false
     @Environment(\.managedObjectContext) var context
     @FetchRequest(entity: Article.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Article.publishedAt, ascending: false)]) var results : FetchedResults<Article>
+    @Environment(\.scenePhase) var scenePhase
 
     var body: some View {
         NavigationView {
@@ -20,7 +21,7 @@ struct TopHeadlinesListView: View {
                     ProgressView()
                         .onAppear {
                             Task {
-                                await newsArticleListViewModel.getTopNews()
+                                try await refresh()
                             }
                         }
                 } else {
@@ -40,10 +41,19 @@ struct TopHeadlinesListView: View {
                                 }
                         }
                     }
+                    .onChange(of: scenePhase) { phase in
+                        switch phase {
+                        case .active:
+                            Task {
+                                try await refresh()
+                            }
+                        default: break
+                        }
+                    }
                 }
             }
             .listStyle(.plain)
-            .navigationTitle( results.isEmpty ? "Top Headlines" : "Top fetched headlines")
+            .navigationTitle("Top Headlines")
             .refreshable {
                 Task {
                     try await refresh()
