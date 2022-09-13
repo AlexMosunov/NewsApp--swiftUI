@@ -12,21 +12,14 @@ struct NewsArticleCell: View {
 
     var body: some View {
         HStack(alignment: .top) {
-            AsyncImage(url: newsArticle.urlToImage) { image in
-                image.resizable()
-                    .scaledToFit()
-                    .frame(maxWidth: 150, maxHeight: 100)
-            } placeholder: {
-                ProgressView("Loading...")
-                    .frame(maxWidth: 150, maxHeight: 100)
-            }
-
+            UrlImageView(url: newsArticle.urlToImage)
+                .scaledToFit()
+                .frame(maxWidth: 150, maxHeight: 100)
             VStack {
                 Text(newsArticle.title)
                     .fontWeight(.bold)
                 Text(newsArticle.description)
             }
-//            if self.islas
         }
     }
 }
