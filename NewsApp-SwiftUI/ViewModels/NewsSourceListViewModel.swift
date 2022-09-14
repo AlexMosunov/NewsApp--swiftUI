@@ -15,7 +15,7 @@ class NewsSourceListViewModel: ObservableObject {
     func getSources() async {
         do {
             let newsSources = try await Webservice().fetchSourcesAsync(url: Constants.Urls.sources)
-            self.newsSources = newsSources.map(NewsSourceViewModel.init)
+            try await PersistenceController.shared.saveSources(sources: newsSources)
         } catch {
             print(error)
         }
@@ -25,22 +25,23 @@ class NewsSourceListViewModel: ObservableObject {
 
 struct NewsSourceViewModel {
     
-    fileprivate var newsSource: NewsSource
+    let newsSource: NewsSource?
+    let fetchedResult: Source?
     
     var id: String {
-        newsSource.id
+        (newsSource == nil ? fetchedResult!.id : newsSource!.id) ?? ""
     }
     
     var name: String {
-        newsSource.name
+        (newsSource == nil ? fetchedResult!.name : newsSource!.name) ?? ""
     }
     
     var description: String {
-        newsSource.description
+        (newsSource == nil ? fetchedResult!.sourceDescription : newsSource!.description) ?? ""
     }
     
     static var `default`: NewsSourceViewModel {
         let newsSource = NewsSource(id: "abc-news", name: "ABC News", description: "This is ABC news")
-        return NewsSourceViewModel(newsSource: newsSource)
+        return NewsSourceViewModel(newsSource: newsSource, fetchedResult: nil)
     }
 }

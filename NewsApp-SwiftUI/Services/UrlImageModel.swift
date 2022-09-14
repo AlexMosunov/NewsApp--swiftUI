@@ -8,6 +8,7 @@ import UIKit
 
 class UrlImageModel: ObservableObject {
     @Published var image: UIImage?
+    @Published var errorMessage: String? = nil
     var url: URL?
     var imageCache = ImageCache.getImageCache()
     
@@ -47,8 +48,9 @@ class UrlImageModel: ObservableObject {
     
     
     func getImageFromResponse(data: Data?, response: URLResponse?, error: Error?) {
-        guard error == nil else {
-            print("Error: \(error!)")
+        if let error = error {
+            errorMessage = error.localizedDescription
+            print("Error: \(error)")
             return
         }
         guard let data = data else {
@@ -58,6 +60,7 @@ class UrlImageModel: ObservableObject {
         DispatchQueue.main.async {
             guard let loadedImage = UIImage(data: data),
                   let urlString = self.url?.absoluteString else {
+                self.errorMessage = "Unable to load image from data"
                 return
             }
 

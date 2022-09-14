@@ -6,30 +6,43 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct NewsSourceListScreen: View {
     
     @StateObject private var newsSourceListViewModel = NewsSourceListViewModel()
-    
+    @FetchRequest(
+        sortDescriptors: [
+            SortDescriptor(\.id, order: SortOrder.forward)
+        ]
+    ) var results: FetchedResults<Source>
+
     var body: some View {
         NavigationView {
-            List(newsSourceListViewModel.newsSources, id: \.id) { newsSource in
-                NavigationLink(destination: NewsListScreen(newsSource: newsSource)) {
-                    NewsSourceCell(newsSource: newsSource)
+            if results.isEmpty {
+                ProgressView()
+                    .onAppear {
+                        Task {
+                            await newsSourceListViewModel.getSources()
+                        }
+                    }
+            } else {
+                List(results) { fetchedSource in
+                    let viewModel = NewsSourceViewModel(newsSource: nil, fetchedResult: fetchedSource)
+                    NavigationLink(destination: NewsListScreen(newsSource: viewModel)) {
+                        NewsSourceCell(newsSource: viewModel)
+                    }
                 }
+                .listStyle(.plain)
+                .navigationTitle("News Sources")
+                .navigationBarItems(trailing: Button(action: {
+                    Task {
+                        await newsSourceListViewModel.getSources()
+                    }
+                }, label: {
+                    Image(systemName: "arrow.clockwise.circle")
+                }))
             }
-            .listStyle(.plain)
-            .task({
-                await newsSourceListViewModel.getSources()
-            })
-            .navigationTitle("News Sources")
-            .navigationBarItems(trailing: Button(action: {
-                Task {
-                    await newsSourceListViewModel.getSources()
-                }
-            }, label: {
-                Image(systemName: "arrow.clockwise.circle")
-            }))
         }
     }
 }

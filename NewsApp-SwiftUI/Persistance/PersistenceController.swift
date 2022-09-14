@@ -46,10 +46,10 @@ struct PersistenceController {
         save(completion: completion)
     }
 
-    func saveData(articles: [NewsArticle]) async throws {
+    func saveData(articles: [NewsArticle], sourceId: String?) async throws {
         deleteOld()
         articles.forEach { data in
-            deleteDuplicates(title: data.title, publishedAt: data.publishedAt)
+            deleteArticleDuplicates(title: data.title, publishedAt: data.publishedAt)
             let entity = Article(context: context)
             entity.author = data.author
             entity.url = data.url
@@ -58,13 +58,57 @@ struct PersistenceController {
             entity.publishedAt = data.publishedAt
             entity.title = data.title
             entity.urlToImage = data.urlToImage
+            if let sourceid = sourceId {
+                entity.source = getSourceFor(sourceId: sourceid)
+                entity.sourceId = sourceid
+            }
         }
 
         //TODO: change, handel error to UI
         try await saveAsync()
     }
 
-    private func deleteDuplicates(title: String, publishedAt: String) {
+    func getSourceFor(sourceId: String) -> Source? {
+        do {
+            let sourceRequst = NSFetchRequest<Source>(entityName: Source.description())
+            sourceRequst.predicate = NSPredicate(format: "id = %@", sourceId)
+            let source: [Source] = try context.fetch(sourceRequst)
+            return source.first
+        } catch {
+            print(error.localizedDescription)
+        }
+        return nil
+    }
+
+    func saveSources(sources: [NewsSource]) async throws {
+        sources.forEach { data in
+            deleteSourcesDuplicates(id: data.id)
+            let entity = Source(context: context)
+            entity.id = data.id
+            entity.name = data.name
+            entity.sourceDescription = data.description
+        }
+        try await saveAsync()
+    }
+
+    private func deleteSourcesDuplicates(id: String?) {
+        guard let id = id else {
+            return
+        }
+        do {
+            let fetchRequest = NSFetchRequest<Source>.init(entityName: Source.description())
+            fetchRequest.predicate = NSPredicate(format: "id == %@", id)
+            fetchRequest.fetchBatchSize = 10
+            let duplicates: [Source] = try context.fetch(fetchRequest)
+            for item in duplicates {
+                delete(item)
+            }
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+
+    private func deleteArticleDuplicates(title: String, publishedAt: String) {
         do {
             let fetchRequest = NSFetchRequest<Article>.init(entityName: Article.description())
             fetchRequest.predicate = NSCompoundPredicate(

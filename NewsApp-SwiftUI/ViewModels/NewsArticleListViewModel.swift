@@ -16,9 +16,7 @@ class NewsArticleListViewModel: ObservableObject {
     func getNewsBy(sourceId: String) async {
         do {
             let newsArticles = try await Webservice().fetchNewsAsync(sourceId: sourceId, url: Constants.Urls.topHeadlines(by: sourceId))
-            self.newsArticles = newsArticles.map {
-                NewsArticleViewModel(newsArticle: $0, fetchedResult: nil)
-            }
+            try await PersistenceController.shared.saveData(articles: newsArticles, sourceId: sourceId)
         } catch {
             print(error)
         }
@@ -27,7 +25,7 @@ class NewsArticleListViewModel: ObservableObject {
     func getTopNews() async {
         do {
             let newsArticles = try await Webservice().fetchTopHeadlines(url: Constants.Urls.topHeadlines)
-            try await PersistenceController.shared.saveData(articles: newsArticles)
+            try await PersistenceController.shared.saveData(articles: newsArticles, sourceId: nil)
         } catch {
             print(error)
         }
@@ -74,6 +72,7 @@ struct NewsArticleViewModel {
 
     static var `default`: NewsArticleViewModel {
         let newsArticle = NewsArticle(
+            source: NewsSource(id: "bbc-news", name: "BBC News", description: nil),
             author: "author",
             title: "title",
             description: "description",

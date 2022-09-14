@@ -55,7 +55,11 @@ struct HeadlinesList: View {
     @StateObject var newsArticleListViewModel: NewsArticleListViewModel
 
     init(ascendingFilter: Bool, showLoading: Bool, newsArticleListViewModel: NewsArticleListViewModel) {
-        _results = FetchRequest(entity: Article.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Article.publishedAt, ascending: ascendingFilter)])
+        _results = FetchRequest(
+            entity: Article.entity(),
+            sortDescriptors: [NSSortDescriptor(keyPath: \Article.publishedAt, ascending: ascendingFilter)],
+            predicate: NSPredicate(format: "source == nil")
+        )
         _showLoading = State(initialValue: showLoading)
         _newsArticleListViewModel = StateObject(wrappedValue: newsArticleListViewModel)
     }

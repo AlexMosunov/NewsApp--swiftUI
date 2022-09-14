@@ -7,11 +7,16 @@
 
 import Foundation
 
+protocol NewsItem {
+//    var description: String? { get }
+}
+
 struct NewsArticleResponse: Decodable {
     let articles: [NewsArticle]
 }
 
-struct NewsArticle: Decodable {
+struct NewsArticle: Decodable, NewsItem {
+    let source: NewsSource?
     let author: String?
     let title: String
     let description: String?

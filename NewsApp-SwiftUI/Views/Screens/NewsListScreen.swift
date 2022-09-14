@@ -8,20 +8,26 @@
 import SwiftUI
 
 struct NewsListScreen: View {
-
-    let newsSource: NewsSourceViewModel
+    var newsSource: NewsSourceViewModel
     @StateObject private var newsArticleListViewModel = NewsArticleListViewModel()
     @State private var showLoading: Bool = false
+    @FetchRequest var results: FetchedResults<Article>
+    
+    init(newsSource: NewsSourceViewModel) {
+        self.newsSource = newsSource
+        _results = FetchRequest(
+            entity: Article.entity(),
+            sortDescriptors: [NSSortDescriptor(keyPath: \Article.publishedAt, ascending: false)],
+            predicate: NSPredicate(format: "sourceId == %@", newsSource.id))
+    }
     
     var body: some View {
-        List(newsArticleListViewModel.newsArticles, id: \.id) { newsArticle in
+        List(results) { fetchedArticle in
+            let viewModel = NewsArticleViewModel(newsArticle: nil, fetchedResult: fetchedArticle)
             NavigationLink(destination:
-                            WebView(url: newsArticle.urlToSource!,
-                                    showLoading: $showLoading)
-                            .overlay(showLoading ?
-                                     ProgressView("Loading...").toAnyView() :
-                                     EmptyView().toAnyView()) ) {
-                NewsArticleCell(newsArticle: newsArticle)
+                            WebView(url: viewModel.urlToSource!,
+                                    showLoading: $showLoading) ) {
+                NewsArticleCell(newsArticle: viewModel)
             }
         }
         .listStyle(.plain)

@@ -18,6 +18,9 @@ struct UrlImageView: View {
         if let uiImage = urlImageModel.image {
             Image(uiImage: uiImage)
                 .resizable()
+        } else if let _ = urlImageModel.errorMessage {
+            Image(systemName: "newspaper")
+                .resizable()
         } else {
             ProgressView("Loading...")
         }
