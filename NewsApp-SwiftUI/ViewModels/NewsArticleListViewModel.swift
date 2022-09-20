@@ -66,20 +66,21 @@ struct NewsArticleViewModel {
         URL(string: (newsArticle == nil ? fetchedResult!.urlToImage : newsArticle!.urlToImage) ?? "https://www.locala.org.uk/assets/images/news-placeholder.png")
     }
     
-    var urlToSource: URL? {
-        URL(string: newsArticle == nil ? fetchedResult!.url ?? "" : newsArticle!.url ?? "")
+    var urlToSource: URL {
+        URL(string: (newsArticle == nil ? fetchedResult!.url : newsArticle!.url) ?? "") ??
+        URL(string: "https://www.publicdomainpictures.net/pictures/280000/velka/not-found-image-15383864787lu.jpg")!
     }
 
     static var `default`: NewsArticleViewModel {
         let newsArticle = NewsArticle(
-            source: NewsSource(id: "bbc-news", name: "BBC News", description: nil),
-            author: "author",
-            title: "title",
-            description: "description",
+            source: nil,
+            author: "BBC News",
+            title: "Little Mermaid: Halle Bailey in awe of children's reaction to Disney trailer",
+            description: "Halle Bailey says children's joy at the sight of a non-white Disney star \"means the world to me\".",
             url: nil,
             content: "On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains.",
-            publishedAt: "Yesterday",
-            urlToImage: "https://images.app.goo.gl/T4bkEeZTyZhTPgrF7"
+            publishedAt: "2022-09-14T19:52:21.4676017Z",
+            urlToImage: "https://ichef.bbci.co.uk/news/1024/branded_news/155E/production/_126707450_gettyimages-1422381162.jpg"
         )
         return NewsArticleViewModel(newsArticle: newsArticle, fetchedResult: nil)
     }

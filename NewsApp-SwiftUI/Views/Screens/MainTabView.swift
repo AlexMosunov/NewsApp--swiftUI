@@ -13,11 +13,11 @@ struct MainTabView: View {
         TabView {
             TopHeadlinesListScreen()
                 .tabItem {
-                    Text("Top News")
+                    Label("Top News", systemImage: "globe.europe.africa")
                 }
             NewsSourceListScreen()
                 .tabItem {
-                    Text("Sources")
+                    Label("Sources", systemImage: "list.bullet.circle")
                 }
         }
     }

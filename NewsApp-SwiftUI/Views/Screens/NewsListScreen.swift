@@ -25,7 +25,7 @@ struct NewsListScreen: View {
         List(results) { fetchedArticle in
             let viewModel = NewsArticleViewModel(newsArticle: nil, fetchedResult: fetchedArticle)
             NavigationLink(destination:
-                            WebView(url: viewModel.urlToSource!,
+                            WebView(url: viewModel.urlToSource,
                                     showLoading: $showLoading) ) {
                 NewsArticleCell(newsArticle: viewModel)
             }

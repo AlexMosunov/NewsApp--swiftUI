@@ -86,7 +86,7 @@ struct HeadlinesList: View {
                 let fetchedArticle = results[fetchedArticleIndex]
                 let viewModel = NewsArticleViewModel(newsArticle: nil, fetchedResult: fetchedArticle)
                 NavigationLink(destination:
-                                WebView(url: viewModel.urlToSource!,
+                                WebView(url: viewModel.urlToSource,
                                         showLoading: $showLoading)) {
                     NewsArticleCell(newsArticle: viewModel)
                         .onAppear {
@@ -97,7 +97,10 @@ struct HeadlinesList: View {
                             }
                         }
                 }
+                .listRowSeparator(.hidden)
+                .listRowBackground(Color("ArticleCellBG"))
             }
+            .background(Color("ArticleCellBG"))
         }
     }
 }
