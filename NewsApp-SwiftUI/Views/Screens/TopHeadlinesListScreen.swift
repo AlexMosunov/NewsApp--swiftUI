@@ -11,12 +11,17 @@ struct TopHeadlinesListScreen: View {
     @StateObject private var newsArticleListViewModel = NewsArticleListViewModel()
     @State private var showLoading: Bool = false
     @State private var ascendingSort: Bool = false
+    @State var showSettings: Bool = false
+    @State var fromDate = Constants.maxDaysAgoDate
+    @State var toDate = Date()
     @Environment(\.scenePhase) var scenePhase
-
+    
     var body: some View {
         NavigationView {
             HeadlinesList(ascendingFilter: ascendingSort,
                           showLoading: showLoading,
+                          fromDate: fromDate,
+                          toDate: toDate,
                           newsArticleListViewModel: newsArticleListViewModel)
             .onChange(of: scenePhase) { phase in
                 switch phase {
@@ -30,17 +35,25 @@ struct TopHeadlinesListScreen: View {
             .listStyle(.plain)
             .navigationTitle("Top Headlines")
             .toolbar {
-                Button {
-                    ascendingSort.toggle()
-                } label: {
-                    Image(systemName: "line.3.horizontal.decrease.circle")
-                        .rotationEffect(.radians(ascendingSort ? .pi : .zero))
+                ToolbarItemGroup(placement: .navigationBarTrailing) {
+                    Button("Settings") {
+                        showSettings.toggle()
+                    }
+                    Button {
+                        ascendingSort.toggle()
+                    } label: {
+                        Image(systemName: "line.3.horizontal.decrease.circle")
+                            .rotationEffect(.radians(ascendingSort ? .pi : .zero))
+                    }
                 }
             }
             .refreshable {
                 await refresh()
             }
         }
+        .sheet(isPresented: $showSettings, content: {
+            SettingsScreen(fromDate: $fromDate, toDate: $toDate)
+        })
     }
 
     private func refresh() async {
@@ -54,12 +67,14 @@ struct HeadlinesList: View {
     @State var showLoading: Bool
     @StateObject var newsArticleListViewModel: NewsArticleListViewModel
 
-    init(ascendingFilter: Bool, showLoading: Bool, newsArticleListViewModel: NewsArticleListViewModel) {
-        _results = FetchRequest(
-            entity: Article.entity(),
-            sortDescriptors: [NSSortDescriptor(keyPath: \Article.publishedAt, ascending: ascendingFilter)],
-            predicate: NSPredicate(format: "source == nil")
-        )
+    init(
+        ascendingFilter: Bool,
+        showLoading: Bool,
+        fromDate: Date,
+        toDate: Date,
+        newsArticleListViewModel: NewsArticleListViewModel
+    ) {
+        _results = Article.datesRangeTopNewsFetchRequest(fromDate: fromDate, toDate: toDate, ascendingFilter: ascendingFilter)
         _showLoading = State(initialValue: showLoading)
         _newsArticleListViewModel = StateObject(wrappedValue: newsArticleListViewModel)
     }

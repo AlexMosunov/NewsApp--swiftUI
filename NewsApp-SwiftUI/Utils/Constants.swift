@@ -13,6 +13,11 @@ struct Constants {
     static let limit = 20
     static var page = 1
     static var maxDaysOld = 5
+    static let maxDaysAgoDate = Calendar.current.date(
+        byAdding: .day,
+        value: -Constants.maxDaysOld,
+        to: Date()
+    ) ?? Date()
     
     struct Urls {
         static func topHeadlines(by source: String) -> URL? {

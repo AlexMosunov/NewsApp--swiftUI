@@ -6,9 +6,8 @@
 //
 //
 
-import Foundation
+import SwiftUI
 import CoreData
-
 
 extension Article {
 
@@ -26,6 +25,28 @@ extension Article {
     @NSManaged public var source: Source?
     @NSManaged public var sourceId: String?
 
+    static func basicTopNewsFetchRequest(ascendingFilter: Bool) -> FetchRequest<Article> {
+        FetchRequest(
+            entity: Article.entity(),
+            sortDescriptors: [NSSortDescriptor(keyPath: \Article.publishedAt, ascending: ascendingFilter)],
+            predicate: NSPredicate(format: "source == nil")
+        )
+    }
+
+    static func datesRangeTopNewsFetchRequest(
+        fromDate: Date, toDate: Date,
+        ascendingFilter: Bool
+    ) -> FetchRequest<Article> {
+        let sortDescriptor = NSSortDescriptor(keyPath: \Article.publishedAt, ascending: ascendingFilter)
+        let predicate = NSPredicate(
+            format: "publishedAt >= %@ && publishedAt < %@ && source == nil",
+            fromDate.toString(), toDate.toString()
+        )
+        return FetchRequest(
+            entity: Article.entity(),
+            sortDescriptors: [sortDescriptor],
+            predicate: predicate)
+    }
 }
 
 extension Article : Identifiable {

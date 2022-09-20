@@ -29,6 +29,7 @@
 		CE3DA2C028D11FCD00A2F218 /* UrlImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3DA2BF28D11FCD00A2F218 /* UrlImageView.swift */; };
 		CED209B828D2620E00B76090 /* Article+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED209B628D2620E00B76090 /* Article+CoreDataClass.swift */; };
 		CED209B928D2620E00B76090 /* Article+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED209B728D2620E00B76090 /* Article+CoreDataProperties.swift */; };
+		CED209BB28D9EBFA00B76090 /* SettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED209BA28D9EBFA00B76090 /* SettingsScreen.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -55,6 +56,7 @@
 		CE3DA2BF28D11FCD00A2F218 /* UrlImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlImageView.swift; sourceTree = "<group>"; };
 		CED209B628D2620E00B76090 /* Article+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Article+CoreDataClass.swift"; sourceTree = "<group>"; };
 		CED209B728D2620E00B76090 /* Article+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Article+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		CED209BA28D9EBFA00B76090 /* SettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreen.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -170,6 +172,7 @@
 				9A4ACEDC27E109160064541F /* NewsListScreen.swift */,
 				CE3DA22528C8B4A600A2F218 /* TopHeadlinesListScreen.swift */,
 				CE3DA22728C8C97000A2F218 /* MainTabView.swift */,
+				CED209BA28D9EBFA00B76090 /* SettingsScreen.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -264,6 +267,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE3DA22628C8B4A700A2F218 /* TopHeadlinesListScreen.swift in Sources */,
+				CED209BB28D9EBFA00B76090 /* SettingsScreen.swift in Sources */,
 				9A4ACEE327E109720064541F /* Constants.swift in Sources */,
 				9AFB299027E3BDE7003CE3FA /* WebView.swift in Sources */,
 				9A4ACEE627E1099E0064541F /* NewsArticle.swift in Sources */,
@@ -428,7 +432,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.alexmosunov.NewsApp-SwiftUI";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.alexmosunov.NewsApp-SwiftUInew";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -459,7 +463,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.alexmosunov.NewsApp-SwiftUI";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.alexmosunov.NewsApp-SwiftUInew";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
