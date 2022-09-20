@@ -81,8 +81,8 @@ struct PersistenceController {
     }
 
     func saveSources(sources: [NewsSource]) async throws {
+        deleteSourcesDuplicates()
         sources.forEach { data in
-            deleteSourcesDuplicates(id: data.id)
             let entity = Source(context: context)
             entity.id = data.id
             entity.name = data.name
@@ -91,16 +91,11 @@ struct PersistenceController {
         try await saveAsync()
     }
 
-    private func deleteSourcesDuplicates(id: String?) {
-        guard let id = id else {
-            return
-        }
+    private func deleteSourcesDuplicates() {
         do {
             let fetchRequest = NSFetchRequest<Source>.init(entityName: Source.description())
-            fetchRequest.predicate = NSPredicate(format: "id == %@", id)
-            fetchRequest.fetchBatchSize = 10
-            let duplicates: [Source] = try context.fetch(fetchRequest)
-            for item in duplicates {
+            let sources: [Source] = try context.fetch(fetchRequest)
+            for item in sources {
                 delete(item)
             }
         } catch {
@@ -117,7 +112,7 @@ struct PersistenceController {
                     NSPredicate(format: "publishedAt == %@", publishedAt)
                 ]
             )
-            fetchRequest.fetchBatchSize = 10
+            fetchRequest.fetchBatchSize = 20
             let duplicates: [Article] = try context.fetch(fetchRequest)
             for item in duplicates {
                 delete(item)

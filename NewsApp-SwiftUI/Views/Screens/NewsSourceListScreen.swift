@@ -21,11 +21,9 @@ struct NewsSourceListScreen: View {
         NavigationView {
             if results.isEmpty {
                 ProgressView()
-                    .onAppear {
-                        Task {
-                            await newsSourceListViewModel.getSources()
-                        }
-                    }
+                    .task({
+                        await newsSourceListViewModel.getSources()
+                    })
             } else {
                 List(results) { fetchedSource in
                     let viewModel = NewsSourceViewModel(newsSource: nil, fetchedResult: fetchedSource)
@@ -35,14 +33,10 @@ struct NewsSourceListScreen: View {
                 }
                 .listStyle(.plain)
                 .navigationTitle("News Sources")
-                .navigationBarItems(trailing: Button(action: {
-                    Task {
-                        await newsSourceListViewModel.getSources()
-                    }
-                }, label: {
-                    Image(systemName: "arrow.clockwise.circle")
-                }))
             }
+        }
+        .refreshable {
+            await newsSourceListViewModel.getSources()
         }
     }
 }
