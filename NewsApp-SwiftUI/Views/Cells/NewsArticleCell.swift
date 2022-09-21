@@ -9,21 +9,33 @@ import SwiftUI
 
 struct NewsArticleCell: View {
     let newsArticle: NewsArticleViewModel
+    var rectangleHeight: CGFloat { 150 }
 
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 20, style: .continuous)
                 .fill(Color("ArticleCellRactangle"))
-                .frame(height: 130, alignment: .bottomTrailing)
-                .padding(.init(top: 30, leading: 25, bottom: 0, trailing: -100))
+                .frame(height: rectangleHeight, alignment: .bottomTrailing)
+                .padding(.init(top: 20, leading: 25, bottom: 0, trailing: -100))
             HStack(alignment: .top) {
-                UrlImageView(url: newsArticle.urlToImage)
-                    .aspectRatio(contentMode: .fill)
-                    .frame(maxWidth: 150, maxHeight: 150)
-                    .cornerRadius(20)
                 VStack {
-                    TitleTextView(title: newsArticle.title)
+                    UrlImageView(url: newsArticle.urlToImage)
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 130, height: 130, alignment: .leading)
+                        .cornerRadius(20)
+                    DateTextView(title: newsArticle.publishedAt)
+                        .padding(.top, 2)
                 }
+                VStack(alignment: .leading) {
+                    TitleTextView(
+                        title: newsArticle.title,
+                        subTitle: newsArticle.description,
+                        dateTitle: newsArticle.publishedAt,
+                        rectangleHeight: rectangleHeight
+                    )
+                    .padding(.top, (rectangleHeight / 2) - 130 / 2)
+                }
+                .padding(.trailing, 5)
             }
         }
     }
@@ -31,12 +43,33 @@ struct NewsArticleCell: View {
 
 struct TitleTextView: View {
     let title: String
+    let subTitle: String
+    let dateTitle: String
+    let rectangleHeight: CGFloat
+    var titleHeight: CGFloat { 150 }
 
     var body: some View {
-        Text(title)
-            .font(.system(size: 16, weight: .medium, design: .rounded))
-            .frame(height: 80)
-            .padding(.init(top: 75 - 40, leading: 10, bottom: 0, trailing: 0))
+        VStack {
+            Text(title)
+                .font(.subheadline)
+                .fontWeight(.medium)
+                .lineLimit(3)
+            Text(subTitle)
+                .font(.caption)
+                .lineLimit(4)
+        }
+        .frame(width: UIScreen.main.bounds.size.width - 130 - 5 - 20 - 10 ,height: titleHeight, alignment: .leading)
+    }
+}
+
+struct DateTextView: View {
+    var title: String
+    var body: some View {
+        HStack {
+            Text(title)
+                .font(.caption2)
+                .foregroundColor(Color(uiColor: .lightGray))
+        }
     }
 }
 

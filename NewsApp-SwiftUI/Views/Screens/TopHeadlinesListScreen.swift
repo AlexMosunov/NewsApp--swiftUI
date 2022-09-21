@@ -15,7 +15,7 @@ struct TopHeadlinesListScreen: View {
     @State var fromDate = Constants.maxDaysAgoDate
     @State var toDate = Date()
     @Environment(\.scenePhase) var scenePhase
-    
+
     var body: some View {
         NavigationView {
             HeadlinesList(ascendingFilter: ascendingSort,
@@ -97,6 +97,7 @@ struct HeadlinesList: View {
                             }
                         }
                 }
+                .listStyle(.plain)
                 .listRowSeparator(.hidden)
                 .listRowBackground(Color("ArticleCellBG"))
             }

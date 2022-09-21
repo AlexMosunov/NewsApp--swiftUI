@@ -29,21 +29,21 @@ struct NewsListScreen: View {
                                     showLoading: $showLoading) ) {
                 NewsArticleCell(newsArticle: viewModel)
             }
+            .listStyle(.plain)
+            .listRowSeparator(.hidden)
+            .listRowBackground(Color("ArticleCellBG"))
         }
         .listStyle(.plain)
+        .background(Color("ArticleCellBG"))
         .onAppear {
             Task {
                 await newsArticleListViewModel.getNewsBy(sourceId: newsSource.id)
             }
         }
+        .refreshable {
+            await newsArticleListViewModel.getNewsBy(sourceId: newsSource.id)
+        }
         .navigationTitle(newsSource.name)
-        .navigationBarItems(trailing: Button(action: {
-            Task {
-                await newsArticleListViewModel.getNewsBy(sourceId: newsSource.id)
-            }
-        }, label: {
-            Image(systemName: "arrow.clockwise.circle")
-        }))
     }
 }
 

@@ -61,6 +61,10 @@ struct NewsArticleViewModel {
     var author: String {
         newsArticle == nil ? fetchedResult!.author ?? "" : newsArticle!.author ?? ""
     }
+
+    var publishedAt: String {
+        fetchedResult?.publishedAt?.toDate()?.timeAgoDisplay() ?? ""
+    }
      
     var urlToImage: URL? {
         URL(string: (newsArticle == nil ? fetchedResult!.urlToImage : newsArticle!.urlToImage) ?? "https://www.locala.org.uk/assets/images/news-placeholder.png")
