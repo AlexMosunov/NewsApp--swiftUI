@@ -40,4 +40,10 @@ extension String {
         let date = dateFormatter.date(from: self)
         return date
     }
+
+    func localiseToLanguage() -> String {
+        let locale: Locale = .current
+        let language = locale.localizedString(forLanguageCode: self)
+        return language ?? self
+    }
 }

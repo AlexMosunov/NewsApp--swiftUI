@@ -9,17 +9,15 @@ import SwiftUI
 import CoreData
 
 struct SettingsScreen: View {
-    @Binding var fromDate: Date
-    @Binding var toDate: Date
-    @State private var draftFromDate: Date
-    @State private var draftToDate: Date
+    @Binding var settingsFilter: SettingsFilter
+
+    @State private var draftSettingsFilter: SettingsFilter
     @Environment(\.presentationMode) var presentationMode
+    let languageItems = ["ar", "de", "en", "es" ,"fr", "he", "it", "nl", "no", "pt", "ru", "se", "zh" ]
     
-    init(fromDate: Binding<Date>, toDate: Binding<Date>) {
-        _fromDate = fromDate
-        _toDate = toDate
-        _draftFromDate = State(wrappedValue: fromDate.wrappedValue)
-        _draftToDate = State(wrappedValue: toDate.wrappedValue)
+    init(settingsFilter: Binding<SettingsFilter>) {
+        _settingsFilter = settingsFilter
+        _draftSettingsFilter = State(wrappedValue: settingsFilter.wrappedValue)
     }
     
     var body: some View {
@@ -28,20 +26,28 @@ struct SettingsScreen: View {
                 Section("Select news dates range") {
                     DatePickerView(
                         title: "From",
-                        selectedDate: $draftFromDate,
+                        selectedDate: $draftSettingsFilter.fromDate,
                         lhs: Constants.maxDaysAgoDate,
-                        rhs: draftToDate
+                        rhs: draftSettingsFilter.toDate
                     )
                     DatePickerView(
                         title: "To",
-                        selectedDate: $draftToDate,
-                        lhs: draftFromDate,
+                        selectedDate: $draftSettingsFilter.toDate,
+                        lhs: draftSettingsFilter.fromDate,
                         rhs: Date.now
                     )
                     DiscardButtonLabelView(
                         title: "Discard", imageName: "clear", color: .pink,
-                        draftFromDate: $draftFromDate, draftToDate: $draftToDate
+                        draftFromDate: $draftSettingsFilter.fromDate,
+                        draftToDate: $draftSettingsFilter.toDate
                     )
+                }
+                Section("Select language") {
+                    Picker("Language", selection: $settingsFilter.language) {
+                        ForEach(languageItems, id: \.self) { language in
+                            Text(language.localiseToLanguage())
+                        }
+                    }
                 }
             }
             .navigationTitle("Settings")
@@ -53,8 +59,7 @@ struct SettingsScreen: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Save") {
-                        fromDate = draftFromDate
-                        toDate = draftToDate
+                        settingsFilter = draftSettingsFilter
                         presentationMode.wrappedValue.dismiss()
                     }
                 }
@@ -121,6 +126,6 @@ struct DiscardButtonLabel: View {
 
 struct SettingsScreen_Previews: PreviewProvider {
     static var previews: some View {
-        SettingsScreen(fromDate: .constant(Date()), toDate: .constant(Date()))
+        SettingsScreen(settingsFilter: .constant(SettingsFilter(fromDate: Date(), toDate: Date(), language: "en")))
     }
 }

@@ -7,21 +7,25 @@
 
 import SwiftUI
 
+struct SettingsFilter {
+    var fromDate: Date
+    var toDate: Date
+    var language: String
+}
+
 struct TopHeadlinesListScreen: View {
     @StateObject private var newsArticleListViewModel = NewsArticleListViewModel()
     @State private var showLoading: Bool = false
     @State private var ascendingSort: Bool = false
     @State var showSettings: Bool = false
-    @State var fromDate = Constants.maxDaysAgoDate
-    @State var toDate = Date()
+    @State var settingsFilter = SettingsFilter(fromDate: Constants.maxDaysAgoDate, toDate: Date(), language: "en")
     @Environment(\.scenePhase) var scenePhase
 
     var body: some View {
         NavigationView {
             HeadlinesList(ascendingFilter: ascendingSort,
                           showLoading: showLoading,
-                          fromDate: fromDate,
-                          toDate: toDate,
+                          settingsFilter: settingsFilter,
                           newsArticleListViewModel: newsArticleListViewModel)
             .onChange(of: scenePhase) { phase in
                 switch phase {
@@ -51,9 +55,12 @@ struct TopHeadlinesListScreen: View {
                 await refresh()
             }
         }
-        .sheet(isPresented: $showSettings, content: {
-            SettingsScreen(fromDate: $fromDate, toDate: $toDate)
-        })
+        .sheet(isPresented: $showSettings) {
+
+        } content: {
+            SettingsScreen(settingsFilter: $settingsFilter)
+        }
+
     }
 
     private func refresh() async {
@@ -70,11 +77,14 @@ struct HeadlinesList: View {
     init(
         ascendingFilter: Bool,
         showLoading: Bool,
-        fromDate: Date,
-        toDate: Date,
+        settingsFilter: SettingsFilter,
         newsArticleListViewModel: NewsArticleListViewModel
     ) {
-        _results = Article.datesRangeTopNewsFetchRequest(fromDate: fromDate, toDate: toDate, ascendingFilter: ascendingFilter)
+        _results = Article.datesRangeTopNewsFetchRequest(
+            fromDate: settingsFilter.fromDate,
+            toDate: settingsFilter.toDate,
+            ascendingFilter: ascendingFilter
+        )
         _showLoading = State(initialValue: showLoading)
         _newsArticleListViewModel = StateObject(wrappedValue: newsArticleListViewModel)
     }

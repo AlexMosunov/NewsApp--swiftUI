@@ -12,6 +12,7 @@ struct Constants {
     static let apiKey = "d7ae831b5c654b2bbee290b51935c35b"
     static let limit = 20
     static var page = 1
+    static var language = "en"
     static var maxDaysOld = 5
     static let maxDaysAgoDate = Calendar.current.date(
         byAdding: .day,
@@ -25,7 +26,7 @@ struct Constants {
         }
         static let sources: URL? = URL(string: "https://newsapi.org/v2/sources?apiKey=d7ae831b5c654b2bbee290b51935c35b")
         static var topHeadlines: URL? {
-            URL(string: "https://newsapi.org/v2/top-headlines?language=en&page=\(Constants.page)&apiKey=\(Constants.apiKey)")
+            URL(string: "https://newsapi.org/v2/top-headlines?language=\(Constants.language)&page=\(Constants.page)&apiKey=\(Constants.apiKey)")
         }
     }
 }

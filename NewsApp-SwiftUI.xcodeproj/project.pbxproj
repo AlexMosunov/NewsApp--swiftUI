@@ -27,6 +27,8 @@
 		CE3DA23028CA0C7400A2F218 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3DA22F28CA0C7400A2F218 /* PersistenceController.swift */; };
 		CE3DA2BE28D11F8000A2F218 /* UrlImageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3DA2BD28D11F8000A2F218 /* UrlImageModel.swift */; };
 		CE3DA2C028D11FCD00A2F218 /* UrlImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3DA2BF28D11FCD00A2F218 /* UrlImageView.swift */; };
+		CED0925528DB6A87009C0A8D /* RoundedCornersShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED0925428DB6A87009C0A8D /* RoundedCornersShape.swift */; };
+		CED0925728DBA74C009C0A8D /* Source.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED0925628DBA74C009C0A8D /* Source.swift */; };
 		CED209B828D2620E00B76090 /* Article+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED209B628D2620E00B76090 /* Article+CoreDataClass.swift */; };
 		CED209B928D2620E00B76090 /* Article+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED209B728D2620E00B76090 /* Article+CoreDataProperties.swift */; };
 		CED209BB28D9EBFA00B76090 /* SettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED209BA28D9EBFA00B76090 /* SettingsScreen.swift */; };
@@ -54,6 +56,8 @@
 		CE3DA22F28CA0C7400A2F218 /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
 		CE3DA2BD28D11F8000A2F218 /* UrlImageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlImageModel.swift; sourceTree = "<group>"; };
 		CE3DA2BF28D11FCD00A2F218 /* UrlImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlImageView.swift; sourceTree = "<group>"; };
+		CED0925428DB6A87009C0A8D /* RoundedCornersShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCornersShape.swift; sourceTree = "<group>"; };
+		CED0925628DBA74C009C0A8D /* Source.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Source.swift; sourceTree = "<group>"; };
 		CED209B628D2620E00B76090 /* Article+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Article+CoreDataClass.swift"; sourceTree = "<group>"; };
 		CED209B728D2620E00B76090 /* Article+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Article+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		CED209BA28D9EBFA00B76090 /* SettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreen.swift; sourceTree = "<group>"; };
@@ -184,6 +188,7 @@
 				CE3DA22F28CA0C7400A2F218 /* PersistenceController.swift */,
 				CED209B628D2620E00B76090 /* Article+CoreDataClass.swift */,
 				CED209B728D2620E00B76090 /* Article+CoreDataProperties.swift */,
+				CED0925628DBA74C009C0A8D /* Source.swift */,
 			);
 			path = Persistance;
 			sourceTree = "<group>";
@@ -192,6 +197,7 @@
 			isa = PBXGroup;
 			children = (
 				CE3DA2BF28D11FCD00A2F218 /* UrlImageView.swift */,
+				CED0925428DB6A87009C0A8D /* RoundedCornersShape.swift */,
 			);
 			path = SubViews;
 			sourceTree = "<group>";
@@ -275,6 +281,7 @@
 				9A4ACEED27E10ADD0064541F /* NewsSourceListViewModel.swift in Sources */,
 				9A4ACEE827E109C80064541F /* NewsSource.swift in Sources */,
 				CE3DA22828C8C97000A2F218 /* MainTabView.swift in Sources */,
+				CED0925528DB6A87009C0A8D /* RoundedCornersShape.swift in Sources */,
 				9A4ACEDD27E109160064541F /* NewsListScreen.swift in Sources */,
 				CED209B828D2620E00B76090 /* Article+CoreDataClass.swift in Sources */,
 				CE3DA22B28C9F98900A2F218 /* NewsArticleCell.swift in Sources */,
@@ -282,6 +289,7 @@
 				CE3DA2BE28D11F8000A2F218 /* UrlImageModel.swift in Sources */,
 				CE3DA2C028D11FCD00A2F218 /* UrlImageView.swift in Sources */,
 				9A4ACEE027E109440064541F /* Webservice.swift in Sources */,
+				CED0925728DBA74C009C0A8D /* Source.swift in Sources */,
 				9AFB299227E3CC32003CE3FA /* Extensions.swift in Sources */,
 				CED209B928D2620E00B76090 /* Article+CoreDataProperties.swift in Sources */,
 				9A4ACECD27E108910064541F /* NewsApp_SwiftUIApp.swift in Sources */,

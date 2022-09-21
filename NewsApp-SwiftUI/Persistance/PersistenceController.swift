@@ -81,25 +81,8 @@ struct PersistenceController {
     }
 
     func saveSources(sources: [NewsSource]) async throws {
-        deleteSourcesDuplicates()
         sources.forEach { data in
-            let entity = Source(context: context)
-            entity.id = data.id
-            entity.name = data.name
-            entity.sourceDescription = data.description
-        }
-        try await saveAsync()
-    }
-
-    private func deleteSourcesDuplicates() {
-        do {
-            let fetchRequest = NSFetchRequest<Source>.init(entityName: Source.description())
-            let sources: [Source] = try context.fetch(fetchRequest)
-            for item in sources {
-                delete(item)
-            }
-        } catch {
-            print(error.localizedDescription)
+            let _ = Source.withNewsSource(data, context: context)
         }
     }
 
