@@ -13,13 +13,14 @@ struct SettingsScreen: View {
 
     @State private var draftSettingsFilter: SettingsFilter
     @Environment(\.presentationMode) var presentationMode
+
     let languageItems = ["ar", "de", "en", "es" ,"fr", "he", "it", "nl", "no", "pt", "ru", "se", "zh" ]
-    
+
     init(settingsFilter: Binding<SettingsFilter>) {
         _settingsFilter = settingsFilter
         _draftSettingsFilter = State(wrappedValue: settingsFilter.wrappedValue)
     }
-    
+
     var body: some View {
         NavigationView {
             Form {
@@ -43,7 +44,7 @@ struct SettingsScreen: View {
                     )
                 }
                 Section("Select language") {
-                    Picker("Language", selection: $settingsFilter.language) {
+                    Picker("Language", selection: $draftSettingsFilter.language) {
                         ForEach(languageItems, id: \.self) { language in
                             Text(language.localiseToLanguage())
                         }

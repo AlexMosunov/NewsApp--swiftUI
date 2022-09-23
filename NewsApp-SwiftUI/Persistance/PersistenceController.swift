@@ -21,7 +21,12 @@ struct PersistenceController {
                 fatalError("Persistent Container error: \(error.localizedDescription)")
             }
         }
+        let description = NSPersistentStoreDescription()
+        description.shouldMigrateStoreAutomatically = true
+        description.shouldInferMappingModelAutomatically = true
+        container.persistentStoreDescriptions = [description]
         context = container.viewContext
+        self.context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
     }
 
     func save(completion: @escaping (Error?) -> () = {_ in}) {
@@ -46,10 +51,28 @@ struct PersistenceController {
         save(completion: completion)
     }
 
+    func setSettings() {
+        Languages.allCases.forEach { languge in
+            let setting = Setting(context: context)
+            setting.language = languge.rawValue
+        }
+    }
+
+    func createSetting() {
+        let setting = Setting(context: context)
+        setting.language = Constants.selectedLanguage
+        setting.category = Constants.category
+    }
+
+    func createSelectedSetting() {
+        let settings = Settings(context: context)
+        settings.settings = getAllSettings()
+    }
+
     func saveData(articles: [NewsArticle], sourceId: String?) async throws {
         deleteOld()
+        createSetting()
         articles.forEach { data in
-            deleteArticleDuplicates(title: data.title, publishedAt: data.publishedAt)
             let entity = Article(context: context)
             entity.author = data.author
             entity.url = data.url
@@ -62,10 +85,38 @@ struct PersistenceController {
                 entity.source = getSourceFor(sourceId: sourceid)
                 entity.sourceId = sourceid
             }
+            if let setting = getSetting() {
+                entity.settings = [setting]
+                entity.language = setting.language
+            }
         }
 
         //TODO: change, handel error to UI
         try await saveAsync()
+        print("DEBUG: Thread.main \(Thread.main)")
+    }
+
+    func getSetting() -> Setting? {
+        do {
+            let settingRequst = NSFetchRequest<Setting>(entityName: Setting.description())
+            settingRequst.predicate = NSPredicate(format: "language = %@", Constants.selectedLanguage)
+            let settings: [Setting] = try context.fetch(settingRequst)
+            return settings.first
+        } catch {
+            print(error.localizedDescription)
+        }
+        return nil
+    }
+
+    func getAllSettings() -> Set<Setting> {
+        do {
+            let settingRequst = NSFetchRequest<Setting>(entityName: Setting.description())
+            let settings: [Setting] = try context.fetch(settingRequst)
+            return Set(settings)
+        } catch {
+            print(error.localizedDescription)
+            return []
+        }
     }
 
     func getSourceFor(sourceId: String) -> Source? {

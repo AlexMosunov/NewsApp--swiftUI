@@ -24,6 +24,8 @@ extension Article {
     @NSManaged public var urlToImage: String?
     @NSManaged public var source: Source?
     @NSManaged public var sourceId: String?
+    @NSManaged public var settings: Set<Setting>
+    @NSManaged public var language: String
 
     static func basicTopNewsFetchRequest(ascendingFilter: Bool) -> FetchRequest<Article> {
         FetchRequest(
@@ -41,6 +43,22 @@ extension Article {
         let predicate = NSPredicate(
             format: "publishedAt >= %@ && publishedAt < %@ && source == nil",
             fromDate.toString(), toDate.toString()
+        )
+        return FetchRequest(
+            entity: Article.entity(),
+            sortDescriptors: [sortDescriptor],
+            predicate: predicate)
+    }
+
+    static func datesRangeLanguageTopNewsFetchRequest(
+        fromDate: Date, toDate: Date,
+        language: String,
+        ascendingFilter: Bool
+    ) -> FetchRequest<Article> {
+        let sortDescriptor = NSSortDescriptor(keyPath: \Article.publishedAt, ascending: ascendingFilter)
+        let predicate = NSPredicate(
+            format: "publishedAt >= %@ && publishedAt < %@ && language == %@ && source == nil",
+            fromDate.toString(), toDate.toString(), language
         )
         return FetchRequest(
             entity: Article.entity(),

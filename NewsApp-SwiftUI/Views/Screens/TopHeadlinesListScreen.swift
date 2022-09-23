@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct SettingsFilter {
     var fromDate: Date
@@ -18,7 +19,7 @@ struct TopHeadlinesListScreen: View {
     @State private var showLoading: Bool = false
     @State private var ascendingSort: Bool = false
     @State var showSettings: Bool = false
-    @State var settingsFilter = SettingsFilter(fromDate: Constants.maxDaysAgoDate, toDate: Date(), language: "en")
+    @State var settingsFilter: SettingsFilter = SettingsFilter(fromDate: Constants.maxDaysAgoDate, toDate: Date(), language: Constants.selectedLanguage)
     @Environment(\.scenePhase) var scenePhase
 
     var body: some View {
@@ -56,7 +57,10 @@ struct TopHeadlinesListScreen: View {
             }
         }
         .sheet(isPresented: $showSettings) {
-
+            Constants.selectedLanguage = settingsFilter.language
+            Task {
+                await refresh()
+            }
         } content: {
             SettingsScreen(settingsFilter: $settingsFilter)
         }
@@ -80,9 +84,10 @@ struct HeadlinesList: View {
         settingsFilter: SettingsFilter,
         newsArticleListViewModel: NewsArticleListViewModel
     ) {
-        _results = Article.datesRangeTopNewsFetchRequest(
+        _results = Article.datesRangeLanguageTopNewsFetchRequest(
             fromDate: settingsFilter.fromDate,
             toDate: settingsFilter.toDate,
+            language: settingsFilter.language,
             ascendingFilter: ascendingFilter
         )
         _showLoading = State(initialValue: showLoading)
