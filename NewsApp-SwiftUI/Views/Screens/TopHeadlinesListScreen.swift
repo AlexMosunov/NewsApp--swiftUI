@@ -24,6 +24,8 @@ struct TopHeadlinesListScreen: View {
 
     var body: some View {
         NavigationView {
+            VStack {
+            CategoriesSeletionView()
             HeadlinesList(ascendingFilter: ascendingSort,
                           showLoading: showLoading,
                           settingsFilter: settingsFilter,
@@ -55,6 +57,7 @@ struct TopHeadlinesListScreen: View {
             .refreshable {
                 await refresh()
             }
+        }
         }
         .sheet(isPresented: $showSettings) {
             Constants.selectedLanguage = settingsFilter.language
