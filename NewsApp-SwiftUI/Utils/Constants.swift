@@ -13,13 +13,18 @@ struct Constants {
     static let limit = 20
     static var page = 1
     @AppStorage("SelectedLanguage") static var selectedLanguage = "en"
-    static var category: String?
+    @AppStorage("SelectedCategory") static var selectedCategory = "all news"
     static var maxDaysOld = 5
     static let maxDaysAgoDate = Calendar.current.date(
         byAdding: .day,
         value: -Constants.maxDaysOld,
         to: Date()
     ) ?? Date()
+    static var categoryEndpoint: String {
+        Constants.selectedCategory.isEmpty ||
+        Constants.selectedCategory == "all news" ? "" :
+        "&category=\(Constants.selectedCategory)"
+    }
     
     struct Urls {
         static func topHeadlines(by source: String) -> URL? {
@@ -27,7 +32,7 @@ struct Constants {
         }
         static let sources: URL? = URL(string: "https://newsapi.org/v2/sources?apiKey=d7ae831b5c654b2bbee290b51935c35b")
         static var topHeadlines: URL? {
-            URL(string: "https://newsapi.org/v2/top-headlines?language=\(Constants.selectedLanguage)&page=\(Constants.page)&apiKey=\(Constants.apiKey)")
+            URL(string: "https://newsapi.org/v2/top-headlines?language=\(Constants.selectedLanguage)&page=\(Constants.page)\(Constants.categoryEndpoint)&apiKey=\(Constants.apiKey)")
         }
     }
 }

@@ -127,6 +127,11 @@ struct DiscardButtonLabel: View {
 
 struct SettingsScreen_Previews: PreviewProvider {
     static var previews: some View {
-        SettingsScreen(settingsFilter: .constant(SettingsFilter(fromDate: Date(), toDate: Date(), language: "en")))
+        SettingsScreen(settingsFilter: .constant(SettingsFilter(
+            fromDate: Date(),
+            toDate: Date(),
+            language: "en",
+            selection: .business
+        )))
     }
 }

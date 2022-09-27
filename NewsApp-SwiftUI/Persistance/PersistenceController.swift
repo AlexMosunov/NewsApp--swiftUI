@@ -61,7 +61,7 @@ struct PersistenceController {
     func createSetting() {
         let setting = Setting(context: context)
         setting.language = Constants.selectedLanguage
-        setting.category = Constants.category
+        setting.category = Constants.selectedCategory
     }
 
     func createSelectedSetting() {
@@ -88,6 +88,7 @@ struct PersistenceController {
             if let setting = getSetting() {
                 entity.settings = [setting]
                 entity.language = setting.language
+                entity.category = setting.category ?? ""
             }
         }
 
@@ -99,7 +100,10 @@ struct PersistenceController {
     func getSetting() -> Setting? {
         do {
             let settingRequst = NSFetchRequest<Setting>(entityName: Setting.description())
-            settingRequst.predicate = NSPredicate(format: "language = %@", Constants.selectedLanguage)
+            settingRequst.predicate = NSPredicate(
+                format: "language = %@ && category == %@",
+                Constants.selectedLanguage, Constants.selectedCategory
+            )
             let settings: [Setting] = try context.fetch(settingRequst)
             return settings.first
         } catch {

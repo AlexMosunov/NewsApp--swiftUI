@@ -42,6 +42,11 @@ class NewsArticleListViewModel: ObservableObject {
             await getTopNews()
         }
     }
+
+    func refresh() async {
+        Constants.page = 1
+        await getTopNews()
+    }
 }
 
 struct NewsArticleViewModel {

@@ -8,10 +8,11 @@
 import SwiftUI
 import CoreData
 
-struct SettingsFilter {
+struct SettingsFilter: Equatable {
     var fromDate: Date
     var toDate: Date
     var language: String
+    var selection: Categories
 }
 
 struct TopHeadlinesListScreen: View {
@@ -19,28 +20,36 @@ struct TopHeadlinesListScreen: View {
     @State private var showLoading: Bool = false
     @State private var ascendingSort: Bool = false
     @State var showSettings: Bool = false
-    @State var settingsFilter: SettingsFilter = SettingsFilter(fromDate: Constants.maxDaysAgoDate, toDate: Date(), language: Constants.selectedLanguage)
+    @State var settingsFilter: SettingsFilter = SettingsFilter(
+        fromDate: Constants.maxDaysAgoDate,
+        toDate: Date(),
+        language: Constants.selectedLanguage,
+        selection: Categories(string: Constants.selectedCategory) ?? .business
+    )
     @Environment(\.scenePhase) var scenePhase
 
     var body: some View {
         NavigationView {
             VStack {
-            CategoriesSeletionView()
-            HeadlinesList(ascendingFilter: ascendingSort,
-                          showLoading: showLoading,
-                          settingsFilter: settingsFilter,
-                          newsArticleListViewModel: newsArticleListViewModel)
+                CategoriesSeletionView(selection: $settingsFilter.selection)
+                    .frame(height: 50, alignment: .top)
+                HeadlinesList(ascendingFilter: ascendingSort,
+                              showLoading: showLoading,
+                              settingsFilter: settingsFilter,
+                              newsArticleListViewModel: newsArticleListViewModel)
+            }
             .onChange(of: scenePhase) { phase in
                 switch phase {
                 case .active:
                     Task {
-                        await refresh()
+                        await newsArticleListViewModel.refresh()
                     }
                 default: break
                 }
             }
             .listStyle(.plain)
             .navigationTitle("Top Headlines")
+            .background(Color("ArticleCellBG"))
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button("Settings") {
@@ -55,14 +64,13 @@ struct TopHeadlinesListScreen: View {
                 }
             }
             .refreshable {
-                await refresh()
+                await newsArticleListViewModel.refresh()
             }
-        }
         }
         .sheet(isPresented: $showSettings) {
             Constants.selectedLanguage = settingsFilter.language
             Task {
-                await refresh()
+                await newsArticleListViewModel.refresh()
             }
         } content: {
             SettingsScreen(settingsFilter: $settingsFilter)
@@ -70,10 +78,6 @@ struct TopHeadlinesListScreen: View {
 
     }
 
-    private func refresh() async {
-        Constants.page = 1
-        await newsArticleListViewModel.getTopNews()
-    }
 }
 
 struct HeadlinesList: View {
@@ -91,16 +95,16 @@ struct HeadlinesList: View {
             fromDate: settingsFilter.fromDate,
             toDate: settingsFilter.toDate,
             language: settingsFilter.language,
+            category: settingsFilter.selection.rawValue,
             ascendingFilter: ascendingFilter
         )
         _showLoading = State(initialValue: showLoading)
         _newsArticleListViewModel = StateObject(wrappedValue: newsArticleListViewModel)
     }
     var body: some View {
-        if results.isEmpty {
-            ProgressView()
-        } else {
+        ZStack(alignment: .center) {
             List(results.indices, id: \.self) { fetchedArticleIndex in
+                if results.isEmpty { ProgressView() }
                 let fetchedArticle = results[fetchedArticleIndex]
                 let viewModel = NewsArticleViewModel(newsArticle: nil, fetchedResult: fetchedArticle)
                 NavigationLink(destination:
@@ -120,6 +124,14 @@ struct HeadlinesList: View {
                 .listRowBackground(Color("ArticleCellBG"))
             }
             .background(Color("ArticleCellBG"))
+            if results.isEmpty {
+                ProgressView()
+                    .onAppear {
+                        Task {
+                            await newsArticleListViewModel.refresh()
+                        }
+                    }
+            }
         }
     }
 }

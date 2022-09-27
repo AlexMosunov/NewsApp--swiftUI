@@ -46,4 +46,10 @@ extension String {
         let language = locale.localizedString(forLanguageCode: self)
         return language ?? self
     }
+
+    func widthOfString(usingFont font: UIFont) -> CGFloat {
+        let fontAttributes = [NSAttributedString.Key.font: font]
+        let size = self.size(withAttributes: fontAttributes)
+        return size.width
+    }
 }

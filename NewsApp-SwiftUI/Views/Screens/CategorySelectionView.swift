@@ -7,56 +7,63 @@
 
 import SwiftUI
 
-enum Categories: String, CaseIterable {
-    case business = "business"
-    case entertainment = "entertainment"
-    case general = "general"
-    case health = "health"
-    case science = "science"
-    case sports = "sports"
-    case technology = "technology"
+fileprivate struct Metrics {
+    static var labelFont: Font { .title3 }
 }
 
 struct CategoriesSeletionView: View {
-    @State private var selection: Categories = .business
+    @Binding var selection: Categories
 
     var body: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            LazyHStack(spacing: 30) {
-                ForEach(Categories.allCases, id: \.rawValue) { item in
-                    CategoryView(category: item, selection: selection)
+        ScrollViewReader { reader in
+            ScrollView(.horizontal, showsIndicators: false) {
+                LazyHStack(spacing: 30) {
+                    ForEach(Categories.allCases, id: \.rawValue) { item in
+                        CategoryView(
+                            viewModel: .init(selection: $selection, category: item)
+                        )
                         .onTapGesture {
+                            withAnimation {
+                                reader.scrollTo(item.rawValue, anchor: .center)
+                            }
                             selection = item
+                            Constants.selectedCategory = item.rawValue
                         }
+                    }
                 }
-            }.padding([.trailing, .leading], 30)
+                .onAppear(perform: {
+                    reader.scrollTo(selection.rawValue, anchor: .center)
+                })
+                .padding([.trailing, .leading], 30)
+            }.frame(height: 50)
         }
-        .frame(height: 50)
+        .background(Color("ArticleCellRactangle"))
     }
 }
 
 struct CategoryView: View {
-    let category: Categories
-    let selection: Categories
 
-    private var foregroundColor: Color {
-        category == selection ? Color.gray : Color(uiColor: .label)
-    }
+    var viewModel: CategoryViewModel
 
     var body: some View {
-        VStack {
-            Text(category.rawValue.capitalized)
+        VStack(spacing: 5) {
+            Text(viewModel.categoryString)
                 .font(.title3)
-                .foregroundColor(
-                    .gray
+                .foregroundColor(viewModel.foregroundColor)
+                .fontWeight(viewModel.fontWeight)
+            Rectangle()
+                .fill(viewModel.dividerColor)
+                .frame(
+                    width: viewModel.dividerWidth,
+                    height: 3,
+                    alignment: .center
                 )
-                .fontWeight(.light)
         }
     }
 }
 
 struct CategoriesSeletionView_Previews: PreviewProvider {
     static var previews: some View {
-        CategoriesSeletionView()
+        CategoriesSeletionView(selection: .constant(.business))
     }
 }
