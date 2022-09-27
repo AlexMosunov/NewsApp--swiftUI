@@ -37,7 +37,7 @@ struct CategoriesSeletionView: View {
                 .padding([.trailing, .leading], 30)
             }.frame(height: 50)
         }
-        .background(Color("ArticleCellRactangle"))
+        .background(ColorScheme.backgroundSecondary)
     }
 }
 

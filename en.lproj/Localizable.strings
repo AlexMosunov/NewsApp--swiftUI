@@ -1,0 +1,21 @@
+/* 
+  Localizable.strings
+  NewsApp-SwiftUI
+
+  Created by User on 27.09.2022.
+  
+*/
+
+"setings_select_dates" = "Select news dates range";
+"setings_from" = "From";
+"settings_to" = "To";
+"settings_discard" = "Discard";
+"settings_select_language" = "Select language";
+"settings_language" = "Language";
+"settings_nav_title" = "Settings";
+"settings_cancel" = "Cancel";
+"settings_save" = "Save";
+"sources_title" = "News Sources";
+"headlines_title" = "Top Headlines";
+"tabview_headlines" = "Top News";
+"tabview_sources" = "Sources";

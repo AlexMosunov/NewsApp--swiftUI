@@ -1,0 +1,21 @@
+/* 
+  Localizable.strings
+  NewsApp-SwiftUI
+
+  Created by User on 27.09.2022.
+  
+*/
+
+"setings_select_dates" = "Оберіть дати та часовий проміжок";
+"setings_from" = "З";
+"settings_to" = "По";
+"settings_discard" = "Скинути";
+"settings_select_language" = "Виберіть мову";
+"settings_language" = "Мова";
+"settings_nav_title" = "Налаштування";
+"settings_cancel" = "Скасувати";
+"settings_save" = "Зберегти";
+"sources_title" = "Джерела Новин";
+"headlines_title" = "Популярні Новини";
+"tabview_headlines" = "Топ Новини";
+"tabview_sources" = "Джерела";

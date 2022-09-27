@@ -26,7 +26,11 @@ struct NewsArticleCell: View {
                 VStack {
                     UrlImageView(url: newsArticle.urlToImage)
                         .aspectRatio(contentMode: .fill)
-                        .frame(width: CellMetrics.imageHeight, height: CellMetrics.imageHeight, alignment: .leading)
+                        .frame(
+                            width: CellMetrics.imageHeight,
+                            height: CellMetrics.imageHeight,
+                            alignment: .center
+                        )
                         .cornerRadius(20)
                     DateTextView(title: newsArticle.publishedAt)
                         .padding(.top, 2)
@@ -47,7 +51,7 @@ struct NewsArticleCell: View {
 struct RoundedCornersShapeView: View {
     var body: some View {
         RoundedCornersShape(corners: [.topLeft, .bottomLeft], radius: 20)
-            .fill(Color("ArticleCellRactangle"))
+            .fill(ColorScheme.backgroundSecondary)
             .frame(height: CellMetrics.rectangleHeight, alignment: .bottomTrailing)
             .padding(CellMetrics.roundedShapePadding)
     }

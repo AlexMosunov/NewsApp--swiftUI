@@ -12,8 +12,8 @@ struct Constants {
     static let apiKey = "d7ae831b5c654b2bbee290b51935c35b"
     static let limit = 20
     static var page = 1
-    @AppStorage("SelectedLanguage") static var selectedLanguage = "en"
-    @AppStorage("SelectedCategory") static var selectedCategory = "all news"
+    @AppStorage("SelectedLanguage") static var selectedLanguage = Languages.en.rawValue
+    @AppStorage("SelectedCategory") static var selectedCategory = Categories.allNews.rawValue
     static var maxDaysOld = 5
     static let maxDaysAgoDate = Calendar.current.date(
         byAdding: .day,
@@ -22,7 +22,7 @@ struct Constants {
     ) ?? Date()
     static var categoryEndpoint: String {
         Constants.selectedCategory.isEmpty ||
-        Constants.selectedCategory == "all news" ? "" :
+        Constants.selectedCategory == Categories.allNews.rawValue ? "" :
         "&category=\(Constants.selectedCategory)"
     }
     

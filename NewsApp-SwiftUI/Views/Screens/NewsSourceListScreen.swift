@@ -30,9 +30,11 @@ struct NewsSourceListScreen: View {
                     NavigationLink(destination: NewsListScreen(newsSource: viewModel)) {
                         NewsSourceCell(newsSource: viewModel)
                     }
+                    .listRowBackground(ColorScheme.backgroundSecondary)
                 }
+                .background(ColorScheme.backgroundSecondary)
                 .listStyle(.plain)
-                .navigationTitle("News Sources")
+                .navigationTitle(Localized.sources_title)
             }
         }
         .refreshable {

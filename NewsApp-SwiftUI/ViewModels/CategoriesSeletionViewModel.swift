@@ -18,21 +18,6 @@ enum Categories: String, CaseIterable {
     case technology = "technology"
 }
 
-extension Categories {
-    init?(string: String) {
-        switch string.lowercased() {
-        case "all news": self = .allNews
-        case "business": self = .business
-        case "entertainment": self = .entertainment
-        case "general": self = .general
-        case "health": self = .health
-        case "science": self = .science
-        case "sports": self = .sports
-        case "technology": self = .technology
-        default: return nil
-        }
-    }
-}
 
 struct CategoryViewModel {
 

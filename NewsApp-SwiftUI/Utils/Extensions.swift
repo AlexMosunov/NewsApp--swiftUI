@@ -8,42 +8,41 @@
 import SwiftUI
 
 extension View {
-    
     func toAnyView() -> AnyView {
         AnyView(self)
     }
 }
 
+private let dateFormatter: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.locale = Locale.autoupdatingCurrent
+    formatter.timeZone = TimeZone.current
+    formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
+    return formatter
+}()
+private let relativeFormatter: RelativeDateTimeFormatter = {
+    let formatter = RelativeDateTimeFormatter()
+    formatter.unitsStyle = .full
+    return formatter
+}()
+
 extension Date {
     func toString() -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale.autoupdatingCurrent
-        dateFormatter.timeZone = TimeZone.current
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
-        let dateString = dateFormatter.string(from: self)
-        return dateString
+        dateFormatter.string(from: self)
     }
 
     func timeAgoDisplay() -> String {
-        let formatter = RelativeDateTimeFormatter()
-        formatter.unitsStyle = .full
-        return formatter.localizedString(for: self, relativeTo: Date())
+        relativeFormatter.localizedString(for: self, relativeTo: Date())
     }
 }
 
 extension String {
     func toDate() -> Date? {
-        let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale.autoupdatingCurrent
-        dateFormatter.timeZone = TimeZone.current
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
-        let date = dateFormatter.date(from: self)
-        return date
+        dateFormatter.date(from: self)
     }
 
     func localiseToLanguage() -> String {
-        let locale: Locale = .current
-        let language = locale.localizedString(forLanguageCode: self)
+        let language = Locale.current.localizedString(forLanguageCode: self)
         return language ?? self
     }
 

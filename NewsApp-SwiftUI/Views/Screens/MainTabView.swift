@@ -13,13 +13,21 @@ struct MainTabView: View {
         TabView {
             TopHeadlinesListScreen()
                 .tabItem {
-                    Label("Top News", systemImage: "globe.europe.africa")
+                    Label(
+                        Localized.tabview_headlines,
+                        systemImage: "globe.europe.africa"
+                    )
                 }
             NewsSourceListScreen()
                 .tabItem {
-                    Label("Sources", systemImage: "list.bullet.circle")
+                    Label(
+                        Localized.tabview_sources,
+                        systemImage: "list.bullet.circle"
+                    )
                 }
         }
+        .accentColor(.orange)
+        .background(ColorScheme.backgroundColor)
     }
 }
 

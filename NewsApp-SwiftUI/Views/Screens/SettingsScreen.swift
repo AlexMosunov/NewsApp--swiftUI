@@ -14,8 +14,6 @@ struct SettingsScreen: View {
     @State private var draftSettingsFilter: SettingsFilter
     @Environment(\.presentationMode) var presentationMode
 
-    let languageItems = ["ar", "de", "en", "es" ,"fr", "he", "it", "nl", "no", "pt", "ru", "se", "zh" ]
-
     init(settingsFilter: Binding<SettingsFilter>) {
         _settingsFilter = settingsFilter
         _draftSettingsFilter = State(wrappedValue: settingsFilter.wrappedValue)
@@ -23,43 +21,47 @@ struct SettingsScreen: View {
 
     var body: some View {
         NavigationView {
+            let viewModel = SettingsViewModel(
+                draftFromDate: $draftSettingsFilter.fromDate,
+                draftToDate: $draftSettingsFilter.toDate
+            )
             Form {
-                Section("Select news dates range") {
+                Section(viewModel.datesSectionTitle) {
                     DatePickerView(
-                        title: "From",
-                        selectedDate: $draftSettingsFilter.fromDate,
-                        lhs: Constants.maxDaysAgoDate,
-                        rhs: draftSettingsFilter.toDate
+                        viewModel: .init(
+                            type: .from,
+                            draftSettingsFilter: $draftSettingsFilter
+                        )
                     )
                     DatePickerView(
-                        title: "To",
-                        selectedDate: $draftSettingsFilter.toDate,
-                        lhs: draftSettingsFilter.fromDate,
-                        rhs: Date.now
+                        viewModel: .init(
+                            type: .to,
+                            draftSettingsFilter: $draftSettingsFilter
+                        )
                     )
-                    DiscardButtonLabelView(
-                        title: "Discard", imageName: "clear", color: .pink,
-                        draftFromDate: $draftSettingsFilter.fromDate,
-                        draftToDate: $draftSettingsFilter.toDate
-                    )
+                    DiscardButtonLabelView(viewModel: viewModel)
                 }
-                Section("Select language") {
-                    Picker("Language", selection: $draftSettingsFilter.language) {
-                        ForEach(languageItems, id: \.self) { language in
-                            Text(language.localiseToLanguage())
+                Section(viewModel.languagesSectionTitle) {
+                    Picker(
+                        viewModel.languageTitle,
+                        selection: $draftSettingsFilter.language
+                    ) {
+                        ForEach(Languages.allCases, id: \.rawValue) { language in
+                            Text(language.rawValue.localiseToLanguage())
+                                .tag(language)
                         }
                     }
                 }
             }
-            .navigationTitle("Settings")
+            .navigationTitle(viewModel.navTitle)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") {
+                    Button(viewModel.cancelTitle) {
                         presentationMode.wrappedValue.dismiss()
                     }
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Save") {
+                    Button(viewModel.saveTitle) {
                         settingsFilter = draftSettingsFilter
                         presentationMode.wrappedValue.dismiss()
                     }
@@ -70,39 +72,30 @@ struct SettingsScreen: View {
 }
 
 struct DatePickerView: View {
-    var title: String
-    var selectedDate: Binding<Date>
-    var lhs: Date
-    var rhs: Date
+    var viewModel: SettingsDatePicker
     var displayOnlyDate: Bool = false
 
     var body: some View {
         DatePicker(
-            title,
-            selection: selectedDate,
-            in: lhs...rhs,
-            displayedComponents: displayOnlyDate ? .date : [.hourAndMinute, .date]
+            viewModel.title,
+            selection: viewModel.selectedDate,
+            in: viewModel.dateRange,
+            displayedComponents: displayOnlyDate ?
+                                 .date : [.hourAndMinute, .date]
         )
     }
 }
 
 struct DiscardButtonLabelView: View {
-    var title: String
-    var imageName: String
-    var color: Color
-    @Binding fileprivate var draftFromDate: Date
-    @Binding fileprivate var draftToDate: Date
-    
+    var viewModel: SettingsViewModel
+
     var body: some View {
         HStack {
             Spacer()
             Button {
-                draftFromDate = Constants.maxDaysAgoDate
-                draftToDate = Date.now
+                viewModel.updateDates()
             } label: {
-                DiscardButtonLabel(
-                    title: "Discard", imageName: "clear", color: .pink
-                )
+                DiscardButtonLabel(viewModel: viewModel.discardButton)
             }
             Spacer()
         }
@@ -111,17 +104,18 @@ struct DiscardButtonLabelView: View {
 }
 
 struct DiscardButtonLabel: View {
-    var title: String
-    var imageName: String
-    var color: Color
+    var viewModel: DiscardButtonViewModel
 
     var body: some View {
-        Label(title, systemImage: imageName)
-            .frame(width: 150, height: 35, alignment: .center)
-            .background(color)
-            .foregroundColor(.white)
-            .cornerRadius(12)
-            .padding(5)
+        Label(
+            viewModel.title,
+            systemImage: viewModel.imageName
+        )
+        .frame(width: 150, height: 35, alignment: .center)
+        .background(viewModel.color)
+        .foregroundColor(.white)
+        .cornerRadius(12)
+        .padding(5)
     }
 }
 
@@ -130,7 +124,7 @@ struct SettingsScreen_Previews: PreviewProvider {
         SettingsScreen(settingsFilter: .constant(SettingsFilter(
             fromDate: Date(),
             toDate: Date(),
-            language: "en",
+            language: .en,
             selection: .business
         )))
     }

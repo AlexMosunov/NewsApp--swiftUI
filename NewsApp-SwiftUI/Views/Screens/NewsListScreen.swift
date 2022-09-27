@@ -31,10 +31,10 @@ struct NewsListScreen: View {
             }
             .listStyle(.plain)
             .listRowSeparator(.hidden)
-            .listRowBackground(Color("ArticleCellBG"))
+            .listRowBackground(ColorScheme.backgroundColor)
         }
         .listStyle(.plain)
-        .background(Color("ArticleCellBG"))
+        .background(ColorScheme.backgroundColor)
         .onAppear {
             Task {
                 await newsArticleListViewModel.getNewsBy(sourceId: newsSource.id)

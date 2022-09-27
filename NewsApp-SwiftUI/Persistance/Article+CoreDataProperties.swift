@@ -52,22 +52,21 @@ extension Article {
     }
 
     static func datesRangeLanguageTopNewsFetchRequest(
-        fromDate: Date, toDate: Date,
-        language: String,
-        category: String,
+        settingFilter: SettingsFilter,
         ascendingFilter: Bool
     ) -> FetchRequest<Article> {
         let sortDescriptor = NSSortDescriptor(keyPath: \Article.publishedAt, ascending: ascendingFilter)
-        let categoryPredicate = NSPredicate(format: "category == %@", category)
         let predicate = NSPredicate(
-            format: "publishedAt >= %@ && publishedAt < %@ && language == %@ && source == nil",
-            fromDate.toString(), toDate.toString(), language
+            format: "publishedAt >= %@ && publishedAt < %@ && language == %@ && category == %@ && source == nil",
+            settingFilter.fromDate.toString(),
+            settingFilter.toDate.toString(),
+            settingFilter.language.rawValue,
+            settingFilter.selection.rawValue
         )
-        let compundPrediacte = NSCompoundPredicate(andPredicateWithSubpredicates: category.isEmpty ? [predicate] : [predicate, categoryPredicate])
         return FetchRequest(
             entity: Article.entity(),
             sortDescriptors: [sortDescriptor],
-            predicate: compundPrediacte)
+            predicate: predicate)
     }
 }
 
