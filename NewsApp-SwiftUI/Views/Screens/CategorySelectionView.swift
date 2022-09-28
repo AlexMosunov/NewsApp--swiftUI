@@ -7,8 +7,10 @@
 
 import SwiftUI
 
-fileprivate struct Metrics {
+private struct Metrics {
     static var labelFont: Font { .title3 }
+    static var horizontalPadding: CGFloat { 30 }
+    static var totalHeight: CGFloat { 50 }
 }
 
 struct CategoriesSeletionView: View {
@@ -17,27 +19,32 @@ struct CategoriesSeletionView: View {
     var body: some View {
         ScrollViewReader { reader in
             ScrollView(.horizontal, showsIndicators: false) {
-                LazyHStack(spacing: 30) {
-                    ForEach(Categories.allCases, id: \.rawValue) { item in
-                        CategoryView(
-                            viewModel: .init(selection: $selection, category: item)
-                        )
-                        .onTapGesture {
-                            withAnimation {
-                                reader.scrollTo(item.rawValue, anchor: .center)
-                            }
-                            selection = item
-                            Constants.selectedCategory = item.rawValue
-                        }
-                    }
-                }
-                .onAppear(perform: {
-                    reader.scrollTo(selection.rawValue, anchor: .center)
-                })
-                .padding([.trailing, .leading], 30)
-            }.frame(height: 50)
+                makeHStack(reader)
+            }.frame(height: Metrics.totalHeight)
         }
         .background(ColorScheme.backgroundSecondary)
+    }
+
+    private func makeHStack(_ reader: ScrollViewProxy) -> some View {
+        LazyHStack(spacing: Metrics.horizontalPadding) {
+            ForEach(Categories.allCases, id: \.rawValue) { item in
+                let viewModel = CategoryViewModel(
+                    selection: $selection,
+                    category: item
+                )
+                CategoryView(viewModel: viewModel)
+                    .onTapGesture {
+                        withAnimation {
+                            reader.scrollTo(item.rawValue, anchor: .center)
+                        }
+                        viewModel.selectCategory(item)
+                    }
+            }
+        }
+        .onAppear(perform: {
+            reader.scrollTo(selection.rawValue, anchor: .center)
+        })
+        .padding([.trailing, .leading], Metrics.horizontalPadding)
     }
 }
 

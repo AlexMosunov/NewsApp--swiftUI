@@ -22,7 +22,6 @@ extension Source {
             entity.id = newsSource.id
             entity.name = newsSource.name
             entity.sourceDescription = newsSource.description
-            try? context.save()
             return entity
         }
     }

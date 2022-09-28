@@ -29,7 +29,7 @@ struct PersistenceController {
         self.context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
     }
 
-    func save(completion: @escaping (Error?) -> () = {_ in}) {
+    func save(completion: @escaping (Error?) -> Void = {_ in}) {
         if context.hasChanges {
             do {
                 try context.save()
@@ -46,7 +46,7 @@ struct PersistenceController {
         }
     }
 
-    func delete(_ object: NSManagedObject, completion: @escaping (Error?) -> () = {_ in}) {
+    func delete(_ object: NSManagedObject, completion: @escaping (Error?) -> Void = {_ in}) {
         context.delete(object)
         save(completion: completion)
     }
@@ -92,7 +92,7 @@ struct PersistenceController {
             }
         }
 
-        //TODO: change, handel error to UI
+        // TODO: change, handel error to UI
         try await saveAsync()
         print("DEBUG: Thread.main \(Thread.main)")
     }
@@ -137,8 +137,9 @@ struct PersistenceController {
 
     func saveSources(sources: [NewsSource]) async throws {
         sources.forEach { data in
-            let _ = Source.withNewsSource(data, context: context)
+            _ = Source.withNewsSource(data, context: context)
         }
+        try await saveAsync()
     }
 
     private func deleteArticleDuplicates(title: String, publishedAt: String) {

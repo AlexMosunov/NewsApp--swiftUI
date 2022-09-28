@@ -7,13 +7,20 @@
 
 import SwiftUI
 
-fileprivate struct CellMetrics {
+private struct CellMetrics {
     static var rectangleHeight: CGFloat { 150 }
     static var titleHeight: CGFloat { 145 }
     static var imageHeight: CGFloat { 130 }
     static var titleTopPadding: CGFloat { 5 + (rectangleHeight / 2) - imageHeight / 2 }
     static var roundedShapePadding: EdgeInsets {.init(top: 20, leading: 25, bottom: 0, trailing: 0)}
     static var trailingCellInset: CGFloat { 5 }
+    static var horizontalParentPadding: CGFloat { 30 }
+    static var titleTextWidth: CGFloat {
+        UIScreen.main.bounds.size.width -
+        imageHeight -
+        trailingCellInset -
+        horizontalParentPadding
+    }
 }
 
 struct NewsArticleCell: View {
@@ -74,7 +81,8 @@ struct TitleTextView: View {
         .frame(
             width: UIScreen.main.bounds.size.width -
                    CellMetrics.imageHeight -
-                   CellMetrics.trailingCellInset - 20 - 10 ,
+                   CellMetrics.trailingCellInset -
+                   CellMetrics.horizontalParentPadding,
             height: CellMetrics.titleHeight,
             alignment: .leading
         )

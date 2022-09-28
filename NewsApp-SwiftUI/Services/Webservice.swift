@@ -18,7 +18,7 @@ class Webservice {
     func fetchSourcesAsync(url: URL?) async throws -> [NewsSource] {
         guard let url = url else { return [] }
         let (data, _) = try await URLSession.shared.data(from: url)
-        
+
         let newsSourceResponse = try? JSONDecoder().decode(NewsSourceResponse.self, from: data)
         return newsSourceResponse?.sources ?? []
     }
@@ -60,6 +60,4 @@ class Webservice {
         }.resume()
     }
 
-    
-    
 }

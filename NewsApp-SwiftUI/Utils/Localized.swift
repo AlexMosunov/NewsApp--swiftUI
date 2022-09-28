@@ -8,8 +8,6 @@
 import SwiftUI
 
 public enum Localized {
-//    public static var localizedString: (_ key: String) -> String = { $0 }
-//    public static let localizedString = LocalizedStringKey(<#T##value: String##String#>)
     public static let setings_select_dates = LocalizedStringKey("setings_select_dates")
     public static let setings_from = LocalizedStringKey("setings_from")
     public static let settings_to = LocalizedStringKey("settings_to")
@@ -23,5 +21,4 @@ public enum Localized {
     public static let headlines_title = LocalizedStringKey("headlines_title")
     public static let tabview_headlines = LocalizedStringKey("tabview_headlines")
     public static let tabview_sources = LocalizedStringKey("tabview_sources")
-    //    public static let settings_language = LocalizedStringKey("settings_language")
 }

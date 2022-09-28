@@ -25,4 +25,3 @@ struct NewsArticle: Decodable, NewsItem {
     let publishedAt: String
     let urlToImage: String?
 }
-

@@ -8,9 +8,9 @@
 import Foundation
 
 enum Languages: String, CaseIterable {
-    case ar = "ar"
-    case de = "de"
-    case en = "en"
+    case ar
+    case de
+    case en
     case es
     case fr
     case he

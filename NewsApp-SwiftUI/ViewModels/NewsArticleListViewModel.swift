@@ -6,13 +6,12 @@
 //
 
 import Foundation
-//import CoreData
 
 @MainActor
 class NewsArticleListViewModel: ObservableObject {
-    
+
     @Published var newsArticles = [NewsArticleViewModel]()
-    
+
     func getNewsBy(sourceId: String) async {
         do {
             let newsArticles = try await Webservice().fetchNewsAsync(sourceId: sourceId, url: Constants.Urls.topHeadlines(by: sourceId))
@@ -50,33 +49,33 @@ class NewsArticleListViewModel: ObservableObject {
 }
 
 struct NewsArticleViewModel {
-    
+
     let id = UUID()
     let newsArticle: NewsArticle?
     let fetchedResult: Article?
-    
+
     var title: String {
-        newsArticle == nil ? fetchedResult!.title! : newsArticle!.title
+        fetchedResult?.title ?? ""
     }
-    
+
     var description: String {
-        newsArticle == nil ? fetchedResult!.articleDescription ?? "" : newsArticle!.description ?? ""
+        fetchedResult?.articleDescription ?? ""
     }
-    
+
     var author: String {
-        newsArticle == nil ? fetchedResult!.author ?? "" : newsArticle!.author ?? ""
+        fetchedResult?.author ?? ""
     }
 
     var publishedAt: String {
         fetchedResult?.publishedAt?.toDate()?.timeAgoDisplay() ?? ""
     }
-     
+
     var urlToImage: URL? {
-        URL(string: (newsArticle == nil ? fetchedResult!.urlToImage : newsArticle!.urlToImage) ?? "https://www.locala.org.uk/assets/images/news-placeholder.png")
+        URL(string: fetchedResult?.urlToImage ?? "https://www.locala.org.uk/assets/images/news-placeholder.png")
     }
-    
+
     var urlToSource: URL {
-        URL(string: (newsArticle == nil ? fetchedResult!.url : newsArticle!.url) ?? "") ??
+        URL(string: fetchedResult?.url ?? "") ??
         URL(string: "https://www.publicdomainpictures.net/pictures/280000/velka/not-found-image-15383864787lu.jpg")!
     }
 
@@ -93,5 +92,5 @@ struct NewsArticleViewModel {
         )
         return NewsArticleViewModel(newsArticle: newsArticle, fetchedResult: nil)
     }
-    
+
 }

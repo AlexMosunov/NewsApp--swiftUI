@@ -9,7 +9,7 @@ import SwiftUI
 import CoreData
 
 struct NewsSourceListScreen: View {
-    
+
     @StateObject private var newsSourceListViewModel = NewsSourceListViewModel()
     @FetchRequest(
         sortDescriptors: [
@@ -50,9 +50,9 @@ struct NewsSourceListScreen_Previews: PreviewProvider {
 }
 
 struct NewsSourceCell: View {
-    
+
     let newsSource: NewsSourceViewModel
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text(newsSource.name)

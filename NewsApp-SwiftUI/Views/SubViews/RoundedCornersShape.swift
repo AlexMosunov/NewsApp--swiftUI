@@ -16,7 +16,7 @@ struct RoundedCornersShape: Shape {
         )
         return Path(path.cgPath)
     }
-    
+
     let corners: UIRectCorner
     let radius: CGFloat
 }

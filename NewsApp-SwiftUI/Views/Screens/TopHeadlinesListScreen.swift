@@ -52,7 +52,7 @@ struct TopHeadlinesListScreen: View {
             .background(ColorScheme.backgroundColor)
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
-                    Button() {
+                    Button {
                         showSettings.toggle()
                     } label: {
                         Image(systemName: "gearshape.fill")
@@ -82,7 +82,6 @@ struct TopHeadlinesListScreen: View {
     }
 
 }
-
 
 struct TopHeadlinesListView_Previews: PreviewProvider {
     static var previews: some View {

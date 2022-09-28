@@ -18,11 +18,15 @@ enum Categories: String, CaseIterable {
     case technology = "technology"
 }
 
-
 struct CategoryViewModel {
 
     @Binding var selection: Categories
     var category: Categories
+
+    func selectCategory(_ item: Categories) {
+        selection = item
+        Constants.selectedCategory = item.rawValue
+    }
 
     var categoryString: String {
         category.rawValue.capitalized

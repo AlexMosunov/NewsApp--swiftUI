@@ -9,16 +9,16 @@ import SwiftUI
 
 struct UrlImageView: View {
     @ObservedObject var urlImageModel: UrlImageModel
-    
+
     init(url: URL?) {
         urlImageModel = UrlImageModel(url: url)
     }
-    
+
     var body: some View {
         if let uiImage = urlImageModel.image {
             Image(uiImage: uiImage)
                 .resizable()
-        } else if let _ = urlImageModel.errorMessage {
+        } else if urlImageModel.errorMessage != nil {
             Image(systemName: "newspaper")
                 .resizable()
         } else {

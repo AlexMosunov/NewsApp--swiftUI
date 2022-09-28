@@ -25,7 +25,7 @@ struct Constants {
         Constants.selectedCategory == Categories.allNews.rawValue ? "" :
         "&category=\(Constants.selectedCategory)"
     }
-    
+
     struct Urls {
         static func topHeadlines(by source: String) -> URL? {
             return URL(string: "https://newsapi.org/v2/top-headlines?sources=\(source)&apiKey=d7ae831b5c654b2bbee290b51935c35b")

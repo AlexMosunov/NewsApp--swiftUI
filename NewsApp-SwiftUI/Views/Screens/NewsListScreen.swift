@@ -12,7 +12,7 @@ struct NewsListScreen: View {
     @StateObject private var newsArticleListViewModel = NewsArticleListViewModel()
     @State private var showLoading: Bool = false
     @FetchRequest var results: FetchedResults<Article>
-    
+
     init(newsSource: NewsSourceViewModel) {
         self.newsSource = newsSource
         _results = FetchRequest(
@@ -20,7 +20,7 @@ struct NewsListScreen: View {
             sortDescriptors: [NSSortDescriptor(keyPath: \Article.publishedAt, ascending: false)],
             predicate: NSPredicate(format: "sourceId == %@", newsSource.id))
     }
-    
+
     var body: some View {
         List(results) { fetchedArticle in
             let viewModel = NewsArticleViewModel(newsArticle: nil, fetchedResult: fetchedArticle)
