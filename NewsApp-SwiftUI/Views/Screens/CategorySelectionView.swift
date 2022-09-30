@@ -54,7 +54,7 @@ struct CategoryView: View {
 
     var body: some View {
         VStack(spacing: 5) {
-            Text(viewModel.categoryString)
+            Text(viewModel.categoryName)
                 .font(.title3)
                 .foregroundColor(viewModel.foregroundColor)
                 .fontWeight(viewModel.fontWeight)

@@ -10,8 +10,8 @@
 "setings_from" = "З";
 "settings_to" = "По";
 "settings_discard" = "Скинути";
-"settings_select_language" = "Виберіть мову";
-"settings_language" = "Мова";
+"settings_select_language" = "Виберіть мову новин";
+"settings_language" = "Мова новин";
 "settings_nav_title" = "Налаштування";
 "settings_cancel" = "Скасувати";
 "settings_save" = "Зберегти";
@@ -19,3 +19,11 @@
 "headlines_title" = "Популярні Новини";
 "tabview_headlines" = "Топ Новини";
 "tabview_sources" = "Джерела";
+"category_allNews" = "Усі Новини";
+"category_business" = "Бізнес";
+"category_entertainment" = "Шоубіз";
+"category_general" = "Основні";
+"category_health" = "Здоровʼя";
+"category_science" = "Наука";
+"category_sports" = "Спорт";
+"category_technology" = "Технології";

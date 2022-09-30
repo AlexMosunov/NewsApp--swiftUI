@@ -7,15 +7,20 @@
 
 import SwiftUI
 
+enum SupportedLanguages: String, CaseIterable {
+    case en
+    case uk
+}
+
 enum Categories: String, CaseIterable {
-    case allNews = "all news"
-    case business = "business"
-    case entertainment = "entertainment"
-    case general = "general"
-    case health = "health"
-    case science = "science"
-    case sports = "sports"
-    case technology = "technology"
+    case allNews
+    case business
+    case entertainment
+    case general
+    case health
+    case science
+    case sports
+    case technology
 }
 
 struct CategoryViewModel {
@@ -28,8 +33,9 @@ struct CategoryViewModel {
         Constants.selectedCategory = item.rawValue
     }
 
-    var categoryString: String {
-        category.rawValue.capitalized
+    var categoryName: LocalizedStringKey {
+        let str = "category_\(category.rawValue)"
+        return LocalizedStringKey(str)
     }
 
     var foregroundColor: Color {
@@ -41,9 +47,9 @@ struct CategoryViewModel {
     }
 
     var dividerWidth: CGFloat {
-        category.rawValue.widthOfString(
+        categoryName.width(
             usingFont: UIFont.preferredFont(forTextStyle: .title3)
-        )
+        ) ?? 0
     }
 
     var dividerColor: Color {

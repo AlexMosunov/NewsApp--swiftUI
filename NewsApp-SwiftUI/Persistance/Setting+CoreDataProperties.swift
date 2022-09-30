@@ -15,6 +15,7 @@ extension Setting {
         return NSFetchRequest<Setting>(entityName: "Setting")
     }
 
+    @NSManaged public var country: String
     @NSManaged public var category: String?
     @NSManaged public var language: String
     @NSManaged public var articles: NSSet?

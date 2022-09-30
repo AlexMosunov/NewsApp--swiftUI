@@ -103,7 +103,6 @@
 		9A4ACEC027E108910064541F = {
 			isa = PBXGroup;
 			children = (
-				CE18FB6A28E31125000FF7A1 /* Localizable.strings */,
 				9A4ACECB27E108910064541F /* NewsApp-SwiftUI */,
 				9A4ACECC27E108910064541F /* NewsApp_SwiftUIApp.swift */,
 				9A4ACECA27E108910064541F /* Products */,
@@ -121,13 +120,13 @@
 		9A4ACECB27E108910064541F /* NewsApp-SwiftUI */ = {
 			isa = PBXGroup;
 			children = (
+				CE18FB7628E49232000FF7A1 /* App */,
 				CE3DA2B928D10B7300A2F218 /* Persistance */,
 				9A4ACEDE27E109260064541F /* Views */,
 				9A4ACEE127E109570064541F /* Services */,
 				9A4ACEE427E1097D0064541F /* Utils */,
 				9A4ACEE927E10A990064541F /* Models */,
 				9A4ACF1627E1ED090064541F /* ViewModels */,
-				9A4ACED027E108950064541F /* Assets.xcassets */,
 				9A4ACED227E108950064541F /* Preview Content */,
 			);
 			path = "NewsApp-SwiftUI";
@@ -191,6 +190,15 @@
 				CE18FB6E28E3281F000FF7A1 /* SettingsViewModel.swift */,
 			);
 			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		CE18FB7628E49232000FF7A1 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				9A4ACED027E108950064541F /* Assets.xcassets */,
+				CE18FB6A28E31125000FF7A1 /* Localizable.strings */,
+			);
+			path = App;
 			sourceTree = "<group>";
 		};
 		CE3DA22928C9F96F00A2F218 /* Cells */ = {

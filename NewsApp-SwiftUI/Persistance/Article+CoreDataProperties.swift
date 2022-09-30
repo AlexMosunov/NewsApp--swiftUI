@@ -27,6 +27,7 @@ extension Article {
     @NSManaged public var settings: Set<Setting>
     @NSManaged public var language: String
     @NSManaged public var category: String
+    @NSManaged public var country: String
 
     static func basicTopNewsFetchRequest(ascendingFilter: Bool) -> FetchRequest<Article> {
         FetchRequest(
@@ -57,11 +58,12 @@ extension Article {
     ) -> FetchRequest<Article> {
         let sortDescriptor = NSSortDescriptor(keyPath: \Article.publishedAt, ascending: ascendingFilter)
         let predicate = NSPredicate(
-            format: "publishedAt >= %@ && publishedAt < %@ && language == %@ && category == %@ && source == nil",
+            format: "publishedAt >= %@ && publishedAt < %@ && language == %@ && category == %@ && country == %@ && source == nil",
             settingFilter.fromDate.toString(),
             settingFilter.toDate.toString(),
             settingFilter.language.rawValue,
-            settingFilter.selection.rawValue
+            settingFilter.selection.rawValue,
+            settingFilter.country.rawValue
         )
         return FetchRequest(
             entity: Article.entity(),
@@ -71,5 +73,33 @@ extension Article {
 }
 
 extension Article : Identifiable {
-
+//    static func withArticle(_ newsArticle: NewsArticle, context: NSManagedObjectContext) {
+//        let request = NSFetchRequest<Article>(entityName: Article.description())
+//        request.predicate = NSPredicate(
+//            format: "title = %@ && publishedAt == %@",
+//            newsArticle.title, newsArticle.publishedAt
+//        )
+//        let articles = (try? context.fetch(request)) ?? []
+//        if let article = articles.first {
+//            return
+//        } else {
+//            let entity = Article(context: context)
+//            entity.author = newsArticle.author
+//            entity.url = newsArticle.url
+//            entity.articleDescription = newsArticle.description
+//            entity.content = newsArticle.content
+//            entity.publishedAt = newsArticle.publishedAt
+//            entity.title = newsArticle.title
+//            entity.urlToImage = newsArticle.urlToImage
+//            if let sourceid = sourceId {
+//                entity.source = getSourceFor(sourceId: sourceid)
+//                entity.sourceId = sourceid
+//            }
+//            if let setting = getSetting() {
+//                entity.settings = [setting]
+//                entity.language = setting.language
+//                entity.category = setting.category ?? ""
+//            }
+//        }
+//    }
 }

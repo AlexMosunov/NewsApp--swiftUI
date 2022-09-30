@@ -13,6 +13,7 @@ struct SettingsFilter: Equatable {
     var toDate: Date
     var language: Languages
     var selection: Categories
+    var country: Countries
 }
 
 struct TopHeadlinesListScreen: View {
@@ -24,7 +25,8 @@ struct TopHeadlinesListScreen: View {
         fromDate: Constants.maxDaysAgoDate,
         toDate: Date(),
         language: Languages(rawValue: Constants.selectedLanguage) ?? .en,
-        selection: Categories(rawValue: Constants.selectedCategory) ?? .business
+        selection: Categories(rawValue: Constants.selectedCategory) ?? .business,
+        country: Countries(rawValue: Constants.selectedCountry) ?? .unselected
     )
     @Environment(\.scenePhase) var scenePhase
 
@@ -72,7 +74,8 @@ struct TopHeadlinesListScreen: View {
             }
         }
         .sheet(isPresented: $showSettings) {
-            Constants.selectedLanguage = settingsFilter.language.rawValue
+            Constants.selectedLanguage = settingsFilter.language.rawValue // TODO: change
+            Constants.selectedCountry = settingsFilter.country.rawValue
             Task {
                 await newsArticleListViewModel.refresh()
             }

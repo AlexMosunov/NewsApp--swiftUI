@@ -52,6 +52,14 @@ struct SettingsScreen: View {
                         }
                     }
                 }
+                Section("Choose Country") {
+                    Picker("Countries", selection: $draftSettingsFilter.country) {
+                        ForEach(Countries.allCases, id: \.rawValue) { country in
+                            Text(country.rawValue.localiseToCountry())
+                                .tag(country)
+                        }
+                    }
+                }
             }
             .navigationTitle(viewModel.navTitle)
             .toolbar {
@@ -125,7 +133,8 @@ struct SettingsScreen_Previews: PreviewProvider {
             fromDate: Date(),
             toDate: Date(),
             language: .en,
-            selection: .business
+            selection: .business,
+            country: .it
         )))
     }
 }

@@ -46,9 +46,48 @@ extension String {
         return language ?? self
     }
 
+    func localiseToCountry() -> String {
+        let country = Locale.current.localizedString(forRegionCode: self)
+        return country ?? self
+    }
+
     func widthOfString(usingFont font: UIFont) -> CGFloat {
         let fontAttributes = [NSAttributedString.Key.font: font]
         let size = self.size(withAttributes: fontAttributes)
         return size.width
+    }
+}
+
+extension LocalizedStringKey {
+
+    var stringKey: String? {
+            Mirror(reflecting: self).children.first(where: { $0.label == "key" })?.value as? String
+        }
+
+    func toString() -> String? {
+        let mirror = Mirror(reflecting: self)
+
+        let attributeLabelAndValue = mirror.children.first { arg0 -> Bool in
+            let (label, _) = arg0
+            if label == "key" {
+                return true
+            }
+            return false
+        }
+
+        if let value = attributeLabelAndValue?.value as? String {
+            return String.localizedStringWithFormat(
+                NSLocalizedString(value, comment: "")
+            )
+        } else {
+            return nil
+        }
+    }
+
+    func width(usingFont font: UIFont) -> CGFloat? {
+        guard let string = self.toString() else {
+            return nil
+        }
+        return string.widthOfString(usingFont: font)
     }
 }

@@ -10,8 +10,8 @@
 "setings_from" = "From";
 "settings_to" = "To";
 "settings_discard" = "Discard";
-"settings_select_language" = "Select language";
-"settings_language" = "Language";
+"settings_select_language" = "Select language of articles";
+"settings_language" = "Language of articles";
 "settings_nav_title" = "Settings";
 "settings_cancel" = "Cancel";
 "settings_save" = "Save";
@@ -19,3 +19,11 @@
 "headlines_title" = "Top Headlines";
 "tabview_headlines" = "Top News";
 "tabview_sources" = "Sources";
+"category_allNews" = "All News";
+"category_business" = "Business";
+"category_entertainment" = "Entertainment";
+"category_general" = "General";
+"category_health" = "Health";
+"category_science" = "Science";
+"category_sports" = "Sports";
+"category_technology" = "Technology";

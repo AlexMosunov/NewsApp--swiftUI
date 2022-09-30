@@ -62,6 +62,7 @@ struct PersistenceController {
         let setting = Setting(context: context)
         setting.language = Constants.selectedLanguage
         setting.category = Constants.selectedCategory
+        setting.country = Constants.selectedCountry
     }
 
     func createSelectedSetting() {
@@ -88,21 +89,27 @@ struct PersistenceController {
             if let setting = getSetting() {
                 entity.settings = [setting]
                 entity.language = setting.language
-                entity.category = setting.category ?? ""
+                entity.category = setting.category ?? "all news"
+                entity.country = setting.country
             }
+//            print("DEBUG: title -- \(data.title)")
+//            print("DEBUG: =========================================")
+//            print("DEBUG: =========================================")
+            //            }
         }
 
         // TODO: change, handel error to UI
         try await saveAsync()
-        print("DEBUG: Thread.main \(Thread.main)")
+//        print("DEBUG: Thread.main \(Thread.main)")
+//        print("DEBUG: url - \(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))")
     }
 
     func getSetting() -> Setting? {
         do {
             let settingRequst = NSFetchRequest<Setting>(entityName: Setting.description())
             settingRequst.predicate = NSPredicate(
-                format: "language = %@ && category == %@",
-                Constants.selectedLanguage, Constants.selectedCategory
+                format: "language = %@ && category == %@ && country == %@",
+                Constants.selectedLanguage, Constants.selectedCategory, Constants.selectedCountry
             )
             let settings: [Setting] = try context.fetch(settingRequst)
             return settings.first
