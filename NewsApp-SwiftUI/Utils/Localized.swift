@@ -21,4 +21,6 @@ public enum Localized {
     public static let headlines_title = LocalizedStringKey("headlines_title")
     public static let tabview_headlines = LocalizedStringKey("tabview_headlines")
     public static let tabview_sources = LocalizedStringKey("tabview_sources")
+    public static let article_favourite_add = LocalizedStringKey("article_favourite_add")
+    public static let article_favourite_remove = LocalizedStringKey("article_favourite_remove")
 }

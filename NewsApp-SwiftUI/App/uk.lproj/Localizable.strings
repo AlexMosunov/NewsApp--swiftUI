@@ -27,3 +27,5 @@
 "category_science" = "Наука";
 "category_sports" = "Спорт";
 "category_technology" = "Технології";
+"article_favourite_add" = "Додати в улюблене";
+"article_favourite_remove" = "Видалити з улюбленого";

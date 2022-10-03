@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 @MainActor
 class NewsArticleListViewModel: ObservableObject {
@@ -79,7 +80,28 @@ struct NewsArticleViewModel {
         URL(string: "https://www.publicdomainpictures.net/pictures/280000/velka/not-found-image-15383864787lu.jpg")!
     }
 
+    var isFavourite: Bool {
+        fetchedResult?.isFavourite ?? false
+    }
+
+    var favouritesTitle: LocalizedStringKey {
+        isFavourite ? Localized.article_favourite_remove : Localized.article_favourite_add
+    }
+
+    var favouritesIconName: String {
+        isFavourite ? "bookmark.fill" : "bookmark"
+    }
+
+    func toggleFavourite() async {
+        do {
+            try await PersistenceController.shared.toggleArticleFavourite(fetchedResult)
+        } catch {
+            print(error)
+        }
+    }
+
     static var `default`: NewsArticleViewModel {
+        
         let newsArticle = NewsArticle(
             source: nil,
             author: "BBC News",
@@ -90,7 +112,7 @@ struct NewsArticleViewModel {
             publishedAt: "2022-09-14T19:52:21.4676017Z",
             urlToImage: "https://ichef.bbci.co.uk/news/1024/branded_news/155E/production/_126707450_gettyimages-1422381162.jpg"
         )
-        return NewsArticleViewModel(newsArticle: newsArticle, fetchedResult: nil)
+        return NewsArticleViewModel(newsArticle: newsArticle, fetchedResult: PersistenceController.shared.getRandomArticle())
     }
 
 }

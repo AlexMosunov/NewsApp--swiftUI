@@ -74,6 +74,9 @@ struct PersistenceController {
         deleteOld()
         createSetting()
         articles.forEach { data in
+            if Article.isDuplicate(data, context: context) {
+                return
+            }
             let entity = Article(context: context)
             entity.author = data.author
             entity.url = data.url
@@ -92,16 +95,19 @@ struct PersistenceController {
                 entity.category = setting.category ?? "all news"
                 entity.country = setting.country
             }
-//            print("DEBUG: title -- \(data.title)")
-//            print("DEBUG: =========================================")
-//            print("DEBUG: =========================================")
-            //            }
         }
 
         // TODO: change, handel error to UI
         try await saveAsync()
-//        print("DEBUG: Thread.main \(Thread.main)")
-//        print("DEBUG: url - \(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))")
+        print("DEBUG: path - \(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))")
+    }
+
+    func toggleArticleFavourite(_ article: Article?) async throws {
+        guard let article = article else {
+            return
+        }
+        article.isFavourite.toggle()
+        try await saveAsync()
     }
 
     func getSetting() -> Setting? {
@@ -168,12 +174,19 @@ struct PersistenceController {
         }
     }
 
+    func getRandomArticle() -> Article? {
+        let request = NSFetchRequest<Article>(entityName: Article.description())
+        let articles = (try? context.fetch(request)) ?? []
+        return articles.first
+    }
+
     private func deleteOld() {
         do {
             let fetchRequest = NSFetchRequest<Article>.init(entityName: Article.description())
             let articles: [Article] = try context.fetch(fetchRequest)
             for item in articles {
-                if numberOfDaysSinceNow(dateString: item.publishedAt ?? "") > Constants.maxDaysOld {
+                if numberOfDaysSinceNow(dateString: item.publishedAt ?? "") > Constants.maxDaysOld
+                   && item.isFavourite == false {
                     delete(item)
                 }
             }

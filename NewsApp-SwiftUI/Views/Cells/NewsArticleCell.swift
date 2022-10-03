@@ -30,28 +30,70 @@ struct NewsArticleCell: View {
         ZStack {
             RoundedCornersShapeView()
             HStack(alignment: .top) {
-                VStack {
-                    UrlImageView(url: newsArticle.urlToImage)
-                        .aspectRatio(contentMode: .fill)
-                        .frame(
-                            width: CellMetrics.imageHeight,
-                            height: CellMetrics.imageHeight,
-                            alignment: .center
-                        )
-                        .cornerRadius(20)
-                    DateTextView(title: newsArticle.publishedAt)
-                        .padding(.top, 2)
-                }
-                VStack(alignment: .leading) {
-                    TitleTextView(
-                        title: newsArticle.title,
-                        subTitle: newsArticle.description
-                    )
-                    .padding(.top, CellMetrics.titleTopPadding)
-                }
-                .padding(.trailing, CellMetrics.trailingCellInset)
+                ImageStackView(newsArticle)
+                TextStackView(newsArticle)
             }
         }
+        .contextMenu {
+            Button {
+                Task {
+                    await newsArticle.toggleFavourite()
+                }
+            } label: {
+                Label(newsArticle.favouritesTitle, systemImage: newsArticle.favouritesIconName)
+            }
+        }
+        .id(newsArticle.id)
+    }
+}
+
+struct ImageStackView: View {
+    let newsArticle: NewsArticleViewModel
+
+    init(_ newsArticle: NewsArticleViewModel) {
+        self.newsArticle = newsArticle
+    }
+
+    var body: some View {
+        VStack {
+            ZStack(alignment: .topLeading) {
+                UrlImageView(url: newsArticle.urlToImage)
+                    .aspectRatio(contentMode: .fill)
+                    .frame(
+                        width: CellMetrics.imageHeight,
+                        height: CellMetrics.imageHeight,
+                        alignment: .center
+                    )
+                    .cornerRadius(20)
+                if newsArticle.isFavourite {
+                    Image(systemName: "bookmark.circle")
+                        .frame(width: 15, height: 15)
+                        .padding(10)
+                        .foregroundColor(.orange)
+                }
+            }
+            DateTextView(title: newsArticle.publishedAt)
+                .padding(.top, 2)
+        }
+    }
+}
+
+struct TextStackView: View {
+    let newsArticle: NewsArticleViewModel
+
+    init(_ newsArticle: NewsArticleViewModel) {
+        self.newsArticle = newsArticle
+    }
+
+    var body: some View {
+        VStack(alignment: .leading) {
+            TitleTextView(
+                title: newsArticle.title,
+                subTitle: newsArticle.description
+            )
+            .padding(.top, CellMetrics.titleTopPadding)
+        }
+        .padding(.trailing, CellMetrics.trailingCellInset)
     }
 }
 

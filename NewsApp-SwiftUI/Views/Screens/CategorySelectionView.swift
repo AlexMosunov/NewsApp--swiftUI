@@ -8,7 +8,6 @@
 import SwiftUI
 
 private struct Metrics {
-    static var labelFont: Font { .title3 }
     static var horizontalPadding: CGFloat { 30 }
     static var totalHeight: CGFloat { 50 }
 }
@@ -55,7 +54,7 @@ struct CategoryView: View {
     var body: some View {
         VStack(spacing: 5) {
             Text(viewModel.categoryName)
-                .font(.title3)
+                .font(viewModel.font)
                 .foregroundColor(viewModel.foregroundColor)
                 .fontWeight(viewModel.fontWeight)
             Rectangle()

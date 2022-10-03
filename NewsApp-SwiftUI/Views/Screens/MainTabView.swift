@@ -25,6 +25,13 @@ struct MainTabView: View {
                         systemImage: "list.bullet.circle"
                     )
                 }
+            FavouritesScreen()
+                .tabItem {
+                    Label(
+                        "Favourites",
+                          systemImage: "bookmark.circle.fill"
+                    )
+                }
         }
         .accentColor(.orange)
         .background(ColorScheme.backgroundColor)

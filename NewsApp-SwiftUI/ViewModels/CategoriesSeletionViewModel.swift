@@ -13,10 +13,10 @@ enum SupportedLanguages: String, CaseIterable {
 }
 
 enum Categories: String, CaseIterable {
-    case allNews
+    case general
     case business
     case entertainment
-    case general
+    case allNews
     case health
     case science
     case sports
@@ -44,6 +44,10 @@ struct CategoryViewModel {
 
     var fontWeight: Font.Weight {
         category == selection ? .medium : .light
+    }
+
+    var font: Font {
+        Font.title3
     }
 
     var dividerWidth: CGFloat {

@@ -26,6 +26,8 @@
 		CE18FB6F28E3281F000FF7A1 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE18FB6E28E3281F000FF7A1 /* SettingsViewModel.swift */; };
 		CE18FB7128E3438C000FF7A1 /* HeadlinesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE18FB7028E3438C000FF7A1 /* HeadlinesList.swift */; };
 		CE18FB7328E35E52000FF7A1 /* ColorScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE18FB7228E35E52000FF7A1 /* ColorScheme.swift */; };
+		CE18FB7828EB4A9D000FF7A1 /* FavouritesScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE18FB7728EB4A97000FF7A1 /* FavouritesScreen.swift */; };
+		CE18FB7A28EB5057000FF7A1 /* FavouriteArticleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE18FB7928EB5057000FF7A1 /* FavouriteArticleCell.swift */; };
 		CE26247628DDCF7E004B5563 /* SettingsOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE26247528DDCF7E004B5563 /* SettingsOptions.swift */; };
 		CE3A0BFD28E1FEA100BB4684 /* CategoriesSeletionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3A0BFC28E1FEA100BB4684 /* CategoriesSeletionViewModel.swift */; };
 		CE3DA22628C8B4A700A2F218 /* TopHeadlinesListScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3DA22528C8B4A600A2F218 /* TopHeadlinesListScreen.swift */; };
@@ -68,6 +70,8 @@
 		CE18FB6E28E3281F000FF7A1 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		CE18FB7028E3438C000FF7A1 /* HeadlinesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadlinesList.swift; sourceTree = "<group>"; };
 		CE18FB7228E35E52000FF7A1 /* ColorScheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorScheme.swift; sourceTree = "<group>"; };
+		CE18FB7728EB4A97000FF7A1 /* FavouritesScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouritesScreen.swift; sourceTree = "<group>"; };
+		CE18FB7928EB5057000FF7A1 /* FavouriteArticleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouriteArticleCell.swift; sourceTree = "<group>"; };
 		CE26247528DDCF7E004B5563 /* SettingsOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsOptions.swift; sourceTree = "<group>"; };
 		CE3A0BFC28E1FEA100BB4684 /* CategoriesSeletionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesSeletionViewModel.swift; sourceTree = "<group>"; };
 		CE3DA22528C8B4A600A2F218 /* TopHeadlinesListScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopHeadlinesListScreen.swift; sourceTree = "<group>"; };
@@ -205,6 +209,7 @@
 			isa = PBXGroup;
 			children = (
 				CE3DA22A28C9F98900A2F218 /* NewsArticleCell.swift */,
+				CE18FB7928EB5057000FF7A1 /* FavouriteArticleCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -218,6 +223,7 @@
 				CE3DA22728C8C97000A2F218 /* MainTabView.swift */,
 				CED209BA28D9EBFA00B76090 /* SettingsScreen.swift */,
 				9A26D6F728E1F0A7005773D7 /* CategorySelectionView.swift */,
+				CE18FB7728EB4A97000FF7A1 /* FavouritesScreen.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -355,6 +361,7 @@
 				CED0925528DB6A87009C0A8D /* RoundedCornersShape.swift in Sources */,
 				CE3A0BFD28E1FEA100BB4684 /* CategoriesSeletionViewModel.swift in Sources */,
 				CED0926028DDC52A009C0A8D /* Setting+CoreDataProperties.swift in Sources */,
+				CE18FB7A28EB5057000FF7A1 /* FavouriteArticleCell.swift in Sources */,
 				9A4ACEDD27E109160064541F /* NewsListScreen.swift in Sources */,
 				CE18FB6F28E3281F000FF7A1 /* SettingsViewModel.swift in Sources */,
 				CE18FB7328E35E52000FF7A1 /* ColorScheme.swift in Sources */,
@@ -373,6 +380,7 @@
 				9A4ACECD27E108910064541F /* NewsApp_SwiftUIApp.swift in Sources */,
 				CE3DA22E28CA0A8A00A2F218 /* CoreDataModel.xcdatamodeld in Sources */,
 				CE3DA23028CA0C7400A2F218 /* PersistenceController.swift in Sources */,
+				CE18FB7828EB4A9D000FF7A1 /* FavouritesScreen.swift in Sources */,
 				CE18FB7128E3438C000FF7A1 /* HeadlinesList.swift in Sources */,
 				CE73C09428DDDD9800D856BC /* Settings+CoreDataClass.swift in Sources */,
 			);
