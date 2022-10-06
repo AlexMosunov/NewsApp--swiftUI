@@ -13,6 +13,7 @@ struct SettingsScreen: View {
 
     @State private var draftSettingsFilter: SettingsFilter
     @Environment(\.presentationMode) var presentationMode
+    @State private var showingAlert = false
 
     init(settingsFilter: Binding<SettingsFilter>) {
         _settingsFilter = settingsFilter
@@ -47,15 +48,18 @@ struct SettingsScreen: View {
                         selection: $draftSettingsFilter.language
                     ) {
                         ForEach(Languages.allCases, id: \.rawValue) { language in
-                            Text(language.rawValue.localiseToLanguage())
+                            Text(viewModel.languagePickerSelections(language))
                                 .tag(language)
                         }
                     }
                 }
-                Section("Choose Country") {
-                    Picker("Countries", selection: $draftSettingsFilter.country) {
+                Section(viewModel.countriesSectionTitle) {
+                    Picker(
+                        viewModel.countriesTitle,
+                        selection: $draftSettingsFilter.country
+                    ) {
                         ForEach(Countries.allCases, id: \.rawValue) { country in
-                            Text(country.rawValue.localiseToCountry())
+                            Text(viewModel.countryPickerSelections(country))
                                 .tag(country)
                         }
                     }
@@ -74,6 +78,18 @@ struct SettingsScreen: View {
                         presentationMode.wrappedValue.dismiss()
                     }
                 }
+            }
+            .onChange(of: draftSettingsFilter) { newValue in
+                showingAlert =
+                draftSettingsFilter.language == .unselected &&
+                draftSettingsFilter.country == .unselected // TODO: refactor
+            }
+            .alert(isPresented: $showingAlert) {
+                Alert(title: Text(viewModel.pickerAlertTitle),
+                      message: Text(viewModel.pickerAlertMessage),
+                      dismissButton: .default(Text(viewModel.pickerAlertConfirm), action: {
+                    draftSettingsFilter.language = .en
+                }))
             }
         }
     }

@@ -30,6 +30,14 @@ struct SettingsViewModel {
         Localized.settings_language
     }
 
+    var countriesSectionTitle: LocalizedStringKey {
+        Localized.settings_select_country
+    }
+
+    var countriesTitle: LocalizedStringKey {
+        Localized.settings_country
+    }
+
     var navTitle: LocalizedStringKey {
         Localized.settings_nav_title
     }
@@ -40,6 +48,32 @@ struct SettingsViewModel {
 
     var saveTitle: LocalizedStringKey {
         Localized.settings_save
+    }
+
+    var pickerAlertTitle: LocalizedStringKey {
+        Localized.settings_picker_alert_title
+    }
+
+    var pickerAlertMessage: LocalizedStringKey {
+        Localized.settings_picker_alert_message
+    }
+
+    var pickerAlertConfirm: LocalizedStringKey {
+        Localized.general_ok
+    }
+
+    func languagePickerSelections(_ language: Languages) -> String {
+        if language == .unselected {
+            return Localized.settings_unselected.toString() ?? "Not selected"
+        }
+        return language.rawValue.localiseToLanguage()
+    }
+
+    func countryPickerSelections(_ country: Countries) -> String {
+        if country == .unselected {
+            return Localized.settings_unselected.toString() ?? "Not selected"
+        }
+        return country.rawValue.localiseToCountry()
     }
 }
 
@@ -83,5 +117,10 @@ struct SettingsDatePicker {
         case .to:
             return $draftSettingsFilter.toDate
         }
+    }
+
+    var showAlertt: State<Bool> {
+        State(initialValue: draftSettingsFilter.language == .unselected &&
+              draftSettingsFilter.country == .unselected)
     }
 }

@@ -6,15 +6,21 @@
   
 */
 
+"general_ok" = "Ok";
 "setings_select_dates" = "Select news dates range";
 "setings_from" = "From";
 "settings_to" = "To";
 "settings_discard" = "Discard";
 "settings_select_language" = "Select language of articles";
 "settings_language" = "Language of articles";
+"settings_select_country" = "Choose Country for articles";
+"settings_country" = "Country";
 "settings_nav_title" = "Settings";
 "settings_cancel" = "Cancel";
 "settings_save" = "Save";
+"settings_unselected" = "Not selected";
+"settings_picker_alert_title" = "Alert";
+"settings_picker_alert_message" = "Please choose either country or language, or both";
 "sources_title" = "News Sources";
 "headlines_title" = "Top Headlines";
 "tabview_headlines" = "Top News";
