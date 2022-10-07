@@ -34,8 +34,6 @@
 		CE18FB8228EDFFEC000FF7A1 /* SettingsEditTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE18FB8128EDFFEB000FF7A1 /* SettingsEditTextView.swift */; };
 		CE18FB8428EE15D6000FF7A1 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE18FB8328EE15D6000FF7A1 /* ImagePicker.swift */; };
 		CE18FB8628EE21DC000FF7A1 /* SignUpScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE18FB8528EE21DB000FF7A1 /* SignUpScreen.swift */; };
-		CE18FB8828EE22D4000FF7A1 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE18FB8728EE22D4000FF7A1 /* OnboardingView.swift */; };
-		CE18FB8A28EE2328000FF7A1 /* OnboardingViewPart2.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE18FB8928EE2328000FF7A1 /* OnboardingViewPart2.swift */; };
 		CE26247628DDCF7E004B5563 /* SettingsOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE26247528DDCF7E004B5563 /* SettingsOptions.swift */; };
 		CE3A0BFD28E1FEA100BB4684 /* CategoriesSeletionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3A0BFC28E1FEA100BB4684 /* CategoriesSeletionViewModel.swift */; };
 		CE3A582128EEF476008B25C8 /* SignInScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3A582028EEF476008B25C8 /* SignInScreen.swift */; };
@@ -45,9 +43,6 @@
 		CE3A582A28EF08A9008B25C8 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = CE3A582928EF08A9008B25C8 /* FirebaseFirestore */; };
 		CE3A582C28EF08A9008B25C8 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CE3A582B28EF08A9008B25C8 /* FirebaseFirestoreSwift */; };
 		CE3A582E28EF08A9008B25C8 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = CE3A582D28EF08A9008B25C8 /* FirebaseStorage */; };
-		CE3A583128EF20E0008B25C8 /* ImageUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3A583028EF20E0008B25C8 /* ImageUploader.swift */; };
-		CE3A583328EF211F008B25C8 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3A583228EF211F008B25C8 /* AuthService.swift */; };
-		CE3A583628EF23FE008B25C8 /* AuthServicee.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3A583528EF23FE008B25C8 /* AuthServicee.swift */; };
 		CE3A583928EF2DF1008B25C8 /* ImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3A583828EF2DF1008B25C8 /* ImageManager.swift */; };
 		CE3A583B28F038C1008B25C8 /* RegistrationSubViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3A583A28F038C1008B25C8 /* RegistrationSubViews.swift */; };
 		CE3A583D28F04A7D008B25C8 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3A583C28F04A7D008B25C8 /* AuthViewModel.swift */; };
@@ -100,15 +95,10 @@
 		CE18FB8128EDFFEB000FF7A1 /* SettingsEditTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsEditTextView.swift; sourceTree = "<group>"; };
 		CE18FB8328EE15D6000FF7A1 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		CE18FB8528EE21DB000FF7A1 /* SignUpScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpScreen.swift; sourceTree = "<group>"; };
-		CE18FB8728EE22D4000FF7A1 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
-		CE18FB8928EE2328000FF7A1 /* OnboardingViewPart2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewPart2.swift; sourceTree = "<group>"; };
 		CE26247528DDCF7E004B5563 /* SettingsOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsOptions.swift; sourceTree = "<group>"; };
 		CE3A0BFC28E1FEA100BB4684 /* CategoriesSeletionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesSeletionViewModel.swift; sourceTree = "<group>"; };
 		CE3A582028EEF476008B25C8 /* SignInScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInScreen.swift; sourceTree = "<group>"; };
 		CE3A582228EF0623008B25C8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		CE3A583028EF20E0008B25C8 /* ImageUploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUploader.swift; sourceTree = "<group>"; };
-		CE3A583228EF211F008B25C8 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
-		CE3A583528EF23FE008B25C8 /* AuthServicee.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthServicee.swift; sourceTree = "<group>"; };
 		CE3A583828EF2DF1008B25C8 /* ImageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageManager.swift; sourceTree = "<group>"; };
 		CE3A583A28F038C1008B25C8 /* RegistrationSubViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationSubViews.swift; sourceTree = "<group>"; };
 		CE3A583C28F04A7D008B25C8 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
@@ -170,7 +160,6 @@
 			children = (
 				CE3A582228EF0623008B25C8 /* GoogleService-Info.plist */,
 				CE18FB7628E49232000FF7A1 /* App */,
-				CE3A582F28EF20CB008B25C8 /* API */,
 				CE3DA2B928D10B7300A2F218 /* Persistance */,
 				9A4ACEDE27E109260064541F /* Views */,
 				9A4ACEE127E109570064541F /* Services */,
@@ -204,7 +193,6 @@
 			isa = PBXGroup;
 			children = (
 				CE3A583728EF2DE0008B25C8 /* Utils */,
-				CE3A583428EF23DE008B25C8 /* Firebase */,
 				9A4ACEDF27E109440064541F /* Webservice.swift */,
 				9AFB298F27E3BDE7003CE3FA /* WebView.swift */,
 				CE3DA2BD28D11F8000A2F218 /* UrlImageModel.swift */,
@@ -250,8 +238,6 @@
 			isa = PBXGroup;
 			children = (
 				CE18FB8528EE21DB000FF7A1 /* SignUpScreen.swift */,
-				CE18FB8728EE22D4000FF7A1 /* OnboardingView.swift */,
-				CE18FB8928EE2328000FF7A1 /* OnboardingViewPart2.swift */,
 				CE3A582028EEF476008B25C8 /* SignInScreen.swift */,
 			);
 			path = SingIn_Registration;
@@ -264,23 +250,6 @@
 				CE18FB6A28E31125000FF7A1 /* Localizable.strings */,
 			);
 			path = App;
-			sourceTree = "<group>";
-		};
-		CE3A582F28EF20CB008B25C8 /* API */ = {
-			isa = PBXGroup;
-			children = (
-				CE3A583028EF20E0008B25C8 /* ImageUploader.swift */,
-				CE3A583228EF211F008B25C8 /* AuthService.swift */,
-			);
-			path = API;
-			sourceTree = "<group>";
-		};
-		CE3A583428EF23DE008B25C8 /* Firebase */ = {
-			isa = PBXGroup;
-			children = (
-				CE3A583528EF23FE008B25C8 /* AuthServicee.swift */,
-			);
-			path = Firebase;
 			sourceTree = "<group>";
 		};
 		CE3A583728EF2DE0008B25C8 /* Utils */ = {
@@ -466,23 +435,18 @@
 				CE73C09528DDDD9800D856BC /* Settings+CoreDataProperties.swift in Sources */,
 				CE3A582128EEF476008B25C8 /* SignInScreen.swift in Sources */,
 				CE3DA22828C8C97000A2F218 /* MainTabView.swift in Sources */,
-				CE3A583128EF20E0008B25C8 /* ImageUploader.swift in Sources */,
 				CED0925528DB6A87009C0A8D /* RoundedCornersShape.swift in Sources */,
-				CE3A583628EF23FE008B25C8 /* AuthServicee.swift in Sources */,
 				CE18FB8028EDED02000FF7A1 /* ProfileSettingsView.swift in Sources */,
 				CE3A0BFD28E1FEA100BB4684 /* CategoriesSeletionViewModel.swift in Sources */,
 				CED0926028DDC52A009C0A8D /* Setting+CoreDataProperties.swift in Sources */,
-				CE3A583328EF211F008B25C8 /* AuthService.swift in Sources */,
 				CE18FB7A28EB5057000FF7A1 /* FavouriteArticleCell.swift in Sources */,
 				CE18FB8428EE15D6000FF7A1 /* ImagePicker.swift in Sources */,
 				9A4ACEDD27E109160064541F /* NewsListScreen.swift in Sources */,
-				CE18FB8A28EE2328000FF7A1 /* OnboardingViewPart2.swift in Sources */,
 				CE18FB6F28E3281F000FF7A1 /* SettingsViewModel.swift in Sources */,
 				CE18FB7328E35E52000FF7A1 /* ColorScheme.swift in Sources */,
 				CED209B828D2620E00B76090 /* Article+CoreDataClass.swift in Sources */,
 				CE3DA22B28C9F98900A2F218 /* NewsArticleCell.swift in Sources */,
 				CE18FB8628EE21DC000FF7A1 /* SignUpScreen.swift in Sources */,
-				CE18FB8828EE22D4000FF7A1 /* OnboardingView.swift in Sources */,
 				9A4ACEDB27E108F50064541F /* NewsSourceListScreen.swift in Sources */,
 				CE26247628DDCF7E004B5563 /* SettingsOptions.swift in Sources */,
 				CE3DA2BE28D11F8000A2F218 /* UrlImageModel.swift in Sources */,

@@ -46,11 +46,6 @@ struct SignUpScreen: View {
                 .padding(.horizontal)
                 .padding(.top, 30)
                 Button {
-//                    let credentials = AuthCredentials(
-//                        email: email, password: password,
-//                        fullname: fullname, username: username,
-//                        profileImage: selectedImage ?? UIImage(named: "avatar")!
-//                    )
                     viewModel.registerUser(
                         email: email, password: password,
                         repeatPassword: repeatPassword, username: username,
@@ -74,40 +69,7 @@ struct SignUpScreen: View {
             .frame(maxHeight: .infinity)
             .background(ColorScheme.backgroundColor)
             .navigationBarHidden(true)
-//            .alert(Text ("Error signing up"), isPresented: $showError)
         }
-    }
-
-    func createProfile() {
-        print("CREATE PROFILE NOW")
-        AuthServicee.instance.createNewUserInDatabase(name: username, email: email, profileImage: selectedImage!) { (returnedUserID) in
-            
-            if let userID = returnedUserID {
-                // SUCCESS
-                print("Successfully created new user in database.")
-                
-                AuthServicee.instance.logInUserToApp(userID: userID) { (success) in
-                    if success {
-                        print("User logged in!")
-                        // return to app
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-//                            self.presentationMode.wrappedValue.dismiss()
-                        }
-                        
-                        
-                    } else {
-                        print("Error logging in")
-                        self.showError.toggle()
-                    }
-                }
-            } else {
-                // ERROR
-                print("Error creating user in Database")
-                self.showError.toggle()
-            }
-            
-        }
-        
     }
 }
 

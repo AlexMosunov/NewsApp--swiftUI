@@ -37,8 +37,6 @@ class AuthViewModel: ObservableObject {
         repeatPassword: String, username: String,
         fullname: String, profileImage: UIImage?
     ) {
-        print("DEBIG: email - \(email), password - \(password)")
-
         Auth.auth().createUser(withEmail: email, password: password) { result, error in
             if let error = error {
                 print("DEBUG: error \(error.localizedDescription)") // TODO: show error on UI
@@ -162,6 +160,5 @@ class AuthViewModel: ObservableObject {
                 self.user?.profileImageUrl = profileImageUrl
             }
         }
-        
     }
 }

@@ -8,9 +8,6 @@
 import SwiftUI
 
 struct ProfileSettingsView: View {
-//    @State var showImagePicker: Bool = false
-//    @State var selectedImage: UIImage
-//    @State var sourceType: UIImagePickerController.SourceType = .
     @State var showAlert: Bool = false
     @EnvironmentObject var viewModel: AuthViewModel
 
@@ -121,10 +118,3 @@ struct SettingsRowView: View {
         .padding(.vertical, 4)
     }
 }
-
-//struct SettingsView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        SettingsView()
-////            .previewLayout(.sizeThatFits)
-//    }
-//}

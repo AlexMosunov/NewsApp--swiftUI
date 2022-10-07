@@ -55,9 +55,3 @@ struct ActionButtonView: View {
             .cornerRadius(35)
     }
 }
-
-//struct RegistrationTextField_Previews: PreviewProvider {
-//    static var previews: some View {
-//        RegistrationTextField()
-//    }
-//}
