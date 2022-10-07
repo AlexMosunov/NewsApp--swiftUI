@@ -8,33 +8,49 @@
 import SwiftUI
 
 struct MainTabView: View {
+    var currentUserID: String?
+    @EnvironmentObject var viewModel: AuthViewModel
 
     var body: some View {
-        TabView {
-            TopHeadlinesListScreen()
-                .tabItem {
-                    Label(
-                        Localized.tabview_headlines,
-                        systemImage: "globe.europe.africa"
-                    )
+        Group {
+            if viewModel.userSession != nil {
+                TabView {
+                    TopHeadlinesListScreen()
+                        .tabItem {
+                            Label(
+                                Localized.tabview_headlines,
+                                systemImage: "globe.europe.africa"
+                            )
+                        }
+                    NewsSourceListScreen()
+                        .tabItem {
+                            Label(
+                                Localized.tabview_sources,
+                                systemImage: "list.bullet.circle"
+                            )
+                        }
+                    FavouritesScreen()
+                        .tabItem {
+                            Label(
+                                "Favourites",
+                                systemImage: "bookmark.circle.fill"
+                            )
+                        }
+                    ProfileScreen()
+                        .tabItem {
+                            Label(
+                                "Profile",
+                                systemImage: "person.fill"
+                            )
+                        }
                 }
-            NewsSourceListScreen()
-                .tabItem {
-                    Label(
-                        Localized.tabview_sources,
-                        systemImage: "list.bullet.circle"
-                    )
-                }
-            FavouritesScreen()
-                .tabItem {
-                    Label(
-                        "Favourites",
-                          systemImage: "bookmark.circle.fill"
-                    )
-                }
+                .accentColor(.orange)
+                .background(ColorScheme.backgroundColor)
+            } else {
+                SignInScreen()
+            }
         }
-        .accentColor(.orange)
-        .background(ColorScheme.backgroundColor)
+
     }
 }
 

@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import Firebase
+import FirebaseFirestore
 
 struct Constants {
 
@@ -47,3 +49,5 @@ struct Constants {
         }
     }
 }
+
+let COLLECTION_USERS = Firestore.firestore().collection("users")

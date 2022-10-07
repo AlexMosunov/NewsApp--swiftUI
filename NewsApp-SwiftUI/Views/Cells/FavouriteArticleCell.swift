@@ -13,6 +13,7 @@ private struct CellMetrics {
 
 struct FavouriteArticleCell: View {
     let newsArticle: NewsArticleViewModel
+    @State private var showShareSheet = false
 
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -54,8 +55,35 @@ struct FavouriteArticleCell: View {
             } label: {
                 Label(newsArticle.favouritesTitle, systemImage: newsArticle.favouritesIconName)
             }
+            Button(action: {
+                self.showShareSheet = true
+            }) {
+                Text("Share Me").bold()
+            }
         }
         .id(newsArticle.id)
+    }
+}
+
+struct ShareSheet: UIViewControllerRepresentable {
+    typealias Callback = (_ activityType: UIActivity.ActivityType?, _ completed: Bool, _ returnedItems: [Any]?, _ error: Error?) -> Void
+    
+    let activityItems: [Any]
+    let applicationActivities: [UIActivity]? = nil
+    let excludedActivityTypes: [UIActivity.ActivityType]? = nil
+    let callback: Callback? = nil
+    
+    func makeUIViewController(context: Context) -> UIActivityViewController {
+        let controller = UIActivityViewController(
+            activityItems: activityItems,
+            applicationActivities: applicationActivities)
+        controller.excludedActivityTypes = excludedActivityTypes
+        controller.completionWithItemsHandler = callback
+        return controller
+    }
+    
+    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {
+        // nothing to do here
     }
 }
 

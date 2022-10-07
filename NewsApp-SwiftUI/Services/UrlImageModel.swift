@@ -42,13 +42,13 @@ class UrlImageModel: ObservableObject {
             return
         }
 
-        let task = URLSession.shared.dataTask(with: url, completionHandler: getImageFromResponse(data:response:error:))
+        let task = URLSession.shared.dataTask(with: url, completionHandler: getImageFromResponse(data:response:error:)) //TODO: App Transport Security has blocked a cleartext HTTP connection tominfin.com.uasince it is insecure. Use HTTPS instead or add this domain to Exception Domains in your Info.plist.
         task.resume()
     }
 
     func getImageFromResponse(data: Data?, response: URLResponse?, error: Error?) {
         if let error = error {
-            errorMessage = error.localizedDescription
+            errorMessage = error.localizedDescription // TODO: Publishing changes from background threads is not allowed; make sure to publish values from the main thread (via operators like receive(on:)) on model updates.
             print("Error: \(error)")
             return
         }

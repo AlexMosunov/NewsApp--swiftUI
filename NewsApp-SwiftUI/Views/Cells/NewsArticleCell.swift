@@ -23,8 +23,15 @@ private struct CellMetrics {
     }
 }
 
+// 2. Share Text
+struct ShareText: Identifiable {
+    let id = UUID()
+    let text: String
+}
+
 struct NewsArticleCell: View {
     let newsArticle: NewsArticleViewModel
+    @State var shareText: ShareText?
 
     var body: some View {
         ZStack {
@@ -34,6 +41,9 @@ struct NewsArticleCell: View {
                 TextStackView(newsArticle)
             }
         }
+        .sheet(item: $shareText) { shareText in
+            ActivityView(text: shareText.text)
+        }
         .contextMenu {
             Button {
                 Task {
@@ -41,6 +51,11 @@ struct NewsArticleCell: View {
                 }
             } label: {
                 Label(newsArticle.favouritesTitle, systemImage: newsArticle.favouritesIconName)
+            }
+            Button {
+                shareText = ShareText(text: "Check out this article that I found on my news app! - " + newsArticle.title + " " + newsArticle.urlToSource.absoluteString)
+            } label: {
+                Label("Share", systemImage: "square.and.arrow.up")
             }
         }
         .id(newsArticle.id)
@@ -140,6 +155,17 @@ struct DateTextView: View {
                 .foregroundColor(.secondary)
         }
     }
+}
+
+// 1. Activity View
+struct ActivityView: UIViewControllerRepresentable {
+    let text: String
+
+    func makeUIViewController(context: UIViewControllerRepresentableContext<ActivityView>) -> UIActivityViewController {
+        return UIActivityViewController(activityItems: [text], applicationActivities: nil)
+    }
+
+    func updateUIViewController(_ uiViewController: UIActivityViewController, context: UIViewControllerRepresentableContext<ActivityView>) {}
 }
 
 struct NewsArticleCell_Previews: PreviewProvider {
