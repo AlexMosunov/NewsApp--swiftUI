@@ -95,6 +95,7 @@ class AuthViewModel: ObservableObject {
     func signOut() {
         try? Auth.auth().signOut()
         userSession = nil
+        user = nil
     }
 
     func fetchUser() {
@@ -158,6 +159,34 @@ class AuthViewModel: ObservableObject {
             Firestore.firestore().collection("users").document(uid).updateData(data) { _ in
                 print("DEBUG: Successflully uplaoded image")
                 self.user?.profileImageUrl = profileImageUrl
+            }
+        }
+    }
+
+    func deleteUser() {
+        guard let user = user, let userSession = userSession else {
+            return
+        }
+        userSession.delete { error in
+            if let error = error {
+                print("2" + error.localizedDescription)
+            } else {
+                print("success user deleted")
+                Firestore.firestore().collection("users").document(userSession.uid).delete { error in
+                    if let error = error {
+                        print("1" + error.localizedDescription)
+                    } else {
+                        print("collection deleted succesfully")
+                        Storage.storage().reference(forURL: user.profileImageUrl).delete { error in
+                            if let error = error {
+                                print("3" + error.localizedDescription)
+                            } else {
+                                print("image deleted succesfully")
+                            }
+                        }
+                        self.signOut()
+                    }
+                }
             }
         }
     }

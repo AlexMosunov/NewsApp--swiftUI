@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct ProfileSettingsView: View {
-    @State var showAlert: Bool = false
+    @State var showSignOutAlert: Bool = false
+    @State var showDeleteUserAlert: Bool = false
     @EnvironmentObject var viewModel: AuthViewModel
 
     var body: some View {
@@ -39,20 +40,31 @@ struct ProfileSettingsView: View {
                 } label: {
                     SettingsRowView(leftIcon: "text.quote", text: "Bio", color: .orange)
                 }
+//                Button {
+////                    showAlert.toggle()
+//                } label: {
+//                    SettingsRowView(leftIcon: "photo", text: "Profile Picture", color: .orange)
+//                }
                 Button {
-//                    showAlert.toggle()
-                } label: {
-                    SettingsRowView(leftIcon: "photo", text: "Profile Picture", color: .orange)
-                }
-                Button {
-                    showAlert.toggle()
+                    showSignOutAlert.toggle()
                 } label: {
                     SettingsRowView(leftIcon: "figure.walk", text: "Sign out", color: .orange)
                 }
-                .alert(isPresented: $showAlert) {
+                .alert(isPresented: $showSignOutAlert) {
                     Alert(title: Text("Are you sure you want to sign out?"),
                           primaryButton: .default(Text("Yes")) {
                         viewModel.signOut()
+                    }, secondaryButton: .cancel())
+                }
+                Button {
+                    showDeleteUserAlert.toggle()
+                } label: {
+                    SettingsRowView(leftIcon: "minus.circle.fill", text: "Delete user", color: .red)
+                }
+                .alert(isPresented: $showDeleteUserAlert) {
+                    Alert(title: Text("Are you sure you want to delete this user?"),
+                          primaryButton: .default(Text("Yes")) {
+                        viewModel.deleteUser()
                     }, secondaryButton: .cancel())
                 }
             }
