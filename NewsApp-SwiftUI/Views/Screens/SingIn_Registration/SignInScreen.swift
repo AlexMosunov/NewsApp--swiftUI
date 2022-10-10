@@ -40,7 +40,10 @@ struct SignInScreen: View {
                 .padding(.horizontal)
                 .padding(.top, 20)
                 Button {
-                    viewModel.login(withEmail: email, password: password)
+                    viewModel.login(withEmail: email, password: password) { errorString in
+                        errorText = errorString
+                        showError.toggle()
+                    }
                 } label: {
                     ActionButtonView(title: "Login")
                 }

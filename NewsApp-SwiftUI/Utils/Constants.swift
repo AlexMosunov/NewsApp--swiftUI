@@ -17,6 +17,7 @@ struct Constants {
     @AppStorage("SelectedLanguage") static var selectedLanguage = Languages.en.rawValue
     @AppStorage("SelectedCategory") static var selectedCategory = Categories.allNews.rawValue
     @AppStorage("SelectedCountry") static var selectedCountry = Countries.unselected.rawValue
+    @AppStorage("UserId") static var userId: String?
     static var maxDaysOld = 5
     static let maxDaysAgoDate = Calendar.current.date(
         byAdding: .day,

@@ -8,12 +8,24 @@
 import SwiftUI
 import Firebase
 import FirebaseStorage
+import FirebaseAuth
 
-//@MainActor
+struct UserCredentials {
+    let email: String
+    let password: String
+    let repeatPassword: String
+    let username: String
+    let fullname: String
+    let profileImage: UIImage?
+    var passwordsMatch: Bool {
+        password == repeatPassword
+    }
+}
+
 class AuthViewModel: ObservableObject {
     @Published var userSession: FirebaseAuth.User?
     @Published var isAuthenticating = false
-//    @Published var error: Error?
+    @Published var error: Error?
     @Published var user: User?
 
     init() {
@@ -21,10 +33,11 @@ class AuthViewModel: ObservableObject {
         fetchUser()
     }
 
-    func login(withEmail email: String, password: String) {
+    func login(withEmail email: String, password: String, completion: @escaping (String) -> Void) {
         Auth.auth().signIn(withEmail: email, password: password) { result, error in
             if let error = error {
                 print("DEBUG: error \(error.localizedDescription)")
+                completion(error.localizedDescription)
                 return
             }
             self.userSession = result?.user
@@ -33,34 +46,46 @@ class AuthViewModel: ObservableObject {
     }
 
     func registerUser(
-        email: String, password: String,
-        repeatPassword: String, username: String,
-        fullname: String, profileImage: UIImage?
+        _ userCredentials: UserCredentials,
+        completion: @escaping (String?) -> Void
     ) {
-        Auth.auth().createUser(withEmail: email, password: password) { result, error in
+        guard userCredentials.passwordsMatch else {
+            completion("Password that you entered does not match with the one, entered in `repeat password` field")
+            return
+        }
+        Auth.auth().createUser(withEmail: userCredentials.email, password: userCredentials.password) { result, error in
             if let error = error {
-                print("DEBUG: error \(error.localizedDescription)") // TODO: show error on UI
+                completion(error.localizedDescription)
                 return
             }
-            print("DEBUG: Success")
             guard let user = result?.user else {
+                completion("Error registering user")
                 return
             }
 
             Task {
-                let profileImageUrl = await self.uploadProfileImage(profileImage).url
+                let result = await self.uploadProfileImage(userCredentials.profileImage)
+                if let errorString = result.error {
+                    completion(errorString)
+                }
+                let profileImageUrl = result.url
                 let data = [
-                    "email": email,
-                    "username": username.lowercased(),
-                    "fullname": fullname,
+                    "email": userCredentials.email,
+                    "username": userCredentials.username.lowercased(),
+                    "fullname": userCredentials.fullname,
                     "profileImageUrl": profileImageUrl,
                     "uid": user.uid
                 ]
 
-                Firestore.firestore().collection("users").document(user.uid).setData(data) { _ in
+                Firestore.firestore().collection("users").document(user.uid).setData(data) { error in
+                    if let error = error {
+                        completion(error.localizedDescription)
+                        return
+                    }
                     print("DEBUG: Successflully uplaoded data")
                     self.userSession = user
                     self.fetchUser()
+                    completion(nil)
                 }
             }
 
@@ -78,7 +103,7 @@ class AuthViewModel: ObservableObject {
             return await withCheckedContinuation { continuation in
                 storageRef.putData(imageData) { _, error in
                     if let error = error {
-                        print("DEBUG: erorr \(error.localizedDescription)")
+                        continuation.resume(returning: ("", error.localizedDescription))
                         return
                     }
                     storageRef.downloadURL { url, error1 in
@@ -111,6 +136,7 @@ class AuthViewModel: ObservableObject {
                 return
             }
             self.user = User(dictionary: data)
+            Constants.userId = self.user?.id
         }
     }
 
@@ -163,17 +189,20 @@ class AuthViewModel: ObservableObject {
         }
     }
 
-    func deleteUser() {
+    func deleteUser(completion: @escaping (String?) -> Void) {
         guard let user = user, let userSession = userSession else {
+            completion("Error deleting user")
             return
         }
         userSession.delete { error in
             if let error = error {
+                completion(error.localizedDescription)
                 print("2" + error.localizedDescription)
             } else {
                 print("success user deleted")
                 Firestore.firestore().collection("users").document(userSession.uid).delete { error in
                     if let error = error {
+                        completion(error.localizedDescription)
                         print("1" + error.localizedDescription)
                     } else {
                         print("collection deleted succesfully")

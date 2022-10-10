@@ -10,6 +10,8 @@ import SwiftUI
 struct ProfileSettingsView: View {
     @State var showSignOutAlert: Bool = false
     @State var showDeleteUserAlert: Bool = false
+    @State var showError: Bool = false
+    @State var errorText: String = ""
     @EnvironmentObject var viewModel: AuthViewModel
 
     var body: some View {
@@ -40,11 +42,6 @@ struct ProfileSettingsView: View {
                 } label: {
                     SettingsRowView(leftIcon: "text.quote", text: "Bio", color: .orange)
                 }
-//                Button {
-////                    showAlert.toggle()
-//                } label: {
-//                    SettingsRowView(leftIcon: "photo", text: "Profile Picture", color: .orange)
-//                }
                 Button {
                     showSignOutAlert.toggle()
                 } label: {
@@ -64,9 +61,21 @@ struct ProfileSettingsView: View {
                 .alert(isPresented: $showDeleteUserAlert) {
                     Alert(title: Text("Are you sure you want to delete this user?"),
                           primaryButton: .default(Text("Yes")) {
-                        viewModel.deleteUser()
+                        viewModel.deleteUser { errorString in
+                            if let errorString = errorString {
+                                showError.toggle()
+                                errorText = errorString
+                            }
+                        }
                     }, secondaryButton: .cancel())
                 }
+            }
+            .alert(isPresented: $showError) {
+                Alert(
+                    title: Text("Error deleting acccount"),
+                    message: Text(errorText),
+                    dismissButton: .default(Text("Ok"))
+                )
             }
             GroupBox(label: SettingsLabelView(
                 labelText: "WorldNews",

@@ -19,14 +19,9 @@ struct NewsApp_SwiftUIApp: App {
 
     var body: some Scene {
         WindowGroup {
-//            if Auth.
-//            if Auth.auth().currentUser == nil {
-//                SignInScreen()
-//            } else {
             MainTabView()
                 .environmentObject(AuthViewModel())
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
-//            }
         }
     }
 }
