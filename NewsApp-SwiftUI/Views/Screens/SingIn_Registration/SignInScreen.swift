@@ -25,10 +25,10 @@ struct SignInScreen: View {
             ZStack(alignment: .center) {
                 VStack {
                     LogoImage()
-                    RegistrationTextField(text: $email, focusInput: _focusedInput, viewModel: .init(type: .email), validationError: $errorText, showError: $showError, isValid: $isValid)
+                    RegistrationTextField(text: $email, focusInput: _focusedInput, viewModel: .init(type: .email, shouldValidate: false), validationError: $errorText, showError: $showError, isValid: $isValid)
                         .padding(.horizontal)
                         .padding(.top, 40)
-                    CustomSecureField(password: $password, focusInput: _focusedInput, viewModel: .init(type: .password))
+                    CustomSecureField(password: $password, focusInput: _focusedInput, viewModel: .init(type: .password, shouldValidate: false), validationError: $errorText, showError: $showError, isValid: $isValid)
                         .padding(.horizontal)
                         .padding(.top, 30)
                     HStack {

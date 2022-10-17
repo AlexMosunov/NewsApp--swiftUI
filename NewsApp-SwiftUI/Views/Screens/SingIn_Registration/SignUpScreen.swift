@@ -21,9 +21,14 @@ struct SignUpScreen: View {
     @State var errorText: String?
     @State var showError: Bool = false
     @State var isLoading: Bool = false
-    @State var isValid = true
+    @State var isValid = false
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var viewModel: AuthViewModel
+
+    var textfieldsAreEmtpy: Bool {
+        email.isEmpty || username.isEmpty || fullname.isEmpty
+        || password.isEmpty || repeatPassword.isEmpty
+    }
 
     var body: some View {
         NavigationView {
@@ -46,10 +51,10 @@ struct SignUpScreen: View {
                         RegistrationTextField(text: $username, focusInput: _focusedInput, viewModel: .init(type: .username), validationError: $errorText, showError: $showError, isValid: $isValid)
                             .padding(.horizontal)
                             .padding(.top, 30)
-                        CustomSecureField(password: $password, focusInput: _focusedInput, viewModel: .init(type: .password))
+                        CustomSecureField(password: $password, focusInput: _focusedInput, viewModel: .init(type: .password), validationError: $errorText, showError: $showError, isValid: $isValid)
                             .padding(.horizontal)
                             .padding(.top, 30)
-                        CustomSecureField(password: $repeatPassword, focusInput: _focusedInput, viewModel: .init(type: .repeatPassword))
+                        CustomSecureField(password: $repeatPassword, focusInput: _focusedInput, viewModel: .init(type: .repeatPassword), validationError: $errorText, showError: $showError, isValid: $isValid)
                             .padding(.horizontal)
                             .padding(.top, 30)
                         registerButton
@@ -111,9 +116,9 @@ struct SignUpScreen: View {
             }
         } label: {
             ActionButtonView(title: "Sign Up")
-                .opacity(isValid == false ? 0.5 : 1.0)
+                .opacity(isValid == false || textfieldsAreEmtpy ? 0.5 : 1.0)
         }
-        .disabled(isValid == false)
+        .disabled(isValid == false || textfieldsAreEmtpy)
     }
 
     private var secondaryActionButton: some View {

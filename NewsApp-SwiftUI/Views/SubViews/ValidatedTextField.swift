@@ -18,13 +18,16 @@ struct ValidatedTextField: View {
     @State var showButton = false
     var body: some View {
         ZStack(alignment: .trailing) {
-            TextField(viewModel.placeholder, text: $text, onEditingChanged: { isEditing in
-                if !isEditing && !text.isEmpty {
-                    validationError = validate(text)
-                    isValid = validationError == nil
-                    showButton = validationError != nil
-                }
-            })
+            if viewModel.secureEntry {
+                SecureField(viewModel.placeholder, text: $text)
+                    .onChange(of: text) { _ in
+                        performValidation(isEditing: false, text: text)
+                    }
+            } else {
+                TextField(viewModel.placeholder, text: $text, onEditingChanged: { isEditing in
+                    performValidation(isEditing: isEditing, text: text)
+                })
+            }
 
             if showButton {
                 Button {
@@ -37,12 +40,25 @@ struct ValidatedTextField: View {
                         .frame(width: 20, height: 20)
                         .tint(.red)
                 }
+                .padding(.trailing, 15)
             }
 
         }
     }
 
+    private func performValidation(isEditing: Bool, text: String) {
+        guard !isEditing && !text.isEmpty && viewModel.shouldValidate else {
+            return
+        }
+        validationError = validate(text)
+        isValid = validationError == nil
+        showButton = !isValid
+    }
+
     private func validate(_ text: String) -> String? {
+        guard !text.isEmpty else {
+            return GeneralErrors.emptyField.rawValue
+        }
         switch viewModel.type {
         case .fullname:
             return validateFullname(text).error?.rawValue
@@ -100,7 +116,7 @@ struct ValidatedTextField: View {
         case tooShort = "Please enter the password that is longer then 6 symbols"
         case atLeastOneUppercase = "Please use at least one uppercased character in your password"
         case atLeastOneDigit = "Please use at least one digit in your password"
-        case atLeastOneSymbol = "Please use at least one of symbols !&^%$#@()/]+.* in your password"
+        case atLeastOneSymbol = "Please use at least one of symbols !&^%$#@()/ in your password"
         case atLeastOneLowercased = "Please use at least one lowercased character in your password"
     }
 
@@ -111,10 +127,8 @@ struct ValidatedTextField: View {
     enum FullnameErrors: String {
         case fullnameIsNotValid = "Please use valid fullname (name + surname)"
     }
-}
 
-//struct ValidatedTextField_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ValidatedTextField(text: .constant("text"), isValid: .constant(true))
-//    }
-//}
+    enum GeneralErrors: String {
+        case emptyField = "The textfield is empty"
+    }
+}

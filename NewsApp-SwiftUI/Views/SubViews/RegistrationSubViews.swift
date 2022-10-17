@@ -24,6 +24,18 @@ enum LoginTextFieldType: Int, Hashable, CaseIterable {
 struct AuthTextFieldViewModel {
 
     let type: RegistrationTextFieldType
+    var shouldValidate = true
+
+    var secureEntry: Bool {
+        switch type {
+        case .password:
+            return true
+        case .repeatPassword:
+            return true
+        default:
+            return false
+        }
+    }
 
     var placeholder: String {
         switch type {
@@ -119,13 +131,22 @@ struct CustomSecureField: View {
     @Binding var password: String
     @FocusState var focusInput: RegistrationTextFieldType?
     let viewModel: AuthTextFieldViewModel
+    @Binding var validationError: String?
+    @Binding var showError: Bool
+    @Binding var isValid: Bool
 
     var body: some View {
         VStack {
             HStack(spacing: 15) {
                 Image(systemName: viewModel.imageName)
                     .foregroundColor(.orange)
-                SecureField(viewModel.placeholder, text: $password)
+                ValidatedTextField(
+                    text: $password, isValid: _isValid,
+                    validationError: $validationError,
+                    showError: $showError,
+                    focusInput: _focusInput,
+                    viewModel: viewModel
+                )
                     .frame(height: 40)
                     .focused($focusInput, equals: viewModel.type)
             }
