@@ -87,6 +87,9 @@ struct RegistrationTextField: View {
     @Binding var text: String
     @FocusState var focusInput: RegistrationTextFieldType?
     let viewModel: AuthTextFieldViewModel
+    @Binding var validationError: String?
+    @Binding var showError: Bool
+    @Binding var isValid: Bool
 
     var body: some View {
         VStack {
@@ -94,7 +97,13 @@ struct RegistrationTextField: View {
                 Image(systemName: viewModel.imageName)
                     .foregroundColor(.orange)
                     .frame(width: 20)
-                TextField(viewModel.placeholder, text: $text)
+                ValidatedTextField(
+                    text: $text, isValid: _isValid,
+                    validationError: $validationError,
+                    showError: $showError,
+                    focusInput: _focusInput,
+                    viewModel: viewModel
+                )
                     .keyboardType(viewModel.keyboardType)
                     .textInputAutocapitalization(viewModel.autoCapitalization)
                     .disableAutocorrection(viewModel.autocorrectionDisabled)

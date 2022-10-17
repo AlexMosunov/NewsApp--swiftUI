@@ -9,30 +9,49 @@ import SwiftUI
 
 struct ValidatedTextField: View {
     @Binding var text: String
-    @FocusState var isTextFieldFocused: Bool
     @Binding var isValid: Bool
+    @Binding var validationError: String?
+    @Binding var showError: Bool
+    @FocusState var focusInput: RegistrationTextFieldType?
+    let viewModel: AuthTextFieldViewModel
 
+    @State var showButton = false
     var body: some View {
         ZStack(alignment: .trailing) {
-            TextField("Text Field", text: $text)
-                .focused($isTextFieldFocused)
-                .onChange(of: isTextFieldFocused) { isFocused in
-                    if isFocused {
-                        print("Began editing")
-                    } else {
-                        print("ended editing")
-                        isValid = validatePassword(text).isValid
-                    }
+            TextField(viewModel.placeholder, text: $text, onEditingChanged: { isEditing in
+                if !isEditing && !text.isEmpty {
+                    validationError = validate(text)
+                    isValid = validationError == nil
+                    showButton = validationError != nil
                 }
-            Button {
-                print("DEBUG: tapped")
-            } label: {
-                Image(systemName: "exclamationmark.circle")
-                    .resizable()
-                    .frame(width: 20, height: 20)
-                    .tint(.red)
+            })
+
+            if showButton {
+                Button {
+                    focusInput = viewModel.type
+                    showError = true
+                    validationError = validate(text)
+                } label: {
+                    Image(systemName: "exclamationmark.circle")
+                        .resizable()
+                        .frame(width: 20, height: 20)
+                        .tint(.red)
+                }
             }
 
+        }
+    }
+
+    private func validate(_ text: String) -> String? {
+        switch viewModel.type {
+        case .fullname:
+            return validateFullname(text).error?.rawValue
+        case .email:
+            return validateEmail(text).error?.rawValue
+        case .password:
+            return validatePassword(text).error?.rawValue
+        default:
+            return nil
         }
     }
 
@@ -94,8 +113,8 @@ struct ValidatedTextField: View {
     }
 }
 
-struct ValidatedTextField_Previews: PreviewProvider {
-    static var previews: some View {
-        ValidatedTextField(text: .constant("text"), isValid: .constant(true))
-    }
-}
+//struct ValidatedTextField_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ValidatedTextField(text: .constant("text"), isValid: .constant(true))
+//    }
+//}

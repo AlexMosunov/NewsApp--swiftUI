@@ -21,6 +21,7 @@ struct SignUpScreen: View {
     @State var errorText: String?
     @State var showError: Bool = false
     @State var isLoading: Bool = false
+    @State var isValid = true
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var viewModel: AuthViewModel
 
@@ -36,13 +37,13 @@ struct SignUpScreen: View {
                             .sheet(isPresented: $showImagePicker) {
                                 ImagePicker(image: $selectedImage)
                             }
-                        RegistrationTextField(text: $email, focusInput: _focusedInput, viewModel: .init(type: .email))
+                        RegistrationTextField(text: $email, focusInput: _focusedInput, viewModel: .init(type: .email), validationError: $errorText, showError: $showError, isValid: $isValid)
                             .padding(.horizontal)
                             .padding(.top, 40)
-                        RegistrationTextField(text: $fullname, focusInput: _focusedInput, viewModel: .init(type: .fullname))
+                        RegistrationTextField(text: $fullname, focusInput: _focusedInput, viewModel: .init(type: .fullname), validationError: $errorText, showError: $showError, isValid: $isValid)
                             .padding(.horizontal)
                             .padding(.top, 30)
-                        RegistrationTextField(text: $username, focusInput: _focusedInput, viewModel: .init(type: .username))
+                        RegistrationTextField(text: $username, focusInput: _focusedInput, viewModel: .init(type: .username), validationError: $errorText, showError: $showError, isValid: $isValid)
                             .padding(.horizontal)
                             .padding(.top, 30)
                         CustomSecureField(password: $password, focusInput: _focusedInput, viewModel: .init(type: .password))
@@ -110,7 +111,9 @@ struct SignUpScreen: View {
             }
         } label: {
             ActionButtonView(title: "Sign Up")
+                .opacity(isValid == false ? 0.5 : 1.0)
         }
+        .disabled(isValid == false)
     }
 
     private var secondaryActionButton: some View {

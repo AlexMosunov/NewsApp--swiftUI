@@ -18,13 +18,14 @@ struct SignInScreen: View {
     @EnvironmentObject var viewModel: AuthViewModel
 
     @FocusState var focusedInput: RegistrationTextFieldType?
+    @State var isValid = true
 
     var body: some View {
         NavigationView {
             ZStack(alignment: .center) {
                 VStack {
                     LogoImage()
-                    RegistrationTextField(text: $email, focusInput: _focusedInput, viewModel: .init(type: .email))
+                    RegistrationTextField(text: $email, focusInput: _focusedInput, viewModel: .init(type: .email), validationError: $errorText, showError: $showError, isValid: $isValid)
                         .padding(.horizontal)
                         .padding(.top, 40)
                     CustomSecureField(password: $password, focusInput: _focusedInput, viewModel: .init(type: .password))
@@ -54,7 +55,9 @@ struct SignInScreen: View {
                         }
                     } label: {
                         ActionButtonView(title: "Login")
+                            .opacity(isValid == false ? 0.5 : 1.0)
                     }
+                    .disabled(isValid == false)
                     .padding(.top, 30)
                     NavigationLink {
                         SignUpScreen()

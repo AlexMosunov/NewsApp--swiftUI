@@ -88,7 +88,7 @@ struct ImageStackView: View {
                 }
             }
             DateTextView(title: newsArticle.publishedAt)
-                .padding(.top, 2)
+                .padding(.top, 6)
         }
     }
 }
