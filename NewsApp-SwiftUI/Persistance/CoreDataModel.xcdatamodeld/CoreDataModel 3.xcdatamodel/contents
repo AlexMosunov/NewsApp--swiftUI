@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21E258" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Article" representedClassName="Article" syncable="YES">
+        <attribute name="articleDescription" optional="YES" attributeType="String"/>
+        <attribute name="author" optional="YES" attributeType="String"/>
+        <attribute name="category" attributeType="String" defaultValueString="all news"/>
+        <attribute name="content" optional="YES" attributeType="String"/>
+        <attribute name="country" attributeType="String" defaultValueString="unselected"/>
+        <attribute name="currentUserId" attributeType="String" defaultValueString=""/>
+        <attribute name="isFavourite" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="language" attributeType="String" defaultValueString="en"/>
+        <attribute name="publishedAt" attributeType="String" defaultValueString=""/>
+        <attribute name="sourceId" optional="YES" attributeType="String"/>
+        <attribute name="title" attributeType="String" defaultValueString=""/>
+        <attribute name="url" optional="YES" attributeType="String"/>
+        <attribute name="urlToImage" optional="YES" attributeType="String"/>
+        <relationship name="settings" toMany="YES" deletionRule="Cascade" destinationEntity="Setting" inverseName="articles" inverseEntity="Setting"/>
+        <relationship name="source" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Source" inverseName="articles" inverseEntity="Source"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CurrentUser" inverseName="articles" inverseEntity="CurrentUser"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="title"/>
+                <constraint value="publishedAt"/>
+                <constraint value="currentUserId"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="CurrentUser" representedClassName="CurrentUser" syncable="YES" codeGenerationType="class">
+        <attribute name="bio" optional="YES" attributeType="String"/>
+        <attribute name="email" optional="YES" attributeType="String"/>
+        <attribute name="fullname" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="profileImageUrl" optional="YES" attributeType="String"/>
+        <attribute name="username" optional="YES" attributeType="String"/>
+        <relationship name="articles" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Article" inverseName="user" inverseEntity="Article"/>
+    </entity>
+    <entity name="Setting" representedClassName="Setting" syncable="YES">
+        <attribute name="category" optional="YES" attributeType="String"/>
+        <attribute name="country" attributeType="String" defaultValueString="unselected"/>
+        <attribute name="language" attributeType="String" defaultValueString="en"/>
+        <relationship name="articles" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Article" inverseName="settings" inverseEntity="Article"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="language"/>
+                <constraint value="category"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="Settings" representedClassName="Settings" syncable="YES">
+        <relationship name="selectedSetting" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Setting"/>
+        <relationship name="settings" toMany="YES" deletionRule="Cascade" destinationEntity="Setting"/>
+    </entity>
+    <entity name="Source" representedClassName="Source" syncable="YES" codeGenerationType="class">
+        <attribute name="id" attributeType="String" defaultValueString=""/>
+        <attribute name="name" attributeType="String" defaultValueString=""/>
+        <attribute name="sourceDescription" optional="YES" attributeType="String"/>
+        <relationship name="articles" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Article" inverseName="source" inverseEntity="Article"/>
+    </entity>
+    <elements>
+        <element name="Article" positionX="237.55615234375" positionY="-333.2700500488281" width="128" height="269"/>
+        <element name="Setting" positionX="-4.83221435546875" positionY="-7.8521728515625" width="128" height="89"/>
+        <element name="Settings" positionX="-262.7139282226562" positionY="-254.8543090820312" width="128" height="59"/>
+        <element name="Source" positionX="478.64697265625" positionY="-2.394683837890625" width="128" height="103"/>
+        <element name="CurrentUser" positionX="-54" positionY="-171" width="128" height="134"/>
+    </elements>
+</model>

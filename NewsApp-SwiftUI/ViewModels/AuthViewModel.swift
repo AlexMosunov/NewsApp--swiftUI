@@ -23,17 +23,17 @@ struct UserCredentials {
 }
 
 class AuthViewModel: ObservableObject {
-    @Published var userSession: FirebaseAuth.User?
+    @Published var userSession: Firebase.User?
     @Published var isAuthenticating = false
     @Published var error: Error?
     @Published var user: User?
 
     init() {
         userSession = Auth.auth().currentUser
-        fetchUser()
+        fetchUser { _ in }
     }
 
-    func login(withEmail email: String, password: String, completion: @escaping (String) -> Void) {
+    func login(withEmail email: String, password: String, completion: @escaping (String?) -> Void) {
         Auth.auth().signIn(withEmail: email, password: password) { result, error in
             if let error = error {
                 print("DEBUG: error \(error.localizedDescription)")
@@ -41,7 +41,13 @@ class AuthViewModel: ObservableObject {
                 return
             }
             self.userSession = result?.user
-            self.fetchUser()
+            self.fetchUser { error in
+                if let error = error {
+                    completion(error)
+                    return
+                }
+                completion(nil)
+            }
         }
     }
 
@@ -67,6 +73,7 @@ class AuthViewModel: ObservableObject {
                 let result = await self.uploadProfileImage(userCredentials.profileImage)
                 if let errorString = result.error {
                     completion(errorString)
+                    return
                 }
                 let profileImageUrl = result.url
                 let data = [
@@ -84,8 +91,13 @@ class AuthViewModel: ObservableObject {
                     }
                     print("DEBUG: Successflully uplaoded data")
                     self.userSession = user
-                    self.fetchUser()
-                    completion(nil)
+                    self.fetchUser { error in
+                        if let error = error {
+                            completion(error)
+                            return
+                        }
+                        completion(nil)
+                    }
                 }
             }
 
@@ -96,7 +108,7 @@ class AuthViewModel: ObservableObject {
          async -> (url: String, error: String?) {
             guard let image1 = image,
                   let imageData = image1.jpegData(compressionQuality: 0.3) else {
-                return ("", "Unable to compress image")
+                return ("", nil)
             }
             let filename = NSUUID().uuidString
             let storageRef = Storage.storage().reference().child(filename)
@@ -123,20 +135,23 @@ class AuthViewModel: ObservableObject {
         user = nil
     }
 
-    func fetchUser() {
+    func fetchUser(completion: @escaping (String?) -> Void) {
         guard let uid = userSession?.uid else {
+            completion("Error fetching user")
             return
         }
         Firestore.firestore().collection("users").document(uid).getDocument { snapshot, error in
             if let error = error {
-                print("DEBUG: \(error.localizedDescription)")
+                completion(error.localizedDescription)
                 return
             }
             guard let data = snapshot?.data() else {
+                completion("Error fetching user")
                 return
             }
             self.user = User(dictionary: data)
             Constants.userId = self.user?.id
+            completion(nil)
         }
     }
 

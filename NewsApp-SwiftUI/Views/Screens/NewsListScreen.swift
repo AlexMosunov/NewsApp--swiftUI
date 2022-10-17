@@ -13,6 +13,9 @@ struct NewsListScreen: View {
     @State private var showLoading: Bool = false
     @FetchRequest var results: FetchedResults<Article>
 
+    @State var errorText: String?
+    @State var showError = false
+
     init(newsSource: NewsSourceViewModel) {
         self.newsSource = newsSource
         _results = FetchRequest(
@@ -37,13 +40,27 @@ struct NewsListScreen: View {
         .background(ColorScheme.backgroundColor)
         .onAppear {
             Task {
-                await newsArticleListViewModel.getNewsBy(sourceId: newsSource.id)
+                await getNews(newsSource.id)
             }
         }
         .refreshable {
-            await newsArticleListViewModel.getNewsBy(sourceId: newsSource.id)
+            await getNews(newsSource.id)
         }
         .navigationTitle(newsSource.name)
+        .alert(isPresented: $showError) {
+            Alert(title: Text("Error loading news"),
+                  message: Text(errorText ?? ""),
+                  dismissButton: .default(Text("Ok")))
+        }
+    }
+
+    private func getNews(_ sourceId: String) async {
+        do {
+            try await newsArticleListViewModel.getNewsBy(sourceId: newsSource.id)
+        } catch {
+            errorText = error.localizedDescription
+            showError.toggle()
+        }
     }
 }
 

@@ -12,6 +12,9 @@ struct HeadlinesList: View {
     @State var showLoading: Bool
     @StateObject var newsArticleListViewModel: NewsArticleListViewModel
 
+    @State var errorText: String?
+    @State var showError = false
+
     init(
         ascendingFilter: Bool,
         showLoading: Bool,
@@ -38,7 +41,12 @@ struct HeadlinesList: View {
                         .onAppear {
                             if fetchedArticleIndex == results.count - 2 {
                                 Task {
-                                    await newsArticleListViewModel.loadMore(resultsCount: results.count)
+                                    do {
+                                        try await newsArticleListViewModel.loadMore(resultsCount: results.count)
+                                    } catch {
+                                        errorText = error.localizedDescription
+                                        showError.toggle()
+                                    }
                                 }
                             }
                         }
@@ -51,11 +59,21 @@ struct HeadlinesList: View {
                 ProgressView()
                     .onAppear {
                         Task {
-                            await newsArticleListViewModel.refresh()
+                            do {
+                                try await newsArticleListViewModel.refresh()
+                            } catch {
+                                errorText = error.localizedDescription
+                                showError.toggle()
+                            }
                         }
                     }
             }
         }
         .background(ColorScheme.backgroundColor)
+        .alert(isPresented: $showError) {
+            Alert(title: Text("Error loading news"),
+                  message: Text(errorText ?? ""),
+                  dismissButton: .default(Text("Ok")))
+        }
     }
 }

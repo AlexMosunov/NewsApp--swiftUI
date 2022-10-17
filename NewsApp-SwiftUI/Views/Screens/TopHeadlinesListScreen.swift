@@ -30,6 +30,9 @@ struct TopHeadlinesListScreen: View {
     )
     @Environment(\.scenePhase) var scenePhase
 
+    @State var errorText: String?
+    @State var showError = false
+
     var body: some View {
         NavigationView {
             VStack {
@@ -44,7 +47,7 @@ struct TopHeadlinesListScreen: View {
                 switch phase {
                 case .active:
                     Task {
-                        await newsArticleListViewModel.refresh()
+                        await refresh()
                     }
                 default: break
                 }
@@ -70,17 +73,31 @@ struct TopHeadlinesListScreen: View {
                 }
             }
             .refreshable {
-                await newsArticleListViewModel.refresh()
+                await refresh()
             }
         }
         .sheet(isPresented: $showSettings) {
             Constants.selectedLanguage = settingsFilter.language.rawValue // TODO: change
             Constants.selectedCountry = settingsFilter.country.rawValue
             Task {
-                await newsArticleListViewModel.refresh()
+                await refresh()
             }
         } content: {
             SettingsScreen(settingsFilter: $settingsFilter)
+        }
+        .alert(isPresented: $showError) {
+            Alert(title: Text("Error loading news"),
+                  message: Text(errorText ?? ""),
+                  dismissButton: .default(Text("Ok")))
+        }
+    }
+
+    private func refresh() async {
+        do {
+            try await newsArticleListViewModel.refresh()
+        } catch {
+            errorText = error.localizedDescription
+            showError.toggle()
         }
     }
 

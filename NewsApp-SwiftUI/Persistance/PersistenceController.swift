@@ -95,9 +95,9 @@ struct PersistenceController {
                 entity.category = setting.category ?? "all news"
                 entity.country = setting.country
             }
+            entity.currentUserId = Constants.userId ?? ""
         }
 
-        // TODO: change, handel error to UI
         try await saveAsync()
         print("DEBUG: path - \(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))")
     }
@@ -111,12 +111,12 @@ struct PersistenceController {
     }
 
     func getSetting() -> Setting? {
+        let settingRequst = NSFetchRequest<Setting>(entityName: Setting.description())
+        settingRequst.predicate = NSPredicate(
+            format: "language = %@ && category == %@ && country == %@",
+            Constants.selectedLanguage, Constants.selectedCategory, Constants.selectedCountry // crash
+        )
         do {
-            let settingRequst = NSFetchRequest<Setting>(entityName: Setting.description())
-            settingRequst.predicate = NSPredicate(
-                format: "language = %@ && category == %@ && country == %@",
-                Constants.selectedLanguage, Constants.selectedCategory, Constants.selectedCountry
-            )
             let settings: [Setting] = try context.fetch(settingRequst)
             return settings.first
         } catch {
@@ -152,6 +152,18 @@ struct PersistenceController {
         sources.forEach { data in
             _ = Source.withNewsSource(data, context: context)
         }
+        try await saveAsync()
+    }
+
+    func saveCurrentUser(_ user: User) async throws {
+        let currentUser = CurrentUser(context: context)
+        currentUser.id = user.id
+        currentUser.fullname = user.fullname
+        currentUser.username = user.username
+        currentUser.email = user.email
+        currentUser.profileImageUrl = user.profileImageUrl
+        currentUser.bio = user.bio
+
         try await saveAsync()
     }
 

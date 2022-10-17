@@ -13,25 +13,17 @@ class NewsArticleListViewModel: ObservableObject {
 
     @Published var newsArticles = [NewsArticleViewModel]()
 
-    func getNewsBy(sourceId: String) async {
-        do {
-            let newsArticles = try await Webservice().fetchNewsAsync(sourceId: sourceId, url: Constants.Urls.topHeadlines(by: sourceId))
-            try await PersistenceController.shared.saveData(articles: newsArticles, sourceId: sourceId)
-        } catch {
-            print(error)
-        }
+    func getNewsBy(sourceId: String) async throws {
+        let newsArticles = try await Webservice().fetchNewsAsync(sourceId: sourceId, url: Constants.Urls.topHeadlines(by: sourceId))
+        try await PersistenceController.shared.saveData(articles: newsArticles, sourceId: sourceId)
     }
 
-    func getTopNews() async {
-        do {
-            let newsArticles = try await Webservice().fetchTopHeadlines(url: Constants.Urls.topHeadlines)
-            try await PersistenceController.shared.saveData(articles: newsArticles, sourceId: nil)
-        } catch {
-            print(error)
-        }
+    func getTopNews() async throws {
+        let newsArticles = try await Webservice().fetchTopHeadlines(url: Constants.Urls.topHeadlines)
+        try await PersistenceController.shared.saveData(articles: newsArticles, sourceId: nil)
     }
 
-    func loadMore(resultsCount: Int)  async {
+    func loadMore(resultsCount: Int)  async throws {
         let currentPage = resultsCount / Constants.limit
         Constants.page = currentPage + 1
         guard Constants.page <= 5 else {
@@ -39,13 +31,13 @@ class NewsArticleListViewModel: ObservableObject {
             return
         }
         Task {
-            await getTopNews()
+            try await getTopNews()
         }
     }
 
-    func refresh() async {
+    func refresh() async throws {
         Constants.page = 1
-        await getTopNews()
+        try await getTopNews()
     }
 }
 
@@ -101,7 +93,6 @@ struct NewsArticleViewModel {
     }
 
     static var `default`: NewsArticleViewModel {
-        
         let newsArticle = NewsArticle(
             source: nil,
             author: "BBC News",

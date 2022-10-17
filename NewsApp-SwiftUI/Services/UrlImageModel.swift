@@ -26,6 +26,7 @@ class UrlImageModel: ObservableObject {
 
     func loadImageFromCache() -> Bool {
         guard let url = url else {
+            errorMessage = "Was not able to load image from the url"
             return false
         }
 

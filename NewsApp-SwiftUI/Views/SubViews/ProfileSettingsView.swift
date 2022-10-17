@@ -42,6 +42,13 @@ struct ProfileSettingsView: View {
                 } label: {
                     SettingsRowView(leftIcon: "text.quote", text: "Bio", color: .orange)
                 }
+                .alert(isPresented: $showError) {
+                    Alert(
+                        title: Text("Error deleting acccount"),
+                        message: Text(errorText),
+                        dismissButton: .default(Text("Ok"))
+                    )
+                }
                 Button {
                     showSignOutAlert.toggle()
                 } label: {
@@ -69,13 +76,6 @@ struct ProfileSettingsView: View {
                         }
                     }, secondaryButton: .cancel())
                 }
-            }
-            .alert(isPresented: $showError) {
-                Alert(
-                    title: Text("Error deleting acccount"),
-                    message: Text(errorText),
-                    dismissButton: .default(Text("Ok"))
-                )
             }
             GroupBox(label: SettingsLabelView(
                 labelText: "WorldNews",

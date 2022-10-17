@@ -29,6 +29,7 @@ extension Article {
     @NSManaged public var category: String
     @NSManaged public var country: String
     @NSManaged public var isFavourite: Bool
+    @NSManaged public var currentUserId: String
 
     static func basicTopNewsFetchRequest(ascendingFilter: Bool) -> FetchRequest<Article> {
         FetchRequest(
@@ -59,12 +60,13 @@ extension Article {
     ) -> FetchRequest<Article> {
         let sortDescriptor = NSSortDescriptor(keyPath: \Article.publishedAt, ascending: ascendingFilter)
         let predicate = NSPredicate(
-            format: "publishedAt >= %@ && publishedAt < %@ && language == %@ && category == %@ && country == %@ && source == nil",
+            format: "publishedAt >= %@ && publishedAt < %@ && language == %@ && category == %@ && country == %@ && currentUserId == %@ && source == nil",
             settingFilter.fromDate.toString(),
             settingFilter.toDate.toString(),
             settingFilter.language.rawValue,
             settingFilter.selection.rawValue,
-            settingFilter.country.rawValue
+            settingFilter.country.rawValue,
+            Constants.userId ?? ""
         )
         return FetchRequest(
             entity: Article.entity(),
@@ -77,8 +79,9 @@ extension Article {
     ) -> FetchRequest<Article> {
         let sortDescriptor = NSSortDescriptor(keyPath: \Article.publishedAt, ascending: false)
         let predicate = NSPredicate(
-            format: "isFavourite == true && category == %@",
-            category.rawValue
+            format: "isFavourite == true && category == %@ && currentUserId == %@",
+            category.rawValue,
+            Constants.userId ?? ""
         )
         return FetchRequest(
             entity: Article.entity(),
@@ -92,8 +95,8 @@ extension Article : Identifiable {
     static func isDuplicate(_ newsArticle: NewsArticle, context: NSManagedObjectContext) -> Bool {
         let request = NSFetchRequest<Article>(entityName: Article.description())
         request.predicate = NSPredicate(
-            format: "title = %@ && publishedAt == %@",
-            newsArticle.title, newsArticle.publishedAt
+            format: "title = %@ && publishedAt == %@ && currentUserId == %@",
+            newsArticle.title, newsArticle.publishedAt, Constants.userId ?? ""
         )
         let articles = (try? context.fetch(request)) ?? []
         if articles.first != nil {

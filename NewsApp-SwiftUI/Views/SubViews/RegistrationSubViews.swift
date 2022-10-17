@@ -6,20 +6,100 @@
 //
 
 import SwiftUI
+import Photos
+
+enum RegistrationTextFieldType: Int, Hashable, CaseIterable {
+    case email
+    case fullname
+    case username
+    case password
+    case repeatPassword
+}
+
+enum LoginTextFieldType: Int, Hashable, CaseIterable {
+    case email
+    case password
+}
+
+struct AuthTextFieldViewModel {
+
+    let type: RegistrationTextFieldType
+
+    var placeholder: String {
+        switch type {
+        case .email:
+            return "Email Address"
+        case .username:
+            return "Username"
+        case .fullname:
+            return "Fullname"
+        case .password:
+            return "Password"
+        case .repeatPassword:
+            return "Repeat Password"
+        }
+    }
+
+    var imageName: String {
+        switch type {
+        case .email:
+            return "envelope.fill"
+        case .username:
+            return "person.crop.rectangle"
+        case .fullname:
+            return "person.crop.rectangle"
+        case .password:
+            return "eye.slash.fill"
+        case .repeatPassword:
+            return "eye.slash.fill"
+        }
+    }
+
+    var keyboardType: UIKeyboardType {
+        switch type {
+        case .email:
+            return .emailAddress
+        default:
+            return .default
+        }
+    }
+
+    var autoCapitalization: TextInputAutocapitalization {
+        switch type {
+        case .fullname:
+            return .words
+        default:
+            return .never
+        }
+    }
+
+    var autocorrectionDisabled: Bool {
+        switch type {
+        case .username:
+            return false
+        default:
+            return true
+        }
+    }
+}
 
 struct RegistrationTextField: View {
     @Binding var text: String
-    let placeholder: String
-    let imageName: String
+    @FocusState var focusInput: RegistrationTextFieldType?
+    let viewModel: AuthTextFieldViewModel
 
     var body: some View {
         VStack {
             HStack(spacing: 15) {
-                Image(systemName: imageName)
+                Image(systemName: viewModel.imageName)
                     .foregroundColor(.orange)
                     .frame(width: 20)
-                TextField(placeholder, text: $text)
+                TextField(viewModel.placeholder, text: $text)
+                    .keyboardType(viewModel.keyboardType)
+                    .textInputAutocapitalization(viewModel.autoCapitalization)
+                    .disableAutocorrection(viewModel.autocorrectionDisabled)
                     .frame(height: 40)
+                    .focused($focusInput, equals: viewModel.type)
             }
             Divider().background(.gray)
         }
@@ -28,14 +108,17 @@ struct RegistrationTextField: View {
 
 struct CustomSecureField: View {
     @Binding var password: String
+    @FocusState var focusInput: RegistrationTextFieldType?
+    let viewModel: AuthTextFieldViewModel
 
     var body: some View {
         VStack {
             HStack(spacing: 15) {
-                Image(systemName: "eye.slash.fill")
+                Image(systemName: viewModel.imageName)
                     .foregroundColor(.orange)
-                SecureField("Password", text: $password)
+                SecureField(viewModel.placeholder, text: $password)
                     .frame(height: 40)
+                    .focused($focusInput, equals: viewModel.type)
             }
             Divider().background(.gray)
         }

@@ -15,23 +15,24 @@ struct ProfileHeaderView: View {
     var body: some View {
         VStack(alignment: .center, spacing: 10) {
             ZStack(alignment: .bottomTrailing) {
-                UrlImageView(url: URL(string: viewModel.user?.profileImageUrl ?? ""))
+                UrlImageView(url: URL(string: viewModel.user?.profileImageUrl ?? ""), defaultImageName: "avatar")
                     .scaledToFill()
                     .frame(width: 120, height: 120, alignment: .center)
                     .cornerRadius(60)
                 Image(systemName: "pencil.circle.fill")
-                    .frame(width: 50, height: 50)
+                    .resizable()
+                    .frame(width: 30, height: 30)
                     .foregroundColor(.orange)
                     .onTapGesture {
                         showImagePicker.toggle()
                     }
-                    .sheet(isPresented: $showImagePicker, onDismiss: {
+                    .sheet(isPresented:  $showImagePicker, onDismiss: {
                         if let image = selectedImage {
                             viewModel.editProfileImage(image)
                         }
-                    }) {
+                    }, content: {
                         ImagePicker(image: $selectedImage)
-                    }
+                    })
             }
             Text(viewModel.user?.username ?? "")
                 .font(.largeTitle)

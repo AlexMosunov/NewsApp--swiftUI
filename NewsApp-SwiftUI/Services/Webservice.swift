@@ -27,8 +27,8 @@ class Webservice {
         guard let url = url else { return [] }
         print("DEBUG: url - \(url)")
         let (data, _) = try await URLSession.shared.data(from: url)
-        let newsArticleResponse = try? JSONDecoder().decode(NewsArticleResponse.self, from: data)
-        return newsArticleResponse?.articles ?? []
+        let newsArticleResponse = try JSONDecoder().decode(NewsArticleResponse.self, from: data)
+        return newsArticleResponse.articles
     }
 
     func fetchNewsAsync(sourceId: String, url: URL?) async throws -> [NewsArticle] {
