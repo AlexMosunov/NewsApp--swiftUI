@@ -35,7 +35,7 @@ struct SearchScreen: View {
     @StateObject var debounceObject = DebounceObject(dueTime: 1.5)
     @State var order: SortingOrders = .publishedAt
     @StateObject private var newsArticleListViewModel = NewsArticleListViewModel()
-    @FocusState private var isFocused: Bool
+    @Environment(\.dismissSearch) var dismissSearch
 
     var body: some View {
         NavigationView {
@@ -65,7 +65,8 @@ struct SearchScreen: View {
                         }
                     }
                     .simultaneousGesture(DragGesture().onChanged({ _ in
-                        isFocused = false
+                        dismissSearch()
+                        hideKeyboard()
                     }))
                     .listStyle(.plain)
                     .listRowSeparator(.hidden)
@@ -77,7 +78,6 @@ struct SearchScreen: View {
             }
         }
         .searchable(text: $debounceObject.text, prompt: "Find news")
-        .focused($isFocused)
         .onChange(of: debounceObject.debouncedText) { _ in
             loadNews()
         }
@@ -89,7 +89,6 @@ struct SearchScreen: View {
             try await self.newsArticleListViewModel.searchArticlesWith(query: debounceObject.debouncedText, order: order)
             debounceObject.showLoading = false
         }
-        print("DEBUG: perform search for: \(debounceObject.debouncedText)")
     }
 }
 
