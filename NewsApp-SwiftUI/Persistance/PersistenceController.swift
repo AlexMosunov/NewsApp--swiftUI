@@ -74,32 +74,37 @@ struct PersistenceController {
         deleteOld()
         createSetting()
         articles.forEach { data in
-            if Article.isDuplicate(data, context: context) {
-                return
-            }
-            let entity = Article(context: context)
-            entity.author = data.author
-            entity.url = data.url
-            entity.articleDescription = data.description
-            entity.content = data.content
-            entity.publishedAt = data.publishedAt
-            entity.title = data.title
-            entity.urlToImage = data.urlToImage
-            if let sourceid = sourceId {
-                entity.source = getSourceFor(sourceId: sourceid)
-                entity.sourceId = sourceid
-            }
-            if let setting = getSetting() {
-                entity.settings = [setting]
-                entity.language = setting.language
-                entity.category = setting.category ?? "all news"
-                entity.country = setting.country
-            }
-            entity.currentUserId = Constants.userId ?? ""
+            createArticle(from: data, sourceId: sourceId)
         }
 
         try await saveAsync()
         print("DEBUG: path - \(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))")
+    }
+
+    func createArticle(from data: NewsArticle, sourceId: String?) -> Article? {
+        if Article.isDuplicate(data, context: context) {
+            return nil
+        }
+        let entity = Article(context: context)
+        entity.author = data.author
+        entity.url = data.url
+        entity.articleDescription = data.description
+        entity.content = data.content
+        entity.publishedAt = data.publishedAt
+        entity.title = data.title
+        entity.urlToImage = data.urlToImage
+        if let sourceid = sourceId {
+            entity.source = getSourceFor(sourceId: sourceid)
+            entity.sourceId = sourceid
+        }
+        if let setting = getSetting() {
+            entity.settings = [setting]
+            entity.language = setting.language
+            entity.category = setting.category ?? "all news"
+            entity.country = setting.country
+        }
+        entity.currentUserId = Constants.userId ?? ""
+        return entity
     }
 
     func toggleArticleFavourite(_ article: Article?) async throws {

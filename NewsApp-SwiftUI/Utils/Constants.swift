@@ -48,6 +48,13 @@ struct Constants {
         static var topHeadlines: URL? {
             URL(string: "https://newsapi.org/v2/top-headlines?page=\(Constants.page)\(Constants.languageEndpoint)\(Constants.categoryEndpoint)\(Constants.countryEndpoint)&apiKey=\(Constants.apiKey)")
         }
+        static func allNews(by query: String, order: SortingOrders) -> URL? {
+            let trimmedQuery = query
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+                .replacingOccurrences(of: " ", with: "")
+            print("DEBUG: trimmed url - \(trimmedQuery)")
+            return URL(string: "https://newsapi.org/v2/everything?q=\(trimmedQuery)&sortBy=\(order.rawValue)\(Constants.languageEndpoint)&apiKey=\(Constants.apiKey)")
+        }
     }
 }
 

@@ -36,6 +36,13 @@ struct MainTabView: View {
                                 systemImage: "bookmark.circle.fill"
                             )
                         }
+                    SearchScreen()
+                        .tabItem {
+                            Label(
+                                "Search",
+                                systemImage: "magnifyingglass"
+                            )
+                        }
                     ProfileScreen()
                         .tabItem {
                             Label(

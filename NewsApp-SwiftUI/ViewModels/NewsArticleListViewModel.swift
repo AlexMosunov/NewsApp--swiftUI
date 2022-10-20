@@ -11,7 +11,7 @@ import SwiftUI
 @MainActor
 class NewsArticleListViewModel: ObservableObject {
 
-    @Published var newsArticles = [NewsArticleViewModel]()
+    @Published var newsArticlesViewModel = [NewsArticleViewModel]()
 
     func getNewsBy(sourceId: String) async throws {
         let newsArticles = try await Webservice().fetchNewsAsync(sourceId: sourceId, url: Constants.Urls.topHeadlines(by: sourceId))
@@ -21,6 +21,11 @@ class NewsArticleListViewModel: ObservableObject {
     func getTopNews() async throws {
         let newsArticles = try await Webservice().fetchTopHeadlines(url: Constants.Urls.topHeadlines)
         try await PersistenceController.shared.saveData(articles: newsArticles, sourceId: nil)
+    }
+
+    func searchArticlesWith(query: String, order: SortingOrders) async throws {
+        let newsArticles = try await Webservice().fetchTopHeadlines(url: Constants.Urls.allNews(by: query, order: order))
+        newsArticlesViewModel = newsArticles.map { NewsArticleViewModel(newsArticle: $0, fetchedResult: nil) }
     }
 
     func loadMore(resultsCount: Int)  async throws {
@@ -45,30 +50,31 @@ struct NewsArticleViewModel {
 
     let id = UUID()
     let newsArticle: NewsArticle?
-    let fetchedResult: Article?
+    var fetchedResult: Article?
 
     var title: String {
-        fetchedResult?.title ?? ""
+        fetchedResult?.title ?? newsArticle?.title ?? ""
     }
 
     var description: String {
-        fetchedResult?.articleDescription ?? ""
+        fetchedResult?.articleDescription ?? newsArticle?.description ?? ""
     }
 
     var author: String {
-        fetchedResult?.author ?? ""
+        fetchedResult?.author ?? newsArticle?.author ?? ""
     }
 
     var publishedAt: String {
-        fetchedResult?.publishedAt?.toDate()?.timeAgoDisplay() ?? ""
+        fetchedResult?.publishedAt?.toDate()?.timeAgoDisplay() ?? newsArticle?.publishedAt.toDate()?.timeAgoDisplay() ?? ""
     }
 
     var urlToImage: URL? {
-        URL(string: fetchedResult?.urlToImage ?? "https://www.locala.org.uk/assets/images/news-placeholder.png")
+        URL(string: fetchedResult?.urlToImage ?? newsArticle?.urlToImage ?? "https://www.locala.org.uk/assets/images/news-placeholder.png")
     }
 
     var urlToSource: URL {
         URL(string: fetchedResult?.url ?? "") ??
+        URL(string: newsArticle?.url ?? "") ??
         URL(string: "https://www.publicdomainpictures.net/pictures/280000/velka/not-found-image-15383864787lu.jpg")!
     }
 
@@ -85,10 +91,20 @@ struct NewsArticleViewModel {
     }
 
     func toggleFavourite() async {
-        do {
-            try await PersistenceController.shared.toggleArticleFavourite(fetchedResult)
-        } catch {
-            print(error)
+        if fetchedResult == nil, let data = newsArticle {
+            let article = PersistenceController.shared.createArticle(from: data, sourceId: nil)
+            try? await PersistenceController.shared.saveAsync()
+            do {
+                try await PersistenceController.shared.toggleArticleFavourite(article)
+            } catch {
+                print(error)
+            }
+        } else {
+            do {
+                try await PersistenceController.shared.toggleArticleFavourite(fetchedResult)
+            } catch {
+                print(error)
+            }
         }
     }
 
