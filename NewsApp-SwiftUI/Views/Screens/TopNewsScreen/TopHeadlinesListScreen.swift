@@ -77,7 +77,7 @@ struct TopHeadlinesListScreen: View {
             }
         }
         .sheet(isPresented: $showSettings) {
-            Constants.selectedLanguage = settingsFilter.language.rawValue // TODO: change
+            Constants.selectedLanguage = settingsFilter.language.rawValue
             Constants.selectedCountry = settingsFilter.country.rawValue
             Task {
                 await refresh()

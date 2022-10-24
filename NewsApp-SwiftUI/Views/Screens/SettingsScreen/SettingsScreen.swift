@@ -79,10 +79,10 @@ struct SettingsScreen: View {
                     }
                 }
             }
-            .onChange(of: draftSettingsFilter) { newValue in
+            .onChange(of: draftSettingsFilter) { _ in
                 showingAlert =
                 draftSettingsFilter.language == .unselected &&
-                draftSettingsFilter.country == .unselected // TODO: refactor
+                draftSettingsFilter.country == .unselected
             }
             .alert(isPresented: $showingAlert) {
                 Alert(title: Text(viewModel.pickerAlertTitle),

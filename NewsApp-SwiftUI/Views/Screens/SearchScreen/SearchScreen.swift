@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Combine
+import AVFoundation
 
 public final class DebounceObject: ObservableObject {
     @Published var text: String = ""
@@ -32,10 +33,13 @@ enum SortingOrders: String, CaseIterable {
 }
 
 struct SearchScreen: View {
-    @StateObject var debounceObject = DebounceObject(dueTime: 1.5)
+    @StateObject var debounceObject = DebounceObject(dueTime: 1.0)
     @State var order: SortingOrders = .publishedAt
     @StateObject private var newsArticleListViewModel = NewsArticleListViewModel()
     @Environment(\.dismissSearch) var dismissSearch
+
+    @State var errorText: String?
+    @State var showError = false
 
     var body: some View {
         NavigationView {
@@ -77,6 +81,11 @@ struct SearchScreen: View {
                 }
             }
         }
+        .alert(isPresented: $showError) {
+            Alert(title: Text("Error loading news"),
+                  message: Text(errorText ?? ""),
+                  dismissButton: .default(Text("Ok")))
+        }
         .searchable(text: $debounceObject.text, prompt: "Find news")
         .onChange(of: debounceObject.debouncedText) { _ in
             loadNews()
@@ -84,9 +93,20 @@ struct SearchScreen: View {
     }
 
     private func loadNews() {
+        guard !debounceObject.debouncedText.isEmpty else {
+            return
+        }
         debounceObject.showLoading = true
         Task {
-            try await self.newsArticleListViewModel.searchArticlesWith(query: debounceObject.debouncedText, order: order)
+            do {
+                try await self.newsArticleListViewModel.searchArticlesWith(
+                    query: debounceObject.debouncedText,
+                    order: order
+                )
+            } catch {
+                errorText = error.localizedDescription
+                showError.toggle()
+            }
             debounceObject.showLoading = false
         }
     }

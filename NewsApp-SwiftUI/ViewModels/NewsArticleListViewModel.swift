@@ -19,22 +19,18 @@ class NewsArticleListViewModel: ObservableObject {
     }
 
     func getTopNews() async throws {
-        let newsArticles = try await Webservice().fetchTopHeadlines(url: Constants.Urls.topHeadlines)
+        let newsArticles = try await Webservice().fetchNewsArticles(url: Constants.Urls.topHeadlines)
         try await PersistenceController.shared.saveData(articles: newsArticles, sourceId: nil)
     }
 
     func searchArticlesWith(query: String, order: SortingOrders) async throws {
-        let newsArticles = try await Webservice().fetchTopHeadlines(url: Constants.Urls.allNews(by: query, order: order))
+        let newsArticles = try await Webservice().fetchNewsArticles(url: Constants.Urls.allNews(by: query, order: order))
         newsArticlesViewModel = newsArticles.map { NewsArticleViewModel(newsArticle: $0, fetchedResult: nil) }
     }
 
     func loadMore(resultsCount: Int)  async throws {
-        if resultsCount < Constants.limit {
-            Constants.page = 2
-        } else {
-            let currentPage = ceil(Double(resultsCount) / Double(Constants.limit))
-            Constants.page = Int(currentPage) + 1
-        }
+        let currentPage = ceil(Double(resultsCount) / Double(Constants.limit))
+        Constants.page = Int(currentPage) + 1
         guard Constants.page <= 5 else {
             Constants.page = 6
             return

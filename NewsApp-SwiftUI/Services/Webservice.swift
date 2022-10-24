@@ -23,7 +23,7 @@ class Webservice {
         return newsSourceResponse?.sources ?? []
     }
 
-    func fetchTopHeadlines(url: URL?) async throws -> [NewsArticle] {
+    func fetchNewsArticles(url: URL?) async throws -> [NewsArticle] {
         guard let url = url else { return [] }
         print("DEBUG: url - \(url)")
         let (data, _) = try await URLSession.shared.data(from: url)

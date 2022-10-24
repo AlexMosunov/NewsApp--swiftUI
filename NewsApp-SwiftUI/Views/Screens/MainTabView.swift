@@ -32,21 +32,21 @@ struct MainTabView: View {
                     FavouritesScreen()
                         .tabItem {
                             Label(
-                                "Favourites",
+                                Localized.tabview_favourites,
                                 systemImage: "bookmark.circle.fill"
                             )
                         }
                     SearchScreen()
                         .tabItem {
                             Label(
-                                "Search",
+                                Localized.tabview_search,
                                 systemImage: "magnifyingglass"
                             )
                         }
                     ProfileScreen()
                         .tabItem {
                             Label(
-                                "Profile",
+                                Localized.tabview_profile,
                                 systemImage: "person.fill"
                             )
                         }

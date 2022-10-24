@@ -25,6 +25,9 @@
 "headlines_title" = "Популярні Новини";
 "tabview_headlines" = "Топ Новини";
 "tabview_sources" = "Джерела";
+"tabview_favourites" = "Улюблені";
+"tabview_search" = "Пошук";
+"tabview_profile" = "Профіль";
 "category_allNews" = "Усі Новини";
 "category_business" = "Бізнес";
 "category_entertainment" = "Шоубіз";

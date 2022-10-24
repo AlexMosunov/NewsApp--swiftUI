@@ -25,6 +25,9 @@
 "headlines_title" = "Top Headlines";
 "tabview_headlines" = "Top News";
 "tabview_sources" = "Sources";
+"tabview_favourites" = "Favourites";
+"tabview_search" = "Search";
+"tabview_profile" = "Profile";
 "category_allNews" = "All News";
 "category_business" = "Business";
 "category_entertainment" = "Entertainment";

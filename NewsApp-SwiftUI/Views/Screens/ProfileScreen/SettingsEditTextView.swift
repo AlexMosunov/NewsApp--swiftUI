@@ -18,7 +18,6 @@ struct SettingsEditTextView: View {
     @State var description: String
     @State var placeholder: String
     let settingsEditTextOption: SettingsEditTextOption
-//    @Binding var profileText: String
     @State var success: Bool = false
     @State var showAlert: Bool = false
     @State var errorMessage: String?
