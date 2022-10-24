@@ -24,7 +24,6 @@ extension Article {
     @NSManaged public var urlToImage: String?
     @NSManaged public var source: Source?
     @NSManaged public var sourceId: String?
-    @NSManaged public var settings: Set<Setting>
     @NSManaged public var language: String
     @NSManaged public var category: String
     @NSManaged public var country: String

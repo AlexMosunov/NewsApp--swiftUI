@@ -13,11 +13,10 @@ enum SupportedLanguages: String, CaseIterable {
 }
 
 enum Categories: String, CaseIterable {
-    case general
     case business
     case entertainment
-    case allNews
     case health
+    case allNews
     case science
     case sports
     case technology

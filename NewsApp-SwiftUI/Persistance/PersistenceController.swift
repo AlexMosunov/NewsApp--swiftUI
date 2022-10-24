@@ -51,28 +51,8 @@ struct PersistenceController {
         save(completion: completion)
     }
 
-    func setSettings() {
-        Languages.allCases.forEach { languge in
-            let setting = Setting(context: context)
-            setting.language = languge.rawValue
-        }
-    }
-
-    func createSetting() {
-        let setting = Setting(context: context)
-        setting.language = Constants.selectedLanguage
-        setting.category = Constants.selectedCategory
-        setting.country = Constants.selectedCountry
-    }
-
-    func createSelectedSetting() {
-        let settings = Settings(context: context)
-        settings.settings = getAllSettings()
-    }
-
     func saveData(articles: [NewsArticle], sourceId: String?) async throws {
         deleteOld()
-        createSetting()
         articles.forEach { data in
             createArticle(from: data, sourceId: sourceId)
         }
@@ -97,12 +77,10 @@ struct PersistenceController {
             entity.source = getSourceFor(sourceId: sourceid)
             entity.sourceId = sourceid
         }
-        if let setting = getSetting() {
-            entity.settings = [setting]
-            entity.language = setting.language
-            entity.category = setting.category ?? "all news"
-            entity.country = setting.country
-        }
+        entity.language = Constants.selectedLanguage
+        entity.category = Constants.selectedCategory
+        entity.country = Constants.selectedCountry
+
         entity.currentUserId = Constants.userId ?? ""
         return entity
     }
@@ -113,32 +91,6 @@ struct PersistenceController {
         }
         article.isFavourite.toggle()
         try await saveAsync()
-    }
-
-    func getSetting() -> Setting? {
-        let settingRequst = NSFetchRequest<Setting>(entityName: Setting.description())
-        settingRequst.predicate = NSPredicate(
-            format: "language = %@ && category == %@ && country == %@",
-            Constants.selectedLanguage, Constants.selectedCategory, Constants.selectedCountry // crash
-        )
-        do {
-            let settings: [Setting] = try context.fetch(settingRequst)
-            return settings.first
-        } catch {
-            print(error.localizedDescription)
-        }
-        return nil
-    }
-
-    func getAllSettings() -> Set<Setting> {
-        do {
-            let settingRequst = NSFetchRequest<Setting>(entityName: Setting.description())
-            let settings: [Setting] = try context.fetch(settingRequst)
-            return Set(settings)
-        } catch {
-            print(error.localizedDescription)
-            return []
-        }
     }
 
     func getSourceFor(sourceId: String) -> Source? {
@@ -157,18 +109,6 @@ struct PersistenceController {
         sources.forEach { data in
             _ = Source.withNewsSource(data, context: context)
         }
-        try await saveAsync()
-    }
-
-    func saveCurrentUser(_ user: User) async throws {
-        let currentUser = CurrentUser(context: context)
-        currentUser.id = user.id
-        currentUser.fullname = user.fullname
-        currentUser.username = user.username
-        currentUser.email = user.email
-        currentUser.profileImageUrl = user.profileImageUrl
-        currentUser.bio = user.bio
-
         try await saveAsync()
     }
 

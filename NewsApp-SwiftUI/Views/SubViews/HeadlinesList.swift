@@ -56,7 +56,10 @@ struct HeadlinesList: View {
                 .listRowBackground(ColorScheme.backgroundColor)
             }
             if results.isEmpty {
-                ProgressView()
+                VStack {
+                    Text("Loading news...")
+                    ProgressView()
+                }
                     .onAppear {
                         Task {
                             do {

@@ -33,8 +33,6 @@
         <attribute name="username" optional="YES" attributeType="String"/>
         <relationship name="articles" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Article" inverseName="user" inverseEntity="Article"/>
     </entity>
-    <entity name="Setting" representedClassName="Setting" syncable="YES"/>
-    <entity name="Settings" representedClassName="Settings" syncable="YES"/>
     <entity name="Source" representedClassName="Source" syncable="YES" codeGenerationType="class">
         <attribute name="id" attributeType="String" defaultValueString=""/>
         <attribute name="name" attributeType="String" defaultValueString=""/>
@@ -44,8 +42,6 @@
     <elements>
         <element name="Article" positionX="237.55615234375" positionY="-333.2700500488281" width="128" height="268"/>
         <element name="CurrentUser" positionX="-54" positionY="-171" width="128" height="134"/>
-        <element name="Setting" positionX="-395.9324340820312" positionY="-28.25933837890625" width="128" height="43"/>
-        <element name="Settings" positionX="-401.5116577148438" positionY="-161.3109741210937" width="128" height="43"/>
         <element name="Source" positionX="478.64697265625" positionY="-2.394683837890625" width="128" height="103"/>
     </elements>
 </model>

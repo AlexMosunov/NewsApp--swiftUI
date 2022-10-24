@@ -29,8 +29,12 @@ class NewsArticleListViewModel: ObservableObject {
     }
 
     func loadMore(resultsCount: Int)  async throws {
-        let currentPage = resultsCount / Constants.limit
-        Constants.page = currentPage + 1
+        if resultsCount < Constants.limit {
+            Constants.page = 2
+        } else {
+            let currentPage = ceil(Double(resultsCount) / Double(Constants.limit))
+            Constants.page = Int(currentPage) + 1
+        }
         guard Constants.page <= 5 else {
             Constants.page = 6
             return
