@@ -6,25 +6,8 @@
 //
 
 import SwiftUI
-import Combine
 import AVFoundation
-
-public final class DebounceObject: ObservableObject {
-    @Published var text: String = ""
-    @Published var debouncedText: String = ""
-    @Published var showLoading: Bool = false
-    private var bag = Set<AnyCancellable>()
-
-    public init(dueTime: TimeInterval = 0.5) {
-        $text
-            .removeDuplicates()
-            .debounce(for: .seconds(dueTime), scheduler: DispatchQueue.main)
-            .sink(receiveValue: { [weak self] value in
-                self?.debouncedText = value
-            })
-            .store(in: &bag)
-    }
-}
+import CoreData
 
 enum SortingOrders: String, CaseIterable {
     case relevancy
@@ -37,6 +20,10 @@ struct SearchScreen: View {
     @State var order: SortingOrders = .publishedAt
     @StateObject private var newsArticleListViewModel = NewsArticleListViewModel()
     @Environment(\.dismissSearch) var dismissSearch
+    @FetchRequest(
+        entity: RecentSearch.entity(),
+        sortDescriptors: [NSSortDescriptor(key: "creationDate", ascending: false)])
+    var recentSearches: FetchedResults<RecentSearch>
 
     @State var errorText: String?
     @State var showError = false
@@ -54,27 +41,36 @@ struct SearchScreen: View {
                     .onChange(of: order) { _ in
                         loadNews()
                     }
-                    if newsArticleListViewModel.newsArticlesViewModel.isEmpty {
-                        if debounceObject.debouncedText.isEmpty {
+                    if newsArticleListViewModel.newsArticlesViewModel.isEmpty || debounceObject.debouncedText.isEmpty {
                             Text("Enter your search query to load articles")
-                        } else {
-                            Text("Search for articles on any topic here!")
+                            List(recentSearches) { search in
+                                if let query = search.query, !query.isEmpty {
+                                    Button {
+                                        debounceObject.showLoading = true
+                                        debounceObject.text = query
+                                        print("DEBUG: query - \(query)")
+                                    } label: {
+                                        Text(query)
+                                    }
+                                }
+                            }
+                            .listStyle(.plain)
+                    } else {
+                        List(newsArticleListViewModel.newsArticlesViewModel, id: \.id) { article in
+                            NavigationLink(destination:
+                                            WebView(url: article.urlToSource,
+                                                    showLoading: $debounceObject.showLoading)) {
+                                NewsArticleCell(newsArticle: article)
+                            }
                         }
+                        .simultaneousGesture(DragGesture().onChanged({ _ in
+                            dismissSearch()
+                            hideKeyboard()
+                        }))
+                        .listStyle(.plain)
+                        .listRowSeparator(.hidden)
+                        .listRowBackground(ColorScheme.backgroundColor)
                     }
-                    List(newsArticleListViewModel.newsArticlesViewModel, id: \.id) { article in
-                        NavigationLink(destination:
-                                        WebView(url: article.urlToSource,
-                                                showLoading: $debounceObject.showLoading)) {
-                            NewsArticleCell(newsArticle: article)
-                        }
-                    }
-                    .simultaneousGesture(DragGesture().onChanged({ _ in
-                        dismissSearch()
-                        hideKeyboard()
-                    }))
-                    .listStyle(.plain)
-                    .listRowSeparator(.hidden)
-                    .listRowBackground(ColorScheme.backgroundColor)
                 }
                 if debounceObject.showLoading {
                     ProgressView("LOADING...")
@@ -103,6 +99,7 @@ struct SearchScreen: View {
                     query: debounceObject.debouncedText,
                     order: order
                 )
+                try await PersistenceController.shared.createRecentSearch(with: debounceObject.debouncedText)
             } catch {
                 errorText = error.localizedDescription
                 showError.toggle()

@@ -54,11 +54,10 @@ struct PersistenceController {
     func saveData(articles: [NewsArticle], sourceId: String?) async throws {
         deleteOld()
         articles.forEach { data in
-            createArticle(from: data, sourceId: sourceId)
+            let _ = createArticle(from: data, sourceId: sourceId)
         }
 
         try await saveAsync()
-        print("DEBUG: path - \(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))")
     }
 
     func createArticle(from data: NewsArticle, sourceId: String?) -> Article? {
@@ -91,6 +90,27 @@ struct PersistenceController {
         }
         article.isFavourite.toggle()
         try await saveAsync()
+    }
+
+    func createRecentSearch(with query: String) async throws {
+        guard !query.isEmpty else {
+            return
+        }
+        let entity = RecentSearch(context: context)
+        entity.query = query
+        entity.creationDate = Date.now
+        deleteOldSearch()
+        try await saveAsync()
+    }
+
+    func deleteOldSearch() {
+        let request = NSFetchRequest<RecentSearch>(entityName: RecentSearch.description())
+        request.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false) ]
+        let searches = (try? context.fetch(request)) ?? []
+        if searches.count > 5 {
+            print("DEBUG: searches = \(searches)")
+            delete(searches[5])
+        }
     }
 
     func getSourceFor(sourceId: String) -> Source? {

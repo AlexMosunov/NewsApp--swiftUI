@@ -19,6 +19,7 @@
 		9A4ACEE827E109C80064541F /* NewsSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4ACEE727E109C80064541F /* NewsSource.swift */; };
 		9A4ACEEB27E10AC90064541F /* NewsArticleListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4ACEEA27E10AC90064541F /* NewsArticleListViewModel.swift */; };
 		9A4ACEED27E10ADD0064541F /* NewsSourceListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4ACEEC27E10ADD0064541F /* NewsSourceListViewModel.swift */; };
+		9ADF0133290810DF009311F9 /* DebounceObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ADF0132290810DF009311F9 /* DebounceObject.swift */; };
 		9AE13C6928F99A33001B9101 /* ValidatedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE13C6828F99A33001B9101 /* ValidatedTextField.swift */; };
 		9AFB299027E3BDE7003CE3FA /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AFB298F27E3BDE7003CE3FA /* WebView.swift */; };
 		9AFB299227E3CC32003CE3FA /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AFB299127E3CC32003CE3FA /* Extensions.swift */; };
@@ -76,6 +77,8 @@
 		9A4ACEE727E109C80064541F /* NewsSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsSource.swift; sourceTree = "<group>"; };
 		9A4ACEEA27E10AC90064541F /* NewsArticleListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsArticleListViewModel.swift; sourceTree = "<group>"; };
 		9A4ACEEC27E10ADD0064541F /* NewsSourceListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsSourceListViewModel.swift; sourceTree = "<group>"; };
+		9ADF0132290810DF009311F9 /* DebounceObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebounceObject.swift; sourceTree = "<group>"; };
+		9ADF013429081127009311F9 /* CoreDataModel 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "CoreDataModel 5.xcdatamodel"; sourceTree = "<group>"; };
 		9AE13C6828F99A33001B9101 /* ValidatedTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidatedTextField.swift; sourceTree = "<group>"; };
 		9AFB298F27E3BDE7003CE3FA /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		9AFB299127E3CC32003CE3FA /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -191,6 +194,7 @@
 				9A4ACEDF27E109440064541F /* Webservice.swift */,
 				9AFB298F27E3BDE7003CE3FA /* WebView.swift */,
 				CE3DA2BD28D11F8000A2F218 /* UrlImageModel.swift */,
+				9ADF0132290810DF009311F9 /* DebounceObject.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -518,6 +522,7 @@
 				9A4ACECD27E108910064541F /* NewsApp_SwiftUIApp.swift in Sources */,
 				9AE13C6928F99A33001B9101 /* ValidatedTextField.swift in Sources */,
 				CE3DA22E28CA0A8A00A2F218 /* CoreDataModel.xcdatamodeld in Sources */,
+				9ADF0133290810DF009311F9 /* DebounceObject.swift in Sources */,
 				CE3DA23028CA0C7400A2F218 /* PersistenceController.swift in Sources */,
 				CE18FB7828EB4A9D000FF7A1 /* FavouritesScreen.swift in Sources */,
 				CE18FB7128E3438C000FF7A1 /* HeadlinesList.swift in Sources */,
@@ -783,12 +788,13 @@
 		CE3DA22C28CA0A8A00A2F218 /* CoreDataModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				9ADF013429081127009311F9 /* CoreDataModel 5.xcdatamodel */,
 				CE7CAB042906F65300238AB2 /* CoreDataModel 4.xcdatamodel */,
 				CED928B128F72DB5002FE05B /* CoreDataModel 3.xcdatamodel */,
 				CED0925828DDB61C009C0A8D /* CoreDataModel 2.xcdatamodel */,
 				CE3DA22D28CA0A8A00A2F218 /* CoreDataModel.xcdatamodel */,
 			);
-			currentVersion = CE7CAB042906F65300238AB2 /* CoreDataModel 4.xcdatamodel */;
+			currentVersion = 9ADF013429081127009311F9 /* CoreDataModel 5.xcdatamodel */;
 			path = CoreDataModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

@@ -8,6 +8,19 @@
 import Foundation
 import SwiftUI
 
+enum FetchingErrors: Error {
+    case wrongQuery
+}
+
+extension FetchingErrors: LocalizedError {
+    private var errorDescription: String {
+        switch self {
+        case .wrongQuery:
+            return NSLocalizedString("No results with for this search, try typing different query", comment: "")
+        }
+    }
+}
+
 @MainActor
 class NewsArticleListViewModel: ObservableObject {
 
@@ -25,6 +38,9 @@ class NewsArticleListViewModel: ObservableObject {
 
     func searchArticlesWith(query: String, order: SortingOrders) async throws {
         let newsArticles = try await Webservice().fetchNewsArticles(url: Constants.Urls.allNews(by: query, order: order))
+        if newsArticles.isEmpty {
+            throw FetchingErrors.wrongQuery
+        }
         newsArticlesViewModel = newsArticles.map { NewsArticleViewModel(newsArticle: $0, fetchedResult: nil) }
     }
 
