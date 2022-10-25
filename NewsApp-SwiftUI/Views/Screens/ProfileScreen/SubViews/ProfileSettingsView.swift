@@ -10,9 +10,14 @@ import SwiftUI
 struct ProfileSettingsView: View {
     @State var showSignOutAlert: Bool = false
     @State var showDeleteUserAlert: Bool = false
+    @State var showReauthUserAlert: Bool = false
+    @State var shouldReAuth: Bool = false
     @State var showError: Bool = false
     @State var errorText: String = ""
     @EnvironmentObject var viewModel: AuthViewModel
+
+    @State var email: String = ""
+    @State var password: String = ""
 
     var body: some View {
         VStack(alignment: .center, spacing: 10) {
@@ -68,31 +73,33 @@ struct ProfileSettingsView: View {
                 .alert(isPresented: $showDeleteUserAlert) {
                     Alert(title: Text("Are you sure you want to delete this user?"),
                           primaryButton: .default(Text("Yes")) {
-                        viewModel.deleteUser { errorString in
-                            if let errorString = errorString {
-                                showError.toggle()
-                                errorText = errorString
-                            }
-                        }
+                        showReauthUserAlert.toggle()
                     }, secondaryButton: .cancel())
                 }
             }
-            GroupBox(label: SettingsLabelView(
-                labelText: "WorldNews",
-                labelImage: "newspaper.fill")
-            ) {
-                HStack(alignment: .center, spacing: 10) {
-                    Image("logo")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 80, height: 80, alignment: .center)
-                        .cornerRadius(12)
-                    Text("WorldNews is perfect app for browsing latest news across the whole world. Choose differnet languages, topics, countries and sources. Safe your favourite articles and share with friends! Browse news even without Internet conncetion! Everything in one app.")
-                        .font(.footnote)
-                }
-            }
+            AboutAppGroupBoxView()
         }
         .padding(.bottom, 20)
+        .fullScreenCover(isPresented: $showReauthUserAlert, onDismiss: {
+            guard shouldReAuth else {
+                return
+            }
+            viewModel.reauthenticateAndDelete(
+                email: email,
+                password: password) { error in
+                    if let error = error {
+                        errorText = error.localizedDescription
+                        email = ""
+                        password = ""
+                        showError.toggle()
+                    }
+                }
+        }, content: {
+            ReAuthenticateView(email: $email, password: $password, showAlert: $showReauthUserAlert, shouldReAuth: $shouldReAuth)
+                .transaction({ transaction in
+                    transaction.animation = .easeOut
+                })
+        })
     }
 }
 
@@ -137,5 +144,24 @@ struct SettingsRowView: View {
                 .foregroundColor(.primary)
         }
         .padding(.vertical, 4)
+    }
+}
+
+struct AboutAppGroupBoxView: View {
+    var body: some View {
+        GroupBox(label: SettingsLabelView(
+            labelText: "WorldNews",
+            labelImage: "newspaper.fill")
+        ) {
+            HStack(alignment: .center, spacing: 10) {
+                Image("logo")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 80, height: 80, alignment: .center)
+                    .cornerRadius(12)
+                Text("WorldNews is perfect app for browsing latest news across the whole world. Choose differnet languages, topics, countries and sources. Safe your favourite articles and share with friends! Browse news even without Internet conncetion! Everything in one app.")
+                    .font(.footnote)
+            }
+        }
     }
 }

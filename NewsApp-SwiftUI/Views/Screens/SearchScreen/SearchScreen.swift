@@ -22,7 +22,9 @@ struct SearchScreen: View {
     @Environment(\.dismissSearch) var dismissSearch
     @FetchRequest(
         entity: RecentSearch.entity(),
-        sortDescriptors: [NSSortDescriptor(key: "creationDate", ascending: false)])
+        sortDescriptors: [NSSortDescriptor(key: "creationDate", ascending: false)],
+        predicate: NSPredicate(format: "currentUserId = %@", Constants.userId ?? "")
+    )
     var recentSearches: FetchedResults<RecentSearch>
 
     @State var errorText: String?
@@ -48,7 +50,6 @@ struct SearchScreen: View {
                                     Button {
                                         debounceObject.showLoading = true
                                         debounceObject.text = query
-                                        print("DEBUG: query - \(query)")
                                     } label: {
                                         Text(query)
                                     }
@@ -76,6 +77,7 @@ struct SearchScreen: View {
                     ProgressView("LOADING...")
                 }
             }
+            .navigationBarTitleDisplayMode(.inline)
         }
         .alert(isPresented: $showError) {
             Alert(title: Text("Error loading news"),

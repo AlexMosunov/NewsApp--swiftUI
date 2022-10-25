@@ -8,19 +8,6 @@
 import Foundation
 import SwiftUI
 
-enum FetchingErrors: Error {
-    case wrongQuery
-}
-
-extension FetchingErrors: LocalizedError {
-    private var errorDescription: String {
-        switch self {
-        case .wrongQuery:
-            return NSLocalizedString("No results with for this search, try typing different query", comment: "")
-        }
-    }
-}
-
 @MainActor
 class NewsArticleListViewModel: ObservableObject {
 

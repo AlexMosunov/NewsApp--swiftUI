@@ -52,7 +52,7 @@ struct PersistenceController {
     }
 
     func saveData(articles: [NewsArticle], sourceId: String?) async throws {
-        deleteOld()
+        deleteOldArticles()
         articles.forEach { data in
             let _ = createArticle(from: data, sourceId: sourceId)
         }
@@ -99,12 +99,14 @@ struct PersistenceController {
         let entity = RecentSearch(context: context)
         entity.query = query
         entity.creationDate = Date.now
+        entity.currentUserId = Constants.userId ?? ""
         deleteOldSearch()
         try await saveAsync()
     }
 
     func deleteOldSearch() {
         let request = NSFetchRequest<RecentSearch>(entityName: RecentSearch.description())
+        request.predicate = NSPredicate(format: "currentUserId = %@", Constants.userId ?? "")
         request.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false) ]
         let searches = (try? context.fetch(request)) ?? []
         if searches.count > 5 {
@@ -157,7 +159,7 @@ struct PersistenceController {
         return articles.first
     }
 
-    private func deleteOld() {
+    private func deleteOldArticles() {
         do {
             let fetchRequest = NSFetchRequest<Article>.init(entityName: Article.description())
             let articles: [Article] = try context.fetch(fetchRequest)
