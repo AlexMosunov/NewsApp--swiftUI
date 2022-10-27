@@ -20,10 +20,14 @@ extension FetchingErrors: LocalizedError {
     }
 }
 
-enum FirebaseErrors: LocalizedError {
+enum FirebaseAuthErrors: LocalizedError {
     case errorDeletingUser
     case errorReauthUser
     case errorDeletingImage
+    case errorLogingUser
+    case errorFetchingUser
+    case errorRegisteringUser
+    case passwordsDoNotmatch
 
     private var errorDescription: String {
         switch self {
@@ -33,6 +37,14 @@ enum FirebaseErrors: LocalizedError {
             return NSLocalizedString("Error re-authenticating user", comment: "")
         case .errorDeletingImage:
             return NSLocalizedString("Error deleting image", comment: "")
+        case .errorLogingUser:
+            return NSLocalizedString("Error loging user", comment: "")
+        case .errorFetchingUser:
+            return NSLocalizedString("Error fetching user", comment: "")
+        case .errorRegisteringUser:
+            return NSLocalizedString("Error registering user", comment: "")
+        case .passwordsDoNotmatch:
+            return NSLocalizedString("Password that you entered does not match with the one, entered in `repeat password` field", comment: "")
         }
     }
 }

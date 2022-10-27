@@ -12,23 +12,53 @@ enum SettingsEditTextOption: String {
     case bio
 }
 
+struct SettingsEditTextViewModel {
+
+    let type: SettingsEditTextOption
+
+    var title: String {
+        switch type {
+        case .username:
+            return "Username"
+        case .bio:
+            return "Bio"
+        }
+    }
+
+    var description: String {
+        switch type {
+        case .username:
+            return "You can edit your username here."
+        case .bio:
+            return "You can edit your bio here."
+        }
+    }
+
+    var placeholder: String {
+        switch type {
+        case .username:
+            return "Your username.."
+        case .bio:
+            return "Write something about yourself.."
+        }
+    }
+}
+
 struct SettingsEditTextView: View {
     @State var submissionText: String = ""
-    @State var title: String
-    @State var description: String
-    @State var placeholder: String
-    let settingsEditTextOption: SettingsEditTextOption
+    var viewModel: SettingsEditTextViewModel
+
     @State var success: Bool = false
     @State var showAlert: Bool = false
     @State var errorMessage: String?
     @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject var viewModel: AuthViewModel
+    @EnvironmentObject var authorisation: AuthViewModel
 
     var body: some View {
         VStack(alignment: .leading) {
-            Text(description)
+            Text(viewModel.description)
                 .padding(.leading, 4)
-            TextField(placeholder, text: $submissionText)
+            TextField(viewModel.placeholder, text: $submissionText)
                 .padding()
                 .frame(height: 60)
                 .frame(maxWidth: .infinity)
@@ -54,7 +84,7 @@ struct SettingsEditTextView: View {
         }
         .alert(isPresented: $showAlert) {
             Alert(title: Text(success ? "Success!" : "Error"),
-                  message: Text(errorMessage ?? "You have successfully edited your \(settingsEditTextOption.rawValue)"),
+                  message: Text(errorMessage ?? "You have successfully edited your \(viewModel.type.rawValue)"),
                   dismissButton: .default(Text("Ok")) {
                 if success {
                     self.presentationMode.wrappedValue.dismiss()
@@ -63,7 +93,7 @@ struct SettingsEditTextView: View {
         }
         .padding()
         .frame(maxWidth: .infinity)
-        .navigationTitle(title)
+        .navigationTitle(viewModel.title)
     }
 
     func saveText() {
@@ -71,7 +101,10 @@ struct SettingsEditTextView: View {
             showAlert.toggle()
             return
         }
-        viewModel.updateUserDisplayName(textType: settingsEditTextOption, username: submissionText) { success, errorMessage  in
+        authorisation.updateUserDisplayName(
+            textType: viewModel.type,
+            username: submissionText
+        ) { success, errorMessage  in
             self.showAlert.toggle()
             self.success = success
             self.errorMessage = errorMessage
@@ -79,7 +112,7 @@ struct SettingsEditTextView: View {
     }
 
     func validate() -> Bool {
-        switch settingsEditTextOption {
+        switch viewModel.type {
         case .username:
             guard submissionText.count > 2 else {
                 self.errorMessage = "Username should be longer than 2 characters"
@@ -97,6 +130,6 @@ struct SettingsEditTextView: View {
 
 struct SettingsEditTextView_Previews: PreviewProvider {
     static var previews: some View {
-        SettingsEditTextView(title: "title", description: "description", placeholder: "placeholder", settingsEditTextOption: .bio)
+        SettingsEditTextView(viewModel: .init(type: .bio))
     }
 }

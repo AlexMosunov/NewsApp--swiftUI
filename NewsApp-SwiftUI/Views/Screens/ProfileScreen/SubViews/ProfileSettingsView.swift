@@ -7,6 +7,64 @@
 
 import SwiftUI
 
+enum ProfileSettingsActionType: Int, Hashable, CaseIterable {
+    case editUsername
+    case editBio
+    case signOut
+    case deleteUser
+}
+
+struct ProfileSettingsViewModel {
+
+    let type: ProfileSettingsActionType
+
+    var editTextViewModel: SettingsEditTextViewModel {
+        switch type {
+        case .editUsername:
+            return .init(type: .username)
+        case .editBio:
+            return .init(type: .bio)
+        default:
+            return .init(type: .username)
+        }
+    }
+
+    var leftIconName: String {
+        switch type {
+        case .editUsername:
+            return "pencil"
+        case .editBio:
+            return "text.quote"
+        case .signOut:
+            return "figure.walk"
+        case .deleteUser:
+            return "minus.circle.fill"
+        }
+    }
+
+    var text: String {
+        switch type {
+        case .editUsername:
+            return "Display Name"
+        case .editBio:
+            return "Bio"
+        case .signOut:
+            return "Sign out"
+        case .deleteUser:
+            return "Delete user"
+        }
+    }
+
+    var color: Color {
+        switch type {
+        case .deleteUser:
+            return .red
+        default:
+            return .orange
+        }
+    }
+}
+
 struct ProfileSettingsView: View {
     @State var showSignOutAlert: Bool = false
     @State var showDeleteUserAlert: Bool = false
@@ -25,28 +83,8 @@ struct ProfileSettingsView: View {
                 labelText: "Profile",
                 labelImage: "person.fill")
             ) {
-                NavigationLink {
-                    SettingsEditTextView(
-                        submissionText: viewModel.user?.username ?? "",
-                        title: "Username",
-                        description: "You can edit your username here.",
-                        placeholder: "Your username..",
-                        settingsEditTextOption: .username
-                    )
-                } label: {
-                    SettingsRowView(leftIcon: "pencil", text: "Display Name", color: .orange)
-                }
-                NavigationLink {
-                    SettingsEditTextView(
-                        submissionText: viewModel.user?.bio ?? "",
-                        title: "Bio",
-                        description: "You can edit your bio here.",
-                        placeholder: "Write something about yourself..",
-                        settingsEditTextOption: .bio
-                    )
-                } label: {
-                    SettingsRowView(leftIcon: "text.quote", text: "Bio", color: .orange)
-                }
+                ProfileNavigationLinkView(viewModel: .init(type: .editUsername), submissionText: viewModel.user?.username ?? "")
+                ProfileNavigationLinkView(viewModel: .init(type: .editBio), submissionText: viewModel.user?.bio ?? "")
                 .alert(isPresented: $showError) {
                     Alert(
                         title: Text("Error deleting acccount"),
@@ -54,22 +92,14 @@ struct ProfileSettingsView: View {
                         dismissButton: .default(Text("Ok"))
                     )
                 }
-                Button {
-                    showSignOutAlert.toggle()
-                } label: {
-                    SettingsRowView(leftIcon: "figure.walk", text: "Sign out", color: .orange)
-                }
+                ProfileButtonView(viewModel: .init(type: .signOut), actionBool: $showSignOutAlert)
                 .alert(isPresented: $showSignOutAlert) {
                     Alert(title: Text("Are you sure you want to sign out?"),
                           primaryButton: .default(Text("Yes")) {
                         viewModel.signOut()
                     }, secondaryButton: .cancel())
                 }
-                Button {
-                    showDeleteUserAlert.toggle()
-                } label: {
-                    SettingsRowView(leftIcon: "minus.circle.fill", text: "Delete user", color: .red)
-                }
+                ProfileButtonView(viewModel: .init(type: .deleteUser), actionBool: $showDeleteUserAlert)
                 .alert(isPresented: $showDeleteUserAlert) {
                     Alert(title: Text("Are you sure you want to delete this user?"),
                           primaryButton: .default(Text("Yes")) {
@@ -122,21 +152,19 @@ struct SettingsLabelView: View {
 }
 
 struct SettingsRowView: View {
-    var leftIcon: String
-    var text: String
-    var color: Color
+    var viewModel: ProfileSettingsViewModel
 
     var body: some View {
         HStack {
             ZStack {
                 RoundedRectangle(cornerRadius: 8, style: .continuous)
-                    .fill(color)
-                Image(systemName: leftIcon)
+                    .fill(viewModel.color)
+                Image(systemName: viewModel.leftIconName)
                     .font(.title3)
                     .foregroundColor(.white)
             }
             .frame(width: 36, height: 36, alignment: .center)
-            Text(text)
+            Text(viewModel.text)
                 .foregroundColor(.primary)
             Spacer()
             Image(systemName: "chevron.right")
@@ -159,9 +187,33 @@ struct AboutAppGroupBoxView: View {
                     .scaledToFit()
                     .frame(width: 80, height: 80, alignment: .center)
                     .cornerRadius(12)
-                Text("WorldNews is perfect app for browsing latest news across the whole world. Choose differnet languages, topics, countries and sources. Safe your favourite articles and share with friends! Browse news even without Internet conncetion! Everything in one app.")
+                Text("WorldNews is perfect app for browsing latest news across the whole world. Choose different languages, topics, countries and sources. Safe your favourite articles and share with friends! Search articles on any topic you like! Browse news even without Internet connection! Everything in one app.")
                     .font(.footnote)
             }
+        }
+    }
+}
+
+struct ProfileNavigationLinkView: View {
+    var viewModel: ProfileSettingsViewModel
+    var submissionText: String
+    var body: some View {
+        NavigationLink {
+            SettingsEditTextView(submissionText: submissionText ,viewModel: viewModel.editTextViewModel)
+        } label: {
+            SettingsRowView(viewModel: viewModel)
+        }
+    }
+}
+
+struct ProfileButtonView: View {
+    var viewModel: ProfileSettingsViewModel
+    @Binding var actionBool: Bool
+    var body: some View {
+        Button {
+            actionBool.toggle()
+        } label: {
+            SettingsRowView(viewModel: viewModel)
         }
     }
 }

@@ -106,10 +106,10 @@ struct SignUpScreen: View {
                 repeatPassword: repeatPassword, username: username,
                 fullname: fullname, profileImage: selectedImage)
             isLoading = true
-            viewModel.registerUser(userCredentials) { errorString in
+            viewModel.registerUser(userCredentials) { error in
                 isLoading = false
-                if let errorString = errorString {
-                    errorText = errorString
+                if let error = error {
+                    errorText = error.localizedDescription
                     showError.toggle()
                     return
                 }

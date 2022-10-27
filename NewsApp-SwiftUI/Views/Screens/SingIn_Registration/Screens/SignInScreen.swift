@@ -46,10 +46,10 @@ struct SignInScreen: View {
                     .padding(.top, 20)
                     Button {
                         isLoading = true
-                        viewModel.login(withEmail: email, password: password) { errorString in
+                        viewModel.login(withEmail: email, password: password) { error in
                             isLoading = false
-                            if let errorString = errorString {
-                                errorText = errorString
+                            if let error = error {
+                                errorText = error.localizedDescription
                                 showError.toggle()
                             }
                         }

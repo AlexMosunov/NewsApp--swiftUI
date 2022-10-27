@@ -33,14 +33,14 @@ class AuthViewModel: ObservableObject {
         fetchUser { _ in }
     }
 
-    func login(withEmail email: String, password: String, completion: @escaping (String?) -> Void) {
+    func login(withEmail email: String, password: String, completion: @escaping (Error?) -> Void) {
         Auth.auth().signIn(withEmail: email, password: password) { [weak self] result, error in
             guard let self = self else {
+                completion(FirebaseAuthErrors.errorLogingUser)
                 return
             }
             if let error = error {
-                print("DEBUG: error \(error.localizedDescription)")
-                completion(error.localizedDescription)
+                completion(error)
                 return
             }
             self.userSession = result?.user
@@ -56,29 +56,30 @@ class AuthViewModel: ObservableObject {
 
     func registerUser(
         _ userCredentials: UserCredentials,
-        completion: @escaping (String?) -> Void
+        completion: @escaping (Error?) -> Void
     ) {
         guard userCredentials.passwordsMatch else {
-            completion("Password that you entered does not match with the one, entered in `repeat password` field")
+            completion(FirebaseAuthErrors.passwordsDoNotmatch)
             return
         }
         Auth.auth().createUser(withEmail: userCredentials.email, password: userCredentials.password) { [weak self] result, error in
             guard let self = self else {
+                completion(FirebaseAuthErrors.errorRegisteringUser)
                 return
             }
             if let error = error {
-                completion(error.localizedDescription)
+                completion(error)
                 return
             }
             guard let user = result?.user else {
-                completion("Error registering user")
+                completion(FirebaseAuthErrors.errorRegisteringUser)
                 return
             }
 
             Task {
                 let result = await self.uploadProfileImage(userCredentials.profileImage)
-                if let errorString = result.error {
-                    completion(errorString)
+                if let error = result.error {
+                    completion(error)
                     return
                 }
                 let profileImageUrl = result.url
@@ -90,12 +91,11 @@ class AuthViewModel: ObservableObject {
                     "uid": user.uid
                 ]
 
-                Firestore.firestore().collection("users").document(user.uid).setData(data) { error in
+                COLLECTION_USERS.document(user.uid).setData(data) { error in
                     if let error = error {
-                        completion(error.localizedDescription)
+                        completion(error)
                         return
                     }
-                    print("DEBUG: Successflully uplaoded data")
                     self.userSession = user
                     self.fetchUser { error in
                         if let error = error {
@@ -111,7 +111,7 @@ class AuthViewModel: ObservableObject {
     }
 
     func uploadProfileImage(_ image: UIImage?)
-         async -> (url: String, error: String?) {
+         async -> (url: String, error: Error?) {
             guard let image1 = image,
                   let imageData = image1.jpegData(compressionQuality: 0.3) else {
                 return ("", nil)
@@ -121,12 +121,12 @@ class AuthViewModel: ObservableObject {
             return await withCheckedContinuation { continuation in
                 storageRef.putData(imageData) { _, error in
                     if let error = error {
-                        continuation.resume(returning: ("", error.localizedDescription))
+                        continuation.resume(returning: ("", error))
                         return
                     }
                     storageRef.downloadURL { url, error1 in
                         guard let urlString = url?.absoluteString else {
-                            continuation.resume(returning: ("", error1?.localizedDescription))
+                            continuation.resume(returning: ("", error1))
                             return
                         }
                         continuation.resume(returning: (urlString, nil))
@@ -137,26 +137,25 @@ class AuthViewModel: ObservableObject {
 
     func signOut() {
         try? Auth.auth().signOut()
-        print("DEBUG: signed out")
         userSession = nil
         user = nil
     }
 
-    func fetchUser(completion: @escaping (String?) -> Void) {
+    func fetchUser(completion: @escaping (Error?) -> Void) {
         guard let uid = userSession?.uid else {
-            completion("Error fetching user")
+            completion(FirebaseAuthErrors.errorFetchingUser)
             return
         }
-        Firestore.firestore().collection("users").document(uid).getDocument { [weak self] snapshot, error in
+        COLLECTION_USERS.document(uid).getDocument { [weak self] snapshot, error in
             guard let self = self else {
                 return
             }
             if let error = error {
-                completion(error.localizedDescription)
+                completion(error)
                 return
             }
             guard let data = snapshot?.data() else {
-                completion("Error fetching user")
+                completion(FirebaseAuthErrors.errorFetchingUser)
                 return
             }
             self.user = User(dictionary: data)
@@ -179,7 +178,7 @@ class AuthViewModel: ObservableObject {
         let data: [String:Any] = [
             textType.rawValue: username.lowercased()
         ]
-        Firestore.firestore().collection("users").document(uid).updateData(data) { [weak self] error in
+        COLLECTION_USERS.document(uid).updateData(data) { [weak self] error in
             guard let self = self else {
                 return
             }
@@ -199,18 +198,16 @@ class AuthViewModel: ObservableObject {
         }
     }
 
-    func editProfileImage(_ image: UIImage) {
+    func editProfileImage(_ image: UIImage) { //TODO: delete previous image
         guard let uid = userSession?.uid else {
             return
         }
-
         Task {
             let profileImageUrl = await self.uploadProfileImage(image).url
             let data = [
                 "profileImageUrl": profileImageUrl
             ]
-
-            Firestore.firestore().collection("users").document(uid).updateData(data) { [weak self]  _ in
+            COLLECTION_USERS.document(uid).updateData(data) { [weak self]  _ in
                 guard let self = self else {
                     return
                 }
@@ -221,7 +218,7 @@ class AuthViewModel: ObservableObject {
 
     func reauthenticate(email: String, password: String, completion: @escaping (Error?) -> Void) {
         guard let userSession = userSession else {
-            completion(FirebaseErrors.errorReauthUser)
+            completion(FirebaseAuthErrors.errorReauthUser)
             return
         }
         let credential = EmailAuthProvider.credential(withEmail: email, password: password)
@@ -233,7 +230,7 @@ class AuthViewModel: ObservableObject {
     func reauthenticateAndDelete(email: String, password: String, completion: @escaping (Error?) -> Void) {
         reauthenticate(email: email, password: password) { [weak self]  error in
             guard let self = self else {
-                completion(FirebaseErrors.errorReauthUser)
+                completion(FirebaseAuthErrors.errorReauthUser)
                 return
             }
             if let error = error {
@@ -247,26 +244,22 @@ class AuthViewModel: ObservableObject {
     }
 
     func deleteUser(completion: @escaping (Error?) -> Void) {
-        guard let user = user, let userSession = userSession else {
-            completion(FirebaseErrors.errorDeletingUser)
+        guard let userSession = userSession else {
+            completion(FirebaseAuthErrors.errorDeletingUser)
             return
         }
-
-        print("DEBUG: is about to delete user")
         userSession.delete { [weak self] error in
             guard let self = self else {
-                completion(FirebaseErrors.errorDeletingUser)
+                completion(FirebaseAuthErrors.errorDeletingUser)
                 return
             }
             if let error = error {
                 completion(error)
             } else {
-                print("DEBUG: success user deleted")
-                Firestore.firestore().collection("users").document(userSession.uid).delete { error in
+                COLLECTION_USERS.document(userSession.uid).delete { error in
                     if let error = error {
                         completion(error)
                     } else {
-                        print("DEBUG: collection deleted succesfully")
                         self.deleteUserImage { error in
                             self.signOut()
                             completion(error)
@@ -279,7 +272,7 @@ class AuthViewModel: ObservableObject {
 
     func deleteUserImage(completion: @escaping (Error?) -> Void) {
         guard let user = user, !user.profileImageUrl.isEmpty else {
-            completion(FirebaseErrors.errorDeletingImage)
+            completion(FirebaseAuthErrors.errorDeletingImage)
             return
         }
         Storage.storage().reference(forURL: user.profileImageUrl).delete { error in
