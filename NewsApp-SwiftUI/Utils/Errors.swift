@@ -29,7 +29,7 @@ enum FirebaseAuthErrors: LocalizedError {
     case errorRegisteringUser
     case passwordsDoNotmatch
 
-    private var errorDescription: String {
+    var errorDescription: String? {
         switch self {
         case .errorDeletingUser:
             return NSLocalizedString("Error deleting user", comment: "")
