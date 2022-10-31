@@ -279,4 +279,10 @@ class AuthViewModel: ObservableObject {
             completion(error)
         }
     }
+
+    func sendPasswordReset(withEmail email: String, completion: @escaping (Error?) -> Void) {
+        Auth.auth().sendPasswordReset(withEmail: email) { error in
+            completion(error)
+        }
+    }
 }

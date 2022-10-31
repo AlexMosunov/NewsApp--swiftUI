@@ -13,6 +13,7 @@ public enum Localized {
     public static let general_success = LocalizedStringKey("general_success")
     public static let general_error = LocalizedStringKey("general_error")
     public static let general_save = LocalizedStringKey("general_save")
+    public static let general_loading = LocalizedStringKey("general_loading")
 
     public static let setings_select_dates = LocalizedStringKey("setings_select_dates")
     public static let setings_from = LocalizedStringKey("setings_from")
@@ -51,6 +52,9 @@ public enum Localized {
     public static let profile_success_edited_bio = LocalizedStringKey("profile_success_edited_bio")
 
     public static let search_no_results_error = LocalizedStringKey("search_no_results_error")
+    public static let search_news_loading_error = LocalizedStringKey("search_news_loading_error")
+    public static let search_enter_query = LocalizedStringKey("search_enter_query")
+    public static let search_find_news = LocalizedStringKey("search_find_news")
 
     public static let error_deleting_user = LocalizedStringKey("error_deleting_user")
     public static let error_reauth_user = LocalizedStringKey("error_reauth_user")
@@ -70,5 +74,7 @@ public enum ErrorMessagesLocalised: String, CaseIterable {
     case errorFetchingUser = "error_fetching_user"
     case errorRegisteringUser = "error_registering_user"
     case passwordsDoNotmatch = "error_passwors_does_not_match"
+    case errorShortUsername = "error_short_username"
+    case errorShortBio = "error_short_bio"
 }
 

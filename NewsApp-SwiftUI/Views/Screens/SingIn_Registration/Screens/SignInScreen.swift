@@ -13,8 +13,8 @@ struct SignInScreen: View {
     @State var password: String = ""
     @State var errorText: String?
     @State var showError = false
+    @State var recoverPassword = false
     @State var isLoading: Bool = false
-    @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var viewModel: AuthViewModel
 
     @FocusState var focusedInput: RegistrationTextFieldType?
@@ -33,42 +33,18 @@ struct SignInScreen: View {
                         .padding(.top, 30)
                     HStack {
                         Spacer()
-                        Button {
-                            errorText = "TODO"
-                            showError.toggle()
-                        } label: {
-                            Text("Forget Password?")
-                                .foregroundColor(.gray)
-                                .font(.footnote)
-                        }
+                        passwordRecoveryButton
                     }
                     .padding(.horizontal)
                     .padding(.top, 20)
-                    Button {
-                        isLoading = true
-                        viewModel.login(withEmail: email, password: password) { error in
-                            isLoading = false
-                            if let error = error {
-                                errorText = error.localizedDescription
-                                showError.toggle()
-                            }
-                        }
-                    } label: {
-                        ActionButtonView(title: "Login")
-                            .opacity(isValid == false ? 0.5 : 1.0)
-                    }
-                    .disabled(isValid == false)
-                    .padding(.top, 30)
-                    NavigationLink {
-                        SignUpScreen()
-                    } label: {
-                        Text("Sign Up?")
-                            .font(.callout)
-                            .bold()
-                            .foregroundColor(.orange)
-                            .underline(true, color: .orange)
-                    }
-                    .padding(.top, 10)
+                    loginButton
+                        .disabled(isValid == false)
+                        .padding(.top, 30)
+                    registerButton
+                        .padding(.top, 10)
+                }
+                if isLoading {
+                    ProgressView()
                 }
             }
             .frame(maxHeight: .infinity)
@@ -90,6 +66,47 @@ struct SignInScreen: View {
             Alert(title: Text("Error Logging in"),
                   message: Text(errorText ?? ""),
                   dismissButton: .default(Text("Ok")))
+        }
+    }
+
+    var passwordRecoveryButton: some View {
+        Button {
+            recoverPassword.toggle()
+        } label: {
+            Text("Forget Password?")
+                .foregroundColor(.gray)
+                .font(.footnote)
+        }
+        .sheet(isPresented: $recoverPassword) {
+            PasswordRecoveryScreen()
+        }
+    }
+
+    var loginButton: some View {
+        Button {
+            isLoading = true
+            viewModel.login(withEmail: email, password: password) { error in
+                isLoading = false
+                if let error = error {
+                    errorText = error.localizedDescription
+                    showError.toggle()
+                }
+            }
+        } label: {
+            ActionButtonView(title: "Login")
+                .opacity(isValid == false ? 0.5 : 1.0)
+        }
+    }
+
+    var registerButton: some View {
+        NavigationLink {
+            SignUpScreen()
+        } label: {
+            Text("Sign Up?")
+                .font(.callout)
+                .bold()
+                .foregroundColor(.orange)
+                .underline(true, color: .orange)
         }
     }
 }

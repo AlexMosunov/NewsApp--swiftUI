@@ -11,6 +11,8 @@
 "general_success" = "Success!";
 "general_error" = "Error";
 "general_save" = "Save";
+"general_loading" = "LOADING...";
+
 "setings_select_dates" = "Select news dates range";
 "setings_from" = "From";
 "settings_to" = "To";
@@ -56,6 +58,9 @@
 "profile_success_edited_bio" = "You have successfully edited your bio";
 
 "search_no_results_error" = "No results with for this search, try typing different query";
+"search_news_loading_error" = "Error loading news";
+"search_enter_query" = "Enter your search query to load articles";
+"search_find_news" = "Find news";
 
 "error_deleting_user" = "Error deleting user";
 "error_reauth_user" = "Error re-authenticating user";
@@ -64,3 +69,5 @@
 "error_fetching_user" = "Error fetching user";
 "error_registering_user" = "Error registering user";
 "error_passwors_does_not_match" = "Password that you entered does not match with the one, entered in `repeat password` field";
+"error_short_username" = "Username should be longer than 2 characters";
+"error_short_bio" = "Bio should be longer than 5 characters";

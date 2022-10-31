@@ -44,7 +44,7 @@ struct SearchScreen: View {
                         loadNews()
                     }
                     if debounceObject.debouncedText.isEmpty {
-                            Text("Enter your search query to load articles")
+                        Text(Localized.search_enter_query)
                             List(recentSearches) { search in
                                 if let query = search.query, !query.isEmpty {
                                     Button {
@@ -75,17 +75,17 @@ struct SearchScreen: View {
                     }
                 }
                 if debounceObject.showLoading {
-                    ProgressView("LOADING...")
+                    ProgressView(Localized.general_loading)
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
         }
         .alert(isPresented: $showError) {
-            Alert(title: Text("Error loading news"),
+            Alert(title: Text(Localized.search_news_loading_error),
                   message: Text(errorText ?? ""),
-                  dismissButton: .default(Text("Ok")))
+                  dismissButton: .default(Text(Localized.general_ok)))
         }
-        .searchable(text: $debounceObject.text, prompt: "Find news")
+        .searchable(text: $debounceObject.text, prompt: Localized.search_find_news)
         .onChange(of: debounceObject.debouncedText) { _ in
             loadNews()
         }
@@ -126,9 +126,6 @@ struct SearchList: View {
 
     var body: some View {
         VStack {
-            if results.isEmpty {
-                Text("ARTICLES are empty")
-            }
             List(results) { article in
                 let vm = NewsArticleViewModel(newsArticle: nil, fetchedResult: article)
                 NavigationLink(destination:

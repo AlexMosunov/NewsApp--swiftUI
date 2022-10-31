@@ -11,6 +11,8 @@
 "general_success" = "Успіх!";
 "general_error" = "Помилка";
 "general_save" = "Зберегти";
+"general_loading" = "ЗАВАНТАЖЕННЯ...";
+
 "setings_select_dates" = "Оберіть дати та часовий проміжок";
 "setings_from" = "З";
 "settings_to" = "По";
@@ -59,6 +61,9 @@
 "profile_success_edited_bio" = "Ви успішно змінили вашу біографію";
 
 "search_no_results_error" = "Немає результатів для цього пошуку. Спробуйте ввести інший запит.";
+"search_news_loading_error" = "Помилка завантаження новин";
+"search_enter_query" = "Введіть, будь ласка, ваш пошуковий запит для завантаження новин";
+"search_find_news" = "Знайти новини";
 
 "error_deleting_user" = "Помилка видалення користувача";
 "error_reauth_user" = "Помилка повторної авторизації користувача";
@@ -67,3 +72,5 @@
 "error_fetching_user" = "Помилка отримання інформації користувача";
 "error_registering_user" = "Помилка реєстрації користувача";
 "error_passwors_does_not_match" = "Пароль не співпадає із тим, що ви ввели у полі \"повторити пароль\"";
+"error_short_username" = "Нікнейм має бути довшим за 5 літер";
+"error_short_bio" = "Біографія має бути довшою за 5 літер";

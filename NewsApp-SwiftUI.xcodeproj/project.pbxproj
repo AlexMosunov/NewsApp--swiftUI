@@ -67,6 +67,7 @@
 		CEE41C9F290AE77F0076443C /* ProfileSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE41C9E290AE77F0076443C /* ProfileSettingsViewModel.swift */; };
 		CEE41CA1290AE7B40076443C /* SettingsEditTextViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE41CA0290AE7B40076443C /* SettingsEditTextViewModel.swift */; };
 		CEEE8B3C2907E78F00209EA4 /* ReauthenticatePopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEEE8B3B2907E78F00209EA4 /* ReauthenticatePopUpView.swift */; };
+		CEFC68E42910098400A120DA /* PasswordRecoveryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEFC68E32910098400A120DA /* PasswordRecoveryScreen.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -132,6 +133,7 @@
 		CEE41C9E290AE77F0076443C /* ProfileSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsViewModel.swift; sourceTree = "<group>"; };
 		CEE41CA0290AE7B40076443C /* SettingsEditTextViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsEditTextViewModel.swift; sourceTree = "<group>"; };
 		CEEE8B3B2907E78F00209EA4 /* ReauthenticatePopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReauthenticatePopUpView.swift; sourceTree = "<group>"; };
+		CEFC68E32910098400A120DA /* PasswordRecoveryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordRecoveryScreen.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -408,6 +410,7 @@
 			children = (
 				CE18FB8528EE21DB000FF7A1 /* SignUpScreen.swift */,
 				CE3A582028EEF476008B25C8 /* SignInScreen.swift */,
+				CEFC68E32910098400A120DA /* PasswordRecoveryScreen.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -578,6 +581,7 @@
 				9AE13C6928F99A33001B9101 /* ValidatedTextField.swift in Sources */,
 				CE3DA22E28CA0A8A00A2F218 /* CoreDataModel.xcdatamodeld in Sources */,
 				CEE41CA1290AE7B40076443C /* SettingsEditTextViewModel.swift in Sources */,
+				CEFC68E42910098400A120DA /* PasswordRecoveryScreen.swift in Sources */,
 				9ADF0133290810DF009311F9 /* DebounceObject.swift in Sources */,
 				CE3DA23028CA0C7400A2F218 /* PersistenceController.swift in Sources */,
 				CE18FB7828EB4A9D000FF7A1 /* FavouritesScreen.swift in Sources */,

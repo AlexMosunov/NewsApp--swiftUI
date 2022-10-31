@@ -78,12 +78,12 @@ struct SettingsEditTextView: View {
         switch viewModel.type {
         case .username:
             guard submissionText.count > 2 else {
-                self.errorMessage = "Username should be longer than 2 characters"
+                self.errorMessage = NSLocalizedString(ErrorMessagesLocalised.errorShortUsername.rawValue, comment: "")
                 return false
             }
         case .bio:
             guard submissionText.count > 5 else {
-                self.errorMessage = "Bio should be longer than 5 characters"
+                self.errorMessage = NSLocalizedString(ErrorMessagesLocalised.errorShortBio.rawValue, comment: "")
                 return false
             }
         }
