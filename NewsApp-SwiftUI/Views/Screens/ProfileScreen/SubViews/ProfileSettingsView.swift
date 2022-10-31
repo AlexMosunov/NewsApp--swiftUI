@@ -31,20 +31,20 @@ struct ProfileSettingsView: View {
                     Alert(
                         title: Text("Error deleting acccount"),
                         message: Text(errorText),
-                        dismissButton: .default(Text("Ok"))
+                        dismissButton: .default(Text(Localized.general_ok))
                     )
                 }
                 ProfileButtonView(viewModel: .init(type: .signOut), actionBool: $showSignOutAlert)
                 .alert(isPresented: $showSignOutAlert) {
-                    Alert(title: Text("Are you sure you want to sign out?"),
-                          primaryButton: .default(Text("Yes")) {
+                    Alert(title: Text(Localized.profile_sign_out),
+                          primaryButton: .default(Text(Localized.general_yes)) {
                         viewModel.signOut()
                     }, secondaryButton: .cancel())
                 }
                 ProfileButtonView(viewModel: .init(type: .deleteUser), actionBool: $showDeleteUserAlert)
                 .alert(isPresented: $showDeleteUserAlert) {
-                    Alert(title: Text("Are you sure you want to delete this user?"),
-                          primaryButton: .default(Text("Yes")) {
+                    Alert(title: Text(Localized.profile_delete_user),
+                          primaryButton: .default(Text(Localized.general_yes)) {
                         showReauthUserAlert.toggle()
                     }, secondaryButton: .cancel())
                 }
@@ -129,7 +129,7 @@ struct AboutAppGroupBoxView: View {
                     .scaledToFit()
                     .frame(width: 80, height: 80, alignment: .center)
                     .cornerRadius(12)
-                Text("WorldNews is perfect app for browsing latest news across the whole world. Choose different languages, topics, countries and sources. Safe your favourite articles and share with friends! Search articles on any topic you like! Browse news even without Internet connection! Everything in one app.")
+                Text(Localized.profile_about_app)
                     .font(.footnote)
             }
         }

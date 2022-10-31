@@ -7,6 +7,10 @@
 */
 
 "general_ok" = "Добре";
+"general_yes" = "Так";
+"general_success" = "Успіх!";
+"general_error" = "Помилка";
+"general_save" = "Зберегти";
 "setings_select_dates" = "Оберіть дати та часовий проміжок";
 "setings_from" = "З";
 "settings_to" = "По";
@@ -23,11 +27,13 @@
 "settings_picker_alert_message" = "Будь ласка оберіть країну чи мову, або обидва варіанти";
 "sources_title" = "Джерела Новин";
 "headlines_title" = "Популярні Новини";
+
 "tabview_headlines" = "Топ Новини";
 "tabview_sources" = "Джерела";
 "tabview_favourites" = "Улюблені";
 "tabview_search" = "Пошук";
 "tabview_profile" = "Профіль";
+
 "category_allNews" = "Усі Новини";
 "category_business" = "Бізнес";
 "category_entertainment" = "Шоубіз";
@@ -38,3 +44,26 @@
 "category_technology" = "Технології";
 "article_favourite_add" = "Додати в улюблене";
 "article_favourite_remove" = "Видалити з улюбленого";
+
+"profile_about_app" = "\"WorldNews\" - ідеальний додаток із найсвіжішими новинами зі всього світу. Обирай будь-яку мову, тематику, країну та джерело. Зберігай свої улюблені статті та ділись із друзями! Шукай матеріали за найбільш цікавою тобі темою! Дивись новини навіть без доступу до інтернету. Усі ці можливості лише в одному додатку!";
+"profile_sign_out" = "Чи впевнені ви, що хочете вийти з облікового запису?";
+"profile_delete_user" = "Чи впевнені ви, що хочете видалити цього користувача?";
+"profile_edit_bio" = "Тут можна змінити вашу біографію.";
+"profile_edit_username" = "Тут ви можете змінити ім'я користувача.";
+"profile_username" = "Нікнейм";
+"profile_bio" = "Біографія користувача";
+"profile_username_placeholder" = "Ваш нікнейм..";
+"profile_bio_placeholder" = "Напишіть, будь ласка, щось про себе..";
+"profile_success_edited" = "Ви успішно змінили ";
+"profile_success_edited_username" = "Ви успішно змінили ваш нікнейм";
+"profile_success_edited_bio" = "Ви успішно змінили вашу біографію";
+
+"search_no_results_error" = "Немає результатів для цього пошуку. Спробуйте ввести інший запит.";
+
+"error_deleting_user" = "Помилка видалення користувача";
+"error_reauth_user" = "Помилка повторної авторизації користувача";
+"error_deleting_image" = "Помилка видалення зображення";
+"error_loging_user" = "Помилка входу користувача";
+"error_fetching_user" = "Помилка отримання інформації користувача";
+"error_registering_user" = "Помилка реєстрації користувача";
+"error_passwors_does_not_match" = "Пароль не співпадає із тим, що ви ввели у полі \"повторити пароль\"";

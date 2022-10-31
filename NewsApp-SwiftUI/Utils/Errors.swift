@@ -12,10 +12,13 @@ enum FetchingErrors: Error {
 }
 
 extension FetchingErrors: LocalizedError {
-    private var errorDescription: String {
+    var errorDescription: String? {
         switch self {
         case .wrongQuery:
-            return NSLocalizedString("No results with for this search, try typing different query", comment: "")
+            return NSLocalizedString(
+                ErrorMessagesLocalised.wrongQuery.rawValue,
+                comment: ""
+            )
         }
     }
 }
@@ -32,19 +35,19 @@ enum FirebaseAuthErrors: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .errorDeletingUser:
-            return NSLocalizedString("Error deleting user", comment: "")
+            return NSLocalizedString(ErrorMessagesLocalised.errorDeletingUser.rawValue, comment: "")
         case .errorReauthUser:
-            return NSLocalizedString("Error re-authenticating user", comment: "")
+            return NSLocalizedString(ErrorMessagesLocalised.errorReauthUser.rawValue, comment: "")
         case .errorDeletingImage:
-            return NSLocalizedString("Error deleting image", comment: "")
+            return NSLocalizedString(ErrorMessagesLocalised.errorDeletingImage.rawValue, comment: "")
         case .errorLogingUser:
-            return NSLocalizedString("Error loging user", comment: "")
+            return NSLocalizedString(ErrorMessagesLocalised.errorLogingUser.rawValue, comment: "")
         case .errorFetchingUser:
-            return NSLocalizedString("Error fetching user", comment: "")
+            return NSLocalizedString(ErrorMessagesLocalised.errorFetchingUser.rawValue, comment: "")
         case .errorRegisteringUser:
-            return NSLocalizedString("Error registering user", comment: "")
+            return NSLocalizedString(ErrorMessagesLocalised.errorRegisteringUser.rawValue, comment: "")
         case .passwordsDoNotmatch:
-            return NSLocalizedString("Password that you entered does not match with the one, entered in `repeat password` field", comment: "")
+            return NSLocalizedString(ErrorMessagesLocalised.passwordsDoNotmatch.rawValue, comment: "")
         }
     }
 }

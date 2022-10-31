@@ -32,7 +32,7 @@ struct SettingsEditTextView: View {
             Button {
                 saveText()
             } label: {
-                Text("Save".uppercased())
+                Text((Localized.general_save.toString() ?? "Save").uppercased())
                     .font(.title3)
                     .fontWeight(.bold)
                     .padding()
@@ -46,9 +46,9 @@ struct SettingsEditTextView: View {
             Spacer()
         }
         .alert(isPresented: $showAlert) {
-            Alert(title: Text(success ? "Success!" : "Error"),
-                  message: Text(errorMessage ?? "You have successfully edited your \(viewModel.type.rawValue)"),
-                  dismissButton: .default(Text("Ok")) {
+            Alert(title: Text(success ? Localized.general_success : Localized.general_error),
+                  message: Text(errorMessage ?? viewModel.sucessMessage),
+                  dismissButton: .default(Text(Localized.general_ok)) {
                 if success {
                     self.presentationMode.wrappedValue.dismiss()
                 }

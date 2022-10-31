@@ -18,7 +18,7 @@ struct ProfileScreen: View {
                 ProfileHeaderView(selectedImage: $selectedImage)
                 ProfileSettingsView()
             }
-            .navigationTitle("Profile")
+            .navigationTitle(Localized.tabview_profile)
             .navigationBarTitleDisplayMode(.inline)
         }
     }
