@@ -29,6 +29,7 @@ class NewsArticleListViewModel: ObservableObject {
             throw FetchingErrors.wrongQuery
         }
         newsArticlesViewModel = newsArticles.map { NewsArticleViewModel(newsArticle: $0, fetchedResult: nil) }
+        try await PersistenceController.shared.saveSearchData(articles: newsArticles, query: query)
     }
 
     func loadMore(resultsCount: Int)  async throws {

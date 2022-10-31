@@ -54,14 +54,22 @@ struct PersistenceController {
     func saveData(articles: [NewsArticle], sourceId: String?) async throws {
         deleteOldArticles()
         articles.forEach { data in
-            let _ = createArticle(from: data, sourceId: sourceId)
+            _ = createArticle(from: data, sourceId: sourceId)
         }
 
         try await saveAsync()
     }
 
-    func createArticle(from data: NewsArticle, sourceId: String?) -> Article? {
-        if Article.isDuplicate(data, context: context) {
+    func saveSearchData(articles: [NewsArticle], query: String) async throws {
+        articles.forEach { data in
+            _ = createArticle(from: data, sourceId: nil, query: query)
+        }
+
+        try await saveAsync()
+    }
+
+    func createArticle(from data: NewsArticle, sourceId: String?, query: String? = nil, filter: String? = nil) -> Article? {
+        if Article.isDuplicate(data, context: context) && query == nil {
             return nil
         }
         let entity = Article(context: context)
@@ -81,6 +89,11 @@ struct PersistenceController {
         entity.country = Constants.selectedCountry
 
         entity.currentUserId = Constants.userId ?? ""
+
+        if let searchQuery = query {
+            entity.searchQuery = searchQuery
+            entity.searchFilter = filter ?? "publishedAt"
+        }
         return entity
     }
 
@@ -110,8 +123,17 @@ struct PersistenceController {
         request.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false) ]
         let searches = (try? context.fetch(request)) ?? []
         if searches.count > 5 {
-            print("DEBUG: searches = \(searches)")
-            delete(searches[5])
+            do {
+                let fetchRequest = NSFetchRequest<Article>.init(entityName: Article.description())
+                fetchRequest.predicate = NSPredicate(format: "searchQuery = %@", searches[5])
+                let articles: [Article] = try context.fetch(fetchRequest)
+                for item in articles {
+                    delete(item)
+                }
+                delete(searches[5])
+            } catch {
+                print(error.localizedDescription)
+            }
         }
     }
 

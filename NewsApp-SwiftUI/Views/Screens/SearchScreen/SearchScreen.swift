@@ -43,7 +43,7 @@ struct SearchScreen: View {
                     .onChange(of: order) { _ in
                         loadNews()
                     }
-                    if newsArticleListViewModel.newsArticlesViewModel.isEmpty || debounceObject.debouncedText.isEmpty {
+                    if debounceObject.debouncedText.isEmpty {
                             Text("Enter your search query to load articles")
                             List(recentSearches) { search in
                                 if let query = search.query, !query.isEmpty {
@@ -64,6 +64,7 @@ struct SearchScreen: View {
                                 NewsArticleCell(newsArticle: article)
                             }
                         }
+//                        SearchList(query: debounceObject.debouncedText, showLoading: debounceObject.showLoading)
                         .simultaneousGesture(DragGesture().onChanged({ _ in
                             dismissSearch()
                             hideKeyboard()
@@ -111,8 +112,31 @@ struct SearchScreen: View {
     }
 }
 
-struct SearchScreen_Previews: PreviewProvider {
-    static var previews: some View {
-        SearchScreen()
+struct SearchList: View {
+    @FetchRequest var results: FetchedResults<Article>
+    @State var showLoading: Bool
+
+    init(query: String, showLoading: Bool) {
+        _results = FetchRequest(
+            entity: Article.entity(),
+            sortDescriptors: [],
+            predicate: NSPredicate(format: "searchQuery == %@", query))
+        _showLoading = State(initialValue: showLoading)
+    }
+
+    var body: some View {
+        VStack {
+            if results.isEmpty {
+                Text("ARTICLES are empty")
+            }
+            List(results) { article in
+                let vm = NewsArticleViewModel(newsArticle: nil, fetchedResult: article)
+                NavigationLink(destination:
+                                WebView(url: vm.urlToSource,
+                                        showLoading: $showLoading)) {
+                    NewsArticleCell(newsArticle: vm)
+                }
+            }
+        }
     }
 }

@@ -63,6 +63,9 @@
 		CED209BB28D9EBFA00B76090 /* SettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED209BA28D9EBFA00B76090 /* SettingsScreen.swift */; };
 		CED2AE2928FFF06C0056779A /* SearchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED2AE2828FFF06C0056779A /* SearchScreen.swift */; };
 		CEE41C9A290A95C30076443C /* AuthTextFieldViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE41C99290A95C30076443C /* AuthTextFieldViewModel.swift */; };
+		CEE41C9C290AD48A0076443C /* AlertInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE41C9B290AD48A0076443C /* AlertInfo.swift */; };
+		CEE41C9F290AE77F0076443C /* ProfileSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE41C9E290AE77F0076443C /* ProfileSettingsViewModel.swift */; };
+		CEE41CA1290AE7B40076443C /* SettingsEditTextViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE41CA0290AE7B40076443C /* SettingsEditTextViewModel.swift */; };
 		CEEE8B3C2907E78F00209EA4 /* ReauthenticatePopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEEE8B3B2907E78F00209EA4 /* ReauthenticatePopUpView.swift */; };
 /* End PBXBuildFile section */
 
@@ -125,6 +128,9 @@
 		CED2AE2828FFF06C0056779A /* SearchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchScreen.swift; sourceTree = "<group>"; };
 		CED928B128F72DB5002FE05B /* CoreDataModel 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "CoreDataModel 3.xcdatamodel"; sourceTree = "<group>"; };
 		CEE41C99290A95C30076443C /* AuthTextFieldViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthTextFieldViewModel.swift; sourceTree = "<group>"; };
+		CEE41C9B290AD48A0076443C /* AlertInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertInfo.swift; sourceTree = "<group>"; };
+		CEE41C9E290AE77F0076443C /* ProfileSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsViewModel.swift; sourceTree = "<group>"; };
+		CEE41CA0290AE7B40076443C /* SettingsEditTextViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsEditTextViewModel.swift; sourceTree = "<group>"; };
 		CEEE8B3B2907E78F00209EA4 /* ReauthenticatePopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReauthenticatePopUpView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -215,6 +221,7 @@
 				9AFB299127E3CC32003CE3FA /* Extensions.swift */,
 				CE18FB7228E35E52000FF7A1 /* ColorScheme.swift */,
 				CEB88B4729084F8B007C249B /* Errors.swift */,
+				CEE41C9B290AD48A0076443C /* AlertInfo.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -345,6 +352,7 @@
 		CE7CAB0A2907035300238AB2 /* ProfileScreen */ = {
 			isa = PBXGroup;
 			children = (
+				CEE41C9D290AE7700076443C /* ViewModel */,
 				CE7CAB0C2907037400238AB2 /* SubViews */,
 				CE18FB8128EDFFEB000FF7A1 /* SettingsEditTextView.swift */,
 				CE18FB7B28EDDD7D000FF7A1 /* ProfileScreen.swift */,
@@ -410,6 +418,15 @@
 				CEE41C99290A95C30076443C /* AuthTextFieldViewModel.swift */,
 			);
 			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		CEE41C9D290AE7700076443C /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				CEE41C9E290AE77F0076443C /* ProfileSettingsViewModel.swift */,
+				CEE41CA0290AE7B40076443C /* SettingsEditTextViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -523,6 +540,7 @@
 				9AFB299027E3BDE7003CE3FA /* WebView.swift in Sources */,
 				CE18FB8228EDFFEC000FF7A1 /* SettingsEditTextView.swift in Sources */,
 				CE18FB6D28E32085000FF7A1 /* Localized.swift in Sources */,
+				CEE41C9C290AD48A0076443C /* AlertInfo.swift in Sources */,
 				9A4ACEE627E1099E0064541F /* NewsArticle.swift in Sources */,
 				9A4ACEEB27E10AC90064541F /* NewsArticleListViewModel.swift in Sources */,
 				CEB88B4829084F8B007C249B /* Errors.swift in Sources */,
@@ -559,11 +577,13 @@
 				9A4ACECD27E108910064541F /* NewsApp_SwiftUIApp.swift in Sources */,
 				9AE13C6928F99A33001B9101 /* ValidatedTextField.swift in Sources */,
 				CE3DA22E28CA0A8A00A2F218 /* CoreDataModel.xcdatamodeld in Sources */,
+				CEE41CA1290AE7B40076443C /* SettingsEditTextViewModel.swift in Sources */,
 				9ADF0133290810DF009311F9 /* DebounceObject.swift in Sources */,
 				CE3DA23028CA0C7400A2F218 /* PersistenceController.swift in Sources */,
 				CE18FB7828EB4A9D000FF7A1 /* FavouritesScreen.swift in Sources */,
 				CEE41C9A290A95C30076443C /* AuthTextFieldViewModel.swift in Sources */,
 				CE18FB7128E3438C000FF7A1 /* HeadlinesList.swift in Sources */,
+				CEE41C9F290AE77F0076443C /* ProfileSettingsViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

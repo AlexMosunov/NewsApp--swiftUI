@@ -10,6 +10,8 @@
         <attribute name="isFavourite" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="language" attributeType="String" defaultValueString="en"/>
         <attribute name="publishedAt" attributeType="String" defaultValueString=""/>
+        <attribute name="searchFilter" optional="YES" attributeType="String"/>
+        <attribute name="searchQuery" optional="YES" attributeType="String"/>
         <attribute name="sourceId" optional="YES" attributeType="String"/>
         <attribute name="title" attributeType="String" defaultValueString=""/>
         <attribute name="url" optional="YES" attributeType="String"/>
@@ -51,7 +53,7 @@
         <relationship name="articles" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Article" inverseName="source" inverseEntity="Article"/>
     </entity>
     <elements>
-        <element name="Article" positionX="237.55615234375" positionY="-333.2700500488281" width="128" height="268"/>
+        <element name="Article" positionX="237.55615234375" positionY="-333.2700500488281" width="128" height="284"/>
         <element name="CurrentUser" positionX="-54" positionY="-171" width="128" height="134"/>
         <element name="RecentSearch" positionX="153" positionY="-171" width="128" height="74"/>
         <element name="Source" positionX="478.64697265625" positionY="-2.394683837890625" width="128" height="103"/>

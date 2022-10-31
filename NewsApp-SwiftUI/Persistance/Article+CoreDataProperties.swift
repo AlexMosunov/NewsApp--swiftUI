@@ -29,6 +29,8 @@ extension Article {
     @NSManaged public var country: String
     @NSManaged public var isFavourite: Bool
     @NSManaged public var currentUserId: String
+    @NSManaged public var searchQuery: String?
+    @NSManaged public var searchFilter: String?
 
     static func basicTopNewsFetchRequest(ascendingFilter: Bool) -> FetchRequest<Article> {
         FetchRequest(
@@ -59,7 +61,7 @@ extension Article {
     ) -> FetchRequest<Article> {
         let sortDescriptor = NSSortDescriptor(keyPath: \Article.publishedAt, ascending: ascendingFilter)
         let predicate = NSPredicate(
-            format: "publishedAt >= %@ && publishedAt < %@ && language == %@ && category == %@ && country == %@ && currentUserId == %@ && source == nil",
+            format: "publishedAt >= %@ && publishedAt < %@ && language == %@ && category == %@ && country == %@ && currentUserId == %@ && source == nil && searchQuery == nil",
             settingFilter.fromDate.toString(),
             settingFilter.toDate.toString(),
             settingFilter.language.rawValue,
